@@ -1,0 +1,33 @@
+# ignore files without extension and allow the others
+*
+!/**/
+!*.*
+
+# include Makefile
+!Makefile
+
+# ignore Mac OS system files
+.DS_Store
+
+# ignore compiled files
+*.o
+
+# ignore executables files
+*.out
+*.exe
+
+# ignore library files
+*.a
+
+# ignore debug files
+*.dSYM/*
+.vscode/*
+
+# ignore bash files
+*.sh
+
+# ignore python files
+*.py
+
+# ignore test files
+test.*
