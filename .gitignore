@@ -30,4 +30,4 @@
 *.py
 
 # ignore test files
-test.*
+test*.*
