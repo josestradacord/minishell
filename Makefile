@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRCS = minishell.c checks.c environment.c list_env.c
+SRCS = minishell.c checks.c environment.c list_env.c parser.c builtins.c
 
 CC = gcc
 
