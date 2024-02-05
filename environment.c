@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environment.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/05 18:48:15 by joestrad          #+#    #+#             */
+/*   Updated: 2024/02/05 18:48:17 by joestrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_print_env(char **envp)
@@ -37,6 +49,25 @@ t_list_e	*ft_create_node(char *env_var)
 	return (node);
 }
 
+void	ft_copy_envp(t_ms *ms, char **envp)
+{
+	int	index;
+
+	index = 0;
+	while (envp[index])
+		index++;
+	ms->envp = malloc(sizeof(char *) * (index + 1));
+	if (!ms->envp)
+		perror("malloc error");
+	index = 0;
+	while (envp[index])
+	{
+		ms->envp[index] = ft_strdup(envp[index]);
+		index++;
+	}
+	ms->envp[index] = NULL;
+}
+
 void	ft_get_env(t_ms *ms, char **envp)
 {
 	int			index;
@@ -44,11 +75,13 @@ void	ft_get_env(t_ms *ms, char **envp)
 
 	index = 0;
 	ms->env = NULL;
+	//ft_copy_envp(ms, envp);
 	while (envp[index] != NULL)
 	{
 		node = ft_create_node(envp[index]);
 		if (!node)
-			return ;	// es mejor devolver algo??
+			perror("create node error");
+			// es mejor devolver algo?? return ;	
 		ft_lste_addback(&ms->env, node);
 		index++;
 	}

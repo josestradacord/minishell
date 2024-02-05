@@ -1,10 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/02/05 18:48:41 by joestrad          #+#    #+#              #
+#    Updated: 2024/02/05 20:42:32 by joestrad         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 
-SRCS = minishell.c checks.c environment.c list_env.c parser.c builtins.c
+SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c
 
 CC = gcc
 
-READLINE = -lreadline
+READLINE = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include/readline
 
 FLAGS = -Wall -Werror -Wextra 
 
@@ -31,7 +43,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@echo $(YELLOW)minishell norminette...$(NOCOLOR)
 #	@norminette $(SRCS)
 	@echo $(GREEN)Compiling minishell...$(NOCOLOR)
-	@$(CC) $(FLAGS) $(INC) $(LIBFT) $(SRCS) -o $(NAME) $(READLINE)
+	@$(CC) $(READLINE) $(FLAGS) $(INC) $(LIBFT) $(SRCS) -o $(NAME)
 	@echo $(GREEN)Program minishell ready$(NOCOLOR)
 
 $(LIBFT):

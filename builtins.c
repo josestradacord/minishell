@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/05 18:47:59 by joestrad          #+#    #+#             */
+/*   Updated: 2024/02/05 18:48:00 by joestrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	ft_echo(t_ms *ms)
+/*
+int	ft_echo(t_ms *ms)
 {
 	int		index;
 	t_list	*node;
@@ -14,4 +27,12 @@ void	ft_echo(t_ms *ms)
 		index--;
 	}
 	printf("\n");
+	return (TRUE);
 }
+
+int	ft_exit(t_ms *ms)
+{
+	(void)	*ms;
+	return (FALSE);
+}
+*/

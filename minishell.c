@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
+/*   Updated: 2024/02/05 20:32:38 by joestrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -9,120 +21,64 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
-void	ft_free(t_ms *ms)
-{
-	//ft_printf("DEBUG: Empiezo a liberar\n");
-	if (ms->env)
-	{
-		//ft_printf("DEBUG: Libero env\n");
-		ft_lste_clear(&ms->env, free);
-		//ft_printf("DEBUG: Liberado env\n");
-	}
-	//ft_printf("DEBUG: Intento liberar name\n");
-	if (ms->cmd->name)
-	{
-		//ft_printf("DEBUG: Libero name\n");
-		free(ms->cmd->name);
-		//ft_printf("DEBUG: Liberado name\n");
-	}
-	//ft_printf("DEBUG: Intento liberar args\n");
-	if (ms->cmd->args)
-	{
-		//ft_printf("DEBUG: Libero args\n");
-		ft_lstclear(&ms->cmd->args, free);
-		//ft_printf("DEBUG: Liberado args\n");
-	}
-	/*
-	//ft_lste_clear(&ms->env, free);
-	//free(ms->cmd->name);
-	//ft_lstclear(&ms->cmd->args, free);
-	
-	free(ms->cmd);
-	
-	//free(ms);
-	*/
-}
 
-void	ft_init_data(t_ms *ms)
+void	minishell(t_ms *ms)
 {
-	ms->cmd->name = NULL;
-	ms->cmd->args = NULL;
-	ms->cmd->next = NULL;
-}
-
-void	minishell(t_ms *ms, char **envp)
-{
-	char	*line;
-	int		len;
+	int		times;
+	int		status;
 
 	/*DEBUG
 	printf("ANTES:\n");	
 	ft_print_env(envp);
 	FIN DEBUG*/
-	ft_init_data(ms);
-	ft_get_env(ms, envp);
-	while (TRUE)
+	times = 0;
+	status = TRUE;
+	while (status)
 	{
-		line = readline("minishell_V0.5>");
-		//printf("He leido: #%s#", line);
-		len = ft_strlen(line);
-		if (line[0] != '\0')
+		ms->line = readline("minishell_V0.6$ ");
+		times++;
+		if (times == 3)
+			status = FALSE;
+		if (ms->line == NULL)
 		{
-			add_history(line);
-			ft_parser(ms, line);
-			ft_echo(ms);
-			// la salida del programa debe hacerse en otro
-			//lugar: la función del parseo o la de ejecución
-			if ((len == 4) && !ft_strncmp(line, "exit", len))
-			{
-				ft_free(ms);
-				/*
-				ft_lste_clear(&ms->env, free);
-				free(ms->cmd->name);
-				ft_lstclear(&ms->cmd->args, free);
-				free(ms->cmd);
-				*/
-				free(line);
-				exit(1);
-			}
-
-			//printf("%s\n", line); // quitar
+			ft_printf("Linea NULL\n");//despues solo /n
+			break ;
 		}
-		//else
-		//	printf("%s", line);
-		ft_free(ms);
-		free(line);
+		add_history(ms->line);	// así agregamos las líneas en blanco al historial
+		if (ft_blank_line(ms->line))
+		{
+			free(ms->line);
+			continue ;
+		}
+		ft_parser(ms);
+		//status = ft_executor(ms);
+		
+		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->cmds->cmd);
+		ft_executor(ms);
+		ft_free_cmds(ms);
 	}
 	/*DEBUG
-	//printf("DESPUÉS:\n");
-	//ft_print_env_lst(ms->env);
+	printf("DESPUÉS:\n");
+	ft_print_env_lst(ms->env);
 	FIN DEBUG*/
-	ft_free(ms);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_ms	*ms;
+	t_ms	ms;
 
-	(void)	**argv;
 	atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else
 	{
-		ms = (t_ms *) malloc(sizeof(t_ms));
-		ms->cmd = (t_cmd *) malloc(sizeof(t_cmd));
-		minishell(ms, envp);
-
-		/*
-		line = readline("minishell>");
-		len = ft_strlen(line);
-		if ((len == 0) || ((len == 4) && !ft_strncmp(line, "exit", len)))
-		printf("%s\n", line);
-		free(line);
-		*/
-		
-		ft_free(ms);
+		//ms = (t_ms *) malloc(sizeof(t_ms));
+		//ms->tokens = (t_token *) malloc(sizeof(t_token));
+		//ms->cmds = (t_cmd *) malloc(sizeof(t_cmd));
+		ft_init_data(&ms, argv, envp);
+		minishell(&ms);
+		ft_free(&ms, EXIT_SUCCESS);
 	}
+	
 	return (0);
 }
