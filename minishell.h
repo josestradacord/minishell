@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 20:35:42 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/07 20:40:40 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,16 @@
 
 # define FALSE	0
 # define TRUE	1
-# define PIPE	10
+
+// Types of tokens
+# define NOQUOTE	10
+# define SNGQUOTE	11
+# define DBLQUOTE	12
+# define INPREDIR	13
+# define OUTREDIR	14
+# define OUTREDIR_A	15
+# define PIPE		16
+# define HEREDOC	17
 
 // Struct to keep the environment variables as a list
 typedef struct s_list_e
@@ -61,7 +70,7 @@ typedef struct s_ms
 {
 	char		*line;
 	char		**line_args;
-	//t_token		*tokens;
+	t_token		*tokens;
 	int			num_pipes;
 	pid_t		child_pid;
 	t_list_e	*env;
@@ -93,9 +102,10 @@ void		ft_print_env_lst(t_list_e *env);
 
 // Parser functions
 void		ft_parser(t_ms *ms);
+void		ft_parse_tokens(t_ms *ms);
 
 // Executor functions
-void			ft_executor(t_ms *ms);
+void		ft_executor(t_ms *ms);
 
 // Builtins functions
 int			ft_echo(t_ms *ms);

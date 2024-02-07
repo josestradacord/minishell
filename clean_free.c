@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   clean_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:07 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 20:41:27 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/07 20:40:17 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 #include "minishell.h"
 
