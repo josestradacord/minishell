@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:15 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:48:17 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:52:30 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,24 @@ void	ft_get_env(t_ms *ms, char **envp)
 			// es mejor devolver algo?? return ;	
 		ft_lste_addback(&ms->env, node);
 		index++;
+	}
+}
+
+void	ft_lste_rm(t_list_e *env, char *tofind)
+{
+	t_list_e	*temp;
+	int			i;
+
+	temp = env;
+	i = 0;
+	if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
+	{
+		ft_printf("encuentra coincidencia en env\n");
+		free(temp); //liberar nodo y enlazar el siguiente con el anterior
+	}
+	else
+	{
+		temp = env;
+		ft_lste_rm(temp->next, tofind);
 	}
 }

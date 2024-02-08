@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 20:32:38 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:55:07 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,23 @@ void	minishell(t_ms *ms)
 		}
 		ft_parser(ms);
 		//status = ft_executor(ms);
-		
-		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->cmds->cmd);
-		ft_executor(ms);
+
+		//added by Gabriel 08/02/24
+		ft_printf("\n\n---cmd es %s---\n\n", ms->cmds->cmd);
+		if (!ft_strncmp(ms->cmds->cmd, "env", 3)) //trying to print env 
+		{
+			ft_print_env_lst(ms->env);
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "PATH", 5))	//tiene que comparar el argumento con los nombres de las variables de entorno
+		{
+			ft_lste_rm(ms->env, "PATH");	//tiene que borrar la coincidencia y juntar el siguiente puntero con el anterior
+		}
+		else
+		{
+			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->cmds->cmd);
+			ft_executor(ms);
+		}
+		//end add
 		ft_free_cmds(ms);
 	}
 	/*DEBUG
@@ -67,7 +81,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else

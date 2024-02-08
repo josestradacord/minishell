@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 20:40:40 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:51:48 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ void		ft_get_env(t_ms *ms, char **envp);
 void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
+
+void	ft_lste_rm(t_list_e *env, char *tofind);
+
 
 // Parser functions
 void		ft_parser(t_ms *ms);
