@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/08 19:55:07 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:44:30 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	minishell(t_ms *ms)
 	{
 		ms->line = readline("minishell_V0.6$ ");
 		times++;
-		if (times == 3)
+		if (times == 100)		//se sale al  meter este numero de comannndo sean o no lineas en blancos
 			status = FALSE;
 		if (ms->line == NULL)
 		{
@@ -58,10 +58,19 @@ void	minishell(t_ms *ms)
 		if (!ft_strncmp(ms->cmds->cmd, "env", 3)) //trying to print env 
 		{
 			ft_print_env_lst(ms->env);
+			//ft_print_env(ms->envp);
 		}
-		else if(!ft_strncmp(ms->cmds->cmd, "PATH", 5))	//tiene que comparar el argumento con los nombres de las variables de entorno
+		else if(!ft_strncmp(ms->cmds->cmd, "SYSTEMD_EXEC_PID", 16))
 		{
-			ft_lste_rm(ms->env, "PATH");	//tiene que borrar la coincidencia y juntar el siguiente puntero con el anterior
+			ft_lste_rm(ms->env, "SYSTEMD_EXEC_PID");
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "PATH", 4))
+		{
+			ft_lste_rm(ms->env, "PATH");
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "LS_COLORS", 9))
+		{
+			ft_lste_rm(ms->env, "LS_COLORS");
 		}
 		else
 		{

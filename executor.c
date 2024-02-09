@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:38 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:47:40 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:07:47 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,33 @@ void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
 	}
 	else
 	{
-		waitpid(ms->child_pid, &status, WUNTRACED);
+		waitpid(ms->child_pid, &status, 0);
 		
 	}
 }
 
+/* int	ft_search(t_data *data, char *cmd)
+{
+	int	i;
+
+	i = -1;
+	data->commt = ft_split(cmd, ' ');
+	while (data->rout[++i])
+	{
+		data->wanted = ft_strjoin(data->rout[i], data->commt[0]);
+		if (access(data->wanted, 0) == 0)
+			return (0);
+	}
+	return (1);
+}
+
+void	ft_cmd(t_data *data, char *cmd, char **envp)
+{
+	if (ft_search(data, cmd) == 0)
+		execve(data->wanted, data->commt, envp);
+	ft_error(2);
+	exit(1);
+} */
 
 void	ft_executor(t_ms *ms)
 {

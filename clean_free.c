@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:07 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 20:40:17 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:40:44 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	ft_free_envp(t_ms *ms)
 		free(ms->envp[index]);
 		index++;
 	}
-	//free(ms->envp);
-	ms->envp = NULL;
+	free(ms->envp);
+	//ms->envp = NULL;
 }
 
 /*void	ft_free_toks(t_ms *ms)

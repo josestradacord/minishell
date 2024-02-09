@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/08 19:51:48 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:54:49 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
+# include <sys/types.h> 
+# include <fcntl.h>
+# include <errno.h>
 
 # include "libft/libft.h"
 
@@ -72,7 +76,7 @@ typedef struct s_ms
 	char		**line_args;
 	t_token		*tokens;
 	int			num_pipes;
-	pid_t		child_pid;
+	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
 	int			status;
@@ -101,6 +105,7 @@ void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
 
 void	ft_lste_rm(t_list_e *env, char *tofind);
+void	ft_env_rm(t_ms *ms, char *tofind);
 
 
 // Parser functions
@@ -117,4 +122,5 @@ int			ft_exit(t_ms *ms);
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
+void		ft_free_envp(t_ms *ms);
 #endif
