@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:28 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:48:29 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:50:07 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_list_e *ft_lste_new(char *key, char *value)
 	if (!node)
 		return (NULL);
 	node->name = ft_strdup(key);
-	node->value = ft_strdup(value);
+	if (value != NULL)
+		node->value = ft_strdup(value);
+	else
+		node->value = ft_strdup("");
 	node->next = NULL;
 	return (node);
 }

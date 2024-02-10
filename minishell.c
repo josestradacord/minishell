@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/09 16:44:30 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:32:00 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ void	minishell(t_ms *ms)
 		else if(!ft_strncmp(ms->cmds->cmd, "LS_COLORS", 9))
 		{
 			ft_lste_rm(ms->env, "LS_COLORS");
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "pwd", 3))
+		{
+			ft_pwd(ms);
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "export", 6))
+		{
+			ft_export(ms);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:57 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 21:00:19 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:53:25 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,22 @@ void	ft_getcmd(t_ms *ms)
 	printf("DEBUG: En ft_getcmd(), el comando es: %s\n", ms->cmds->cmd);
 }
 
+void	ft_getcmd_temp(t_ms *ms)
+{
+	int	ini;
+	int	end;
+
+	ini = 0;
+	end = ini;
+	printf("DEBUG: Obteniendo el comando. La linea es: %s, posición: %d\n", ms->line, ini);
+	while (ms->line[end])
+		end++;
+	printf("DEBUG: Posición final: %d\n", end);
+	ft_new_cmd(ms, ini, end);
+	//ms->cmds->cmd = ft_substr(ms->line, (*p), index - (*p));
+	printf("DEBUG: En ft_getcmd(), el comando es: %s\n", ms->cmds->cmd);
+}
+
 /* void	ft_parse_tokens(t_ms *ms)
 {
 	int	index1;
@@ -108,7 +124,7 @@ void	ft_parser(t_ms *ms)
 	ft_printf("DEBUG: Dentro del parser. La linea es: #%s#\n", ms->line);
 	//ft_parse_tokens(ms);
 	
-	ft_getcmd(ms);
+	ft_getcmd_temp(ms);
 	
 	//ft_printf("DEBUG: El comando es: %s\n", ms->cmds->cmd);
 	//ft_getargs(ms, line, &pos);

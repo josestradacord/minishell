@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/09 14:54:49 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:19:44 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void		ft_init_data(t_ms *ms, char **argv, char **envp);
 // Functions used to manage the list of environment variables
 t_list_e	*ft_lste_new(char *key, char *value);
 int			ft_lste_size(t_list_e *lst);
+t_list_e	*ft_create_node(char *env_var);
 void		ft_lste_addback(t_list_e **lst, t_list_e *new);
 void		ft_lste_delone(t_list_e *lst, void (*del)(void *));
 void		ft_lste_clear(t_list_e **lst, void (*del)(void *));
@@ -118,6 +119,8 @@ void		ft_executor(t_ms *ms);
 // Builtins functions
 int			ft_echo(t_ms *ms);
 int			ft_exit(t_ms *ms);
+void		ft_pwd(t_ms *ms);
+void		ft_export(t_ms *ms);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
