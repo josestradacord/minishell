@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:59 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/10 17:54:10 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:58:31 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	ft_exit(t_ms *ms)
 	return (FALSE);
 }
 */
+
+//Tenner en cuenta que al ejecutarssssssssse una shell dentro de la shell el SHLVL aumenta en 1
 
 void	ft_pwd(t_ms *ms)
 {
@@ -79,7 +81,6 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	t_list_e	*new;
 	char		**val;
 	int			i;
-	char		*borrar;
 
 	i = 0;
 	temp = ms->env;
@@ -87,15 +88,19 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	if (!args[1])
 		while (temp)
 		{
-			ft_printf("declare -x %s=\34%s\34\n", temp->name, temp->value);
+			ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 			temp = temp->next;
 		}
 	else
 		while(args[++i] != NULL)
 		{
-			val = ft_split(args[i], '=');
-			new = ft_lste_new(val[0], val[1]);
-			ft_lste_addback(&temp, new);
+			val = ft_joineq(args[i]);
+			if (ft_isalpha(val[0][0]) == 1)
+				if (ft_liste_comp(ms->env, val) != 0)
+				{	
+					new = ft_lste_new(val[0], val[1]);
+					ft_lste_addback(&temp, new);
+				}
 			ft_free2(val);
 		}
 	ft_free2(args);

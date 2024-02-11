@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/10 17:19:44 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:46:20 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,8 @@ void		ft_export(t_ms *ms);
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
 void		ft_free_envp(t_ms *ms);
+
+//Utils
+char	**ft_joineq(char *astr);
+int	ft_liste_comp(t_list_e *env, char **val);
 #endif

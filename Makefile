@@ -6,13 +6,13 @@
 #    By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 18:48:41 by joestrad          #+#    #+#              #
-#    Updated: 2024/02/09 13:00:55 by gpaez-ga         ###   ########.fr        #
+#    Updated: 2024/02/11 16:05:06 by gpaez-ga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c
+SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c utils.c
 
 CC = gcc
 

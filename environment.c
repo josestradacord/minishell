@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:15 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/10 16:21:11 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:57:19 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,8 @@ t_list_e	*ft_create_node(char *env_var)		//modified by Gabriel 09/02/2024
 {
 	char		**pair;
 	t_list_e	*node;
-	int			i;
 
-	i = 2;
-	pair = ft_split(env_var, '=');			//de esta forma se añaden los '=' que forman parte de los valores de las variables (vease LS_COLORS)
-	while (pair[i])
-	{
-		pair[1] = ft_strjoin(pair[1], "=");
-		pair[1] = ft_strjoin(pair[1], pair[i++]);
-	}
+	pair = ft_joineq(env_var);
 	node = ft_lste_new(pair[0], pair[1]);
 	free(pair[0]);
 	free(pair[1]);
@@ -96,9 +89,9 @@ void	ft_get_env(t_ms *ms, char **envp)
 
 		//added by Gabriel 09/02/2024
 
-void	ft_lste_rm(t_list_e *env, char *tofind)
+void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
 {
-	t_list_e	*temp;
+	t_list_e	*temp;				//Si no existe la variiiiiable a borrar no hace nadddddddda
 	t_list_e	*temp2;
 
 	if (env == NULL || env->next == NULL)
@@ -111,7 +104,7 @@ void	ft_lste_rm(t_list_e *env, char *tofind)
 		env->next = temp->next;
 		free(temp); //liberar nodo y enlazar el siguiente con el anterior
 	}
-	if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
+	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
 	{
 		temp = env;
 		*env = *env->next;
