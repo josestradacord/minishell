@@ -68,9 +68,24 @@ void	minishell(t_ms *ms)
 		{
 			ft_lste_rm(ms->env, "PATH");
 		}
+		else if(!ft_strncmp(ms->cmds->cmd, "cd", 2))
+		{
+			char **dir = ft_split(ms->cmds->cmd, ' ');
+			ft_printf("dir es%s\n", dir[1]);
+			ft_cd(dir[1]);
+		}
 		else if(!ft_strncmp(ms->cmds->cmd, "LS_COLORS", 9))
 		{
 			ft_lste_rm(ms->env, "LS_COLORS");
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "exit", 4))
+		{
+			exit(0);
+		}
+		else if(!ft_strncmp(ms->cmds->cmd, "echo", 4))
+		{
+			char **str = ft_split(ms->cmds->cmd, ' ');
+			ft_echo (str);
 		}
 		else if(!ft_strncmp(ms->cmds->cmd, "pwd", 3))
 		{

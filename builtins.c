@@ -12,32 +12,46 @@
 
 #include "minishell.h"
 
-/*
-int	ft_echo(t_ms *ms)
-{
-	int		index;
-	t_list	*node;
 
-	node = ms->cmd->args;
-	index = ft_lstsize(node);
-	while (index > 0)
+void	ft_echo(char **str)
+{
+	int	i;
+	int	k;
+
+	if (ft_strncmp(str[1], "-n", 2) == 0 && str[1][2] == '\0')
 	{
-		printf("%s ", node->content);
-		node = node->next;
-		index--;
+		i = 2;
+		k = 0;
 	}
-	printf("\n");
-	return (TRUE);
+	else
+	{
+		i = 1;
+		k = 1;
+	}
+	while (str[i + 1])
+		ft_printf("%s ", str[i++]);
+	if (k == 1)
+		ft_printf("%s\n", str[i]);
+	else
+		ft_printf("%s", str[i]);
 }
 
 int	ft_exit(t_ms *ms)
 {
-	(void)	*ms;
-	return (FALSE);
+	exit(0);
 }
-*/
 
-//Tenner en cuenta que al ejecutarssssssssse una shell dentro de la shell el SHLVL aumenta en 1
+
+void	ft_cd(char *dir)
+{
+	if (chdir(dir) != 0)
+	{
+		dup2(STDERR_FILENO, STDIN_FILENO);
+		ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
+	}
+}
+
+//Tener en cuenta que al ejecutarssssssssse una shell dentro de la shell el SHLVL aumenta en 1
 
 void	ft_pwd(t_ms *ms)
 {
@@ -94,7 +108,7 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	else
 		while(args[++i] != NULL)
 		{
-			val = ft_joineq(args[i]);
+			val = ft_joineq(args[i], "=");
 			if (ft_isalpha(val[0][0]) == 1)
 				if (ft_liste_comp(ms->env, val) != 0)
 				{	

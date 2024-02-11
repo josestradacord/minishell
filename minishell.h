@@ -117,7 +117,8 @@ void		ft_parse_tokens(t_ms *ms);
 void		ft_executor(t_ms *ms);
 
 // Builtins functions
-int			ft_echo(t_ms *ms);
+void		ft_echo(char **str);
+void		ft_cd(char *dir);
 int			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
@@ -128,6 +129,6 @@ void		ft_free_cmds(t_ms *ms);
 void		ft_free_envp(t_ms *ms);
 
 //Utils
-char	**ft_joineq(char *astr);
+char	**ft_joineq(char *astr, char *cr);
 int	ft_liste_comp(t_list_e *env, char **val);
 #endif

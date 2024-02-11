@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-char	**ft_joineq(char *astr)
+char	**ft_joineq(char *astr, char *cr)
 {
 	int		i;
 	char	**pair;
 
 	i = 2;
-	pair = ft_split(astr, '=');
+	pair = ft_split(astr, cr[0]);
 	while (pair[i])
 	{
-		pair[1] = ft_strjoin(pair[1], "=");
+		pair[1] = ft_strjoin(pair[1], cr);
 		pair[1] = ft_strjoin(pair[1], pair[i++]);
 	}
 	return (pair);

@@ -41,7 +41,7 @@ t_list_e	*ft_create_node(char *env_var)		//modified by Gabriel 09/02/2024
 	char		**pair;
 	t_list_e	*node;
 
-	pair = ft_joineq(env_var);
+	pair = ft_joineq(env_var, "=");
 	node = ft_lste_new(pair[0], pair[1]);
 	free(pair[0]);
 	free(pair[1]);
