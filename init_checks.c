@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:47:52 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:55:35 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	ft_usage(void)
 
 void	ft_init_data(t_ms *ms, char **argv, char **envp)
 {
-	//(void) argv;
-	//ms->tokens = NULL;
+	(void) argv;
+	ms->tokens = NULL;
 	ms->cmds = NULL;
 	ms->num_pipes = 0;
 	ms->status = 0;
 	ms->line = NULL;
-	ms->line_args = argv;
+	//ms->line_args = argv;
 	//ms->env = NULL;
 	ft_copy_envp(ms, envp);
 	ft_get_env(ms, envp);

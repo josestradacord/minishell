@@ -6,31 +6,30 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:59 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:48:00 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:34:40 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-int	ft_echo(t_ms *ms)
+
+void	ft_echo(t_ms *ms)
 {
 	int		index;
-	t_list	*node;
-
-	node = ms->cmd->args;
-	index = ft_lstsize(node);
-	while (index > 0)
+	
+	ms->command = ft_split(ms->tokens->token, ' ');
+	index = 1;
+	while (ms->command[index])
 	{
-		printf("%s ", node->content);
-		node = node->next;
-		index--;
+		ft_putstr_fd(ms->command[index], STDOUT_FILENO);
+		index++;
+		if (ms->command[index])
+			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
-	printf("\n");
-	return (TRUE);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
-int	ft_exit(t_ms *ms)
+/*int	ft_exit(t_ms *ms)
 {
 	(void)	*ms;
 	return (FALSE);

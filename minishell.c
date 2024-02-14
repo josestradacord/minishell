@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 20:32:38 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:31:22 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
-
 void	minishell(t_ms *ms)
 {
 	int		times;
@@ -35,7 +34,7 @@ void	minishell(t_ms *ms)
 	status = TRUE;
 	while (status)
 	{
-		ms->line = readline("minishell_V0.6$ ");
+		ms->line = readline("minishell_V0.7$ ");
 		times++;
 		if (times == 3)
 			status = FALSE;
@@ -53,9 +52,11 @@ void	minishell(t_ms *ms)
 		ft_parser(ms);
 		//status = ft_executor(ms);
 		
-		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->cmds->cmd);
-		ft_executor(ms);
+		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		//ft_executor(ms);
+		ft_echo(ms);
 		ft_free_cmds(ms);
+		ft_free_toks(ms);
 	}
 	/*DEBUG
 	printf("DESPUÉS:\n");
@@ -75,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 		//ms = (t_ms *) malloc(sizeof(t_ms));
 		//ms->tokens = (t_token *) malloc(sizeof(t_token));
 		//ms->cmds = (t_cmd *) malloc(sizeof(t_cmd));
+		//printf("DEBUG: Voy a iniciar\n");
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

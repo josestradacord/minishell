@@ -16,9 +16,15 @@ SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c ex
 
 CC = gcc
 
-LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
+#42
+#LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
 
-INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
+#INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
+
+#Home
+LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
+
+INC_READLINE = -I/usr/local/opt/readline/include
 
 FLAGS = -Wall -Werror -Wextra 
 

@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 18:06:30 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:31:46 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 
 # define FALSE	0
 # define TRUE	1
+
+// Token delimiters
+# define TOKSTR		"><|;"
+# define SEPCHAR	"><| "
 
 // Types of tokens
 # define NOQUOTE	10
@@ -69,7 +73,7 @@ typedef struct s_cmd
 typedef struct s_ms
 {
 	char		*line;
-	char		**line_args;
+	char		**command;
 	t_token		*tokens;
 	int			num_pipes;
 	pid_t		child_pid;
@@ -108,10 +112,11 @@ void		ft_parse_tokens(t_ms *ms);
 void		ft_executor(t_ms *ms);
 
 // Builtins functions
-int			ft_echo(t_ms *ms);
+void			ft_echo(t_ms *ms);
 int			ft_exit(t_ms *ms);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
+void		ft_free_toks(t_ms *ms);
 #endif

@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:07 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 17:21:43 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:21:41 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,37 @@ void	ft_free_envp(t_ms *ms)
 		free(ms->envp[index]);
 		index++;
 	}
-	//free(ms->envp);
-	ms->envp = NULL;
+	free(ms->envp);
 }
 
-/*void	ft_free_toks(t_ms *ms)
+void	ft_free_toks(t_ms *ms)
 {
 	t_token	*node;
 
-	while (ms->tokens)
+	ft_printf("DEBUG: Empiezo a liberar ft_free_toks()\n");
+	node = ms->tokens;
+	while (node)
 	{
-		free(ms->tokens->token);
-		node = ms->tokens->next;
+		free(node->token);
+		node = node->next;
 	}
 	if (ms->tokens)
 		free(ms->tokens);
-}*/
+	ms->tokens = NULL;
+}
+
+void	ft_free_command(t_ms *ms)
+{
+	int	index;
+
+	index = 0;
+	while (ms->command[index])
+	{
+		free(ms->command[index]);
+		index++;
+	}
+	free(ms->command);
+}
 
 void	ft_free_cmds(t_ms *ms)
 {
@@ -53,9 +68,9 @@ void	ft_free_cmds(t_ms *ms)
 		free(node->cmd);
 		node = node->next;
 	}
-	/*if (ms->cmds)
-		free(ms->cmds);*/
-	ms->cmds = NULL;
+	if (ms->cmds)
+		free(ms->cmds);
+	ft_free_command(ms);
 }
 
 void	ft_free(t_ms *ms, int exit_code)
@@ -66,14 +81,14 @@ void	ft_free(t_ms *ms, int exit_code)
 	ft_lste_clear(&ms->env, free);
 	ft_free_envp(ms);
 	ft_printf("DEBUG: Liberado env\n");
-	ft_printf("DEBUG: Libero cmds\n");
+	/*ft_printf("DEBUG: Libero cmds\n");
 	if (ms->cmds)
 	{
 		ft_printf("DEBUG: Empiezo a liberar comandos\n");
 		ft_free_cmds(ms);
 	}
 	//free(ms);
-	ft_printf("DEBUG: Liberado cmds\n");
+	ft_printf("DEBUG: Liberado cmds\n");*/
 	exit(exit_code);
 }
 
