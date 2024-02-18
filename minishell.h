@@ -78,6 +78,8 @@ typedef struct s_ms
 {
 	char		*line;
 	char		**command;
+	char		*wanted;
+	char		**rout;		//added by Gabriel
 	t_token		*tokens;
 	int			num_pipes;
 	pid_t			child_pid;
@@ -94,6 +96,8 @@ int			ft_blank_line(char *line);
 
 // Init functions
 void		ft_init_data(t_ms *ms, char **argv, char **envp);
+
+char		**ft_routes(char **envp);
 
 // Functions used to manage the list of environment variables
 t_list_e	*ft_lste_new(char *key, char *value);
@@ -126,6 +130,9 @@ void		ft_cd(char *dir);
 int			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
+
+void	ft_cmd(t_ms *ms, char *cmd);
+
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);

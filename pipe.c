@@ -12,25 +12,54 @@ void	ft_error(int i)
 		write(2, "ERROR\nFailed creating child\n", 28);
 }
 
-int	ft_search(t_data *data, char *cmd)
+char	**ft_routes(char **envp)
+{
+	int		i;
+	int		k;
+	char	*temp;
+	char	**rout;
+
+	i = 0;
+	k = 0;
+	temp = "";
+	while (ft_strncmp(envp[i], "PATH=", 5))
+		i++;
+	rout = ft_split(envp[i], ':');
+	temp = ft_strjoin(temp, &rout[0][5]);
+	free(rout[0]);
+	rout[0] = ft_strdup(temp);
+	free(temp);
+	while (rout[k])
+	{
+		temp = ft_strjoin(rout[k], "/");
+		if (rout[k])
+			free(rout[k]);
+		rout[k] = ft_strdup(temp);
+		free(temp);
+		k++;
+	}
+	return (rout);
+}
+
+int	ft_search(t_ms *ms, char *cmd)
 {
 	int	i;
 
 	i = -1;
-	data->commt = ft_split(cmd, ' ');
-	while (data->rout[++i])
+	ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
+	while (ms->rout[++i])
 	{
-		data->wanted = ft_strjoin(data->rout[i], data->commt[0]);
-		if (access(data->wanted, 0) == 0)
+		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
+		if (access(ms->wanted, 0) == 0)
 			return (0);
 	}
 	return (1);
 }
 
-void	ft_cmd(t_data *data, char *cmd, char **envp)
+void	ft_cmd(t_ms *ms, char *cmd)
 {
-	if (ft_search(data, cmd) == 0)
-		execve(data->wanted, data->commt, envp);
+	if (ft_search(ms, cmd) == 0)	//necesita hacer un hijo para no salirse
+		execve(ms->wanted, ms->command, ms->envp);
 	ft_error(2);
 	exit(1);
 }
@@ -53,7 +82,7 @@ void	ft_temp(char *wtd, int fdin)
 	ft_printf("%s", str);
 }
 
-int	here_doc(char *str, t_data *data, char *outfl)
+/* int	here_doc(char *str, t_data *data, char *outfl)
 {
 	int	fdin;
 
@@ -94,9 +123,9 @@ int	ft_enter(t_ms *ms)
 		return (i = 1);
 	}
 }
+ */
 
-
-void	son(t_ms *ms)
+/* void	son(t_ms *ms)
 {
 	int	fd[2];
 	int	pid;
@@ -162,4 +191,4 @@ int	pipe(t_ms *ms)
 	last_son(&ms);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
     //añadir algo para el > y el >>, usar else de ft_enter
 	unlink(".tmp");
-}
+} */
