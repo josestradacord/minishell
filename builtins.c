@@ -13,7 +13,23 @@
 #include "minishell.h"
 
 
-void	ft_echo(char **str)
+void	ft_echo(t_ms *ms)
+{
+	int		index;
+	
+	ms->command = ft_split(ms->tokens->token, ' ');
+	index = 1;
+	while (ms->command[index])
+	{
+		ft_putstr_fd(ms->command[index], STDOUT_FILENO);
+		index++;
+		if (ms->command[index])
+			ft_putstr_fd(" ", STDOUT_FILENO);
+	}
+	ft_putstr_fd("\n", STDOUT_FILENO);
+}
+
+/* void	ft_echo(char **str)
 {
 	int	i;
 	int	k;
@@ -34,7 +50,7 @@ void	ft_echo(char **str)
 		ft_printf("%s\n", str[i]);
 	else
 		ft_printf("%s", str[i]);
-}
+} */
 
 int	ft_exit(t_ms *ms)
 {

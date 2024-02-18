@@ -28,6 +28,10 @@
 # define FALSE	0
 # define TRUE	1
 
+// Token delimiters
+# define TOKSTR		"><|;"
+# define SEPCHAR	"><| "
+
 // Types of tokens
 # define NOQUOTE	10
 # define SNGQUOTE	11
@@ -73,7 +77,7 @@ typedef struct s_cmd
 typedef struct s_ms
 {
 	char		*line;
-	char		**line_args;
+	char		**command;
 	t_token		*tokens;
 	int			num_pipes;
 	pid_t			child_pid;
@@ -105,8 +109,8 @@ void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
 
-void	ft_lste_rm(t_list_e *env, char *tofind);
-void	ft_env_rm(t_ms *ms, char *tofind);
+void		ft_lste_rm(t_list_e *env, char *tofind);
+void		ft_env_rm(t_ms *ms, char *tofind);
 
 
 // Parser functions
@@ -117,7 +121,7 @@ void		ft_parse_tokens(t_ms *ms);
 void		ft_executor(t_ms *ms);
 
 // Builtins functions
-void		ft_echo(char **str);
+void		ft_echo(t_ms *ms);
 void		ft_cd(char *dir);
 int			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
@@ -129,6 +133,6 @@ void		ft_free_cmds(t_ms *ms);
 void		ft_free_envp(t_ms *ms);
 
 //Utils
-char	**ft_joineq(char *astr, char *cr);
-int	ft_liste_comp(t_list_e *env, char **val);
+char		**ft_joineq(char *astr, char *cr);
+int			ft_liste_comp(t_list_e *env, char **val);
 #endif

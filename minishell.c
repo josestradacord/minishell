@@ -21,7 +21,6 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
-
 void	minishell(t_ms *ms)
 {
 	int		times;
@@ -31,6 +30,49 @@ void	minishell(t_ms *ms)
 	printf("ANTES:\n");	
 	ft_print_env(envp);
 	FIN DEBUG*/
+	times = 0;
+	status = TRUE;
+	while (status)
+	{
+		ms->line = readline("minishell_V0.7$ ");
+		times++;
+		if (times == 3)
+			status = FALSE;
+		if (ms->line == NULL)
+		{
+			ft_printf("Linea NULL\n");//despues solo /n
+			break ;
+		}
+		add_history(ms->line);	// así agregamos las líneas en blanco al historial
+		if (ft_blank_line(ms->line))
+		{
+			free(ms->line);
+			continue ;
+		}
+		ft_parser(ms);
+		//status = ft_executor(ms);
+		
+		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		//ft_executor(ms);
+		ft_echo(ms);
+		ft_free_cmds(ms);
+		ft_free_toks(ms);
+	}
+	/*DEBUG
+	printf("DESPUÉS:\n");
+	ft_print_env_lst(ms->env);
+	FIN DEBUG*/
+}
+
+/* void	minishell(t_ms *ms)
+{
+	int		times;
+	int		status;
+
+//	DEBUG
+//	printf("ANTES:\n");	
+//	ft_print_env(envp);
+//	FIN DEBUG
 	times = 0;
 	status = TRUE;
 	while (status)
@@ -103,11 +145,11 @@ void	minishell(t_ms *ms)
 		//end add
 		ft_free_cmds(ms);
 	}
-	/*DEBUG
-	printf("DESPUÉS:\n");
-	ft_print_env_lst(ms->env);
-	FIN DEBUG*/
-}
+//	DEBUG
+//	printf("DESPUÉS:\n");
+//	ft_print_env_lst(ms->env);
+//	FIN DEBUG
+} */
 
 int	main(int argc, char **argv, char **envp)
 {
