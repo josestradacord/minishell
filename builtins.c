@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:59 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/12 20:34:40 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:33:18 by jestradac        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	ft_echo(t_ms *ms)
 {
 	int		index;
 	
-	ms->command = ft_split(ms->tokens->token, ' ');
+	//ms->command = ft_split(ms->tokens->token, ' ');
+	ft_create_command(ms);
 	index = 1;
 	while (ms->command[index])
 	{
@@ -29,9 +30,13 @@ void	ft_echo(t_ms *ms)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
-/*int	ft_exit(t_ms *ms)
+void	ft_exit(t_ms *ms)
 {
-	(void)	*ms;
-	return (FALSE);
+	int	index;
+
+	index = 0;
+	while (ms->command[index])
+		index++;
+	if (index == 1)
+		ft_free(ms, EXIT_SUCCESS);
 }
-*/

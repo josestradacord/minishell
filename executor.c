@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:38 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:47:40 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:06:25 by jestradac        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
 }
 
 
-void	ft_executor(t_ms *ms)
+void	ft_execute_command(t_ms *ms)
 {
 	int	fd_pipe[2];
 	int	fd_in;
@@ -61,24 +61,51 @@ void	ft_executor(t_ms *ms)
 	}
 }
 
-
-/*
-int	ft_executor(t_ms *ms)
+void	ft_create_command(t_ms *ms)
 {
-	if (!ft_strncmp(ms->cmd->name, "echo", 4))
+	t_token	*node;
+	char	*cmd;
+	char	*cmd1;
+
+	if (DEBUG)
 	{
-		return (ft_echo(ms));
+		printf("DEBUG. Entrando a crear el comando.\nLista de tokens:\n");
+		ft_print_tok_list(ms);
 	}
-	else if (!ft_strncmp(ms->cmd->name, "exit", 4))
+	cmd = NULL;
+	node = ms->tokens;
+	while (node && node->type <= DBLQUOTE)
 	{
-		ft_printf("DEBUG: Saliendo, comando exit\n");
-		return (ft_exit(ms));
+		if (DEBUG)
+			printf("DEBUG. Copio el token: #%s#\n", node->token);
+		cmd1 = ft_strdup(node->token);
+		if (DEBUG)
+			printf("DEBUG. Uno el token.\n");
+		cmd1 = ft_strjoin(cmd1, " ");
+		cmd = ft_strjoin(cmd, cmd1);
+		free(cmd1);
+		if (DEBUG)
+			printf("DEBUG. Token unido: #%s#\n", cmd);
+		node = node->next;
 	}
-	else
+	if (DEBUG)
 	{
-		ft_printf("minishell: %s: command not found\n", ms->cmd->name);
-		return (TRUE);
+		printf("DEBUG. Fuera del bucle.\n");
+		printf("DEBUG. Comando antes del split: #%s#\n", cmd);
 	}
+	ms->command = ft_split(cmd, ' ');
+	free(cmd);
 }
 
-*/
+void	ft_executor(t_ms *ms)
+{
+	if (DEBUG)
+		printf("DEBUG. Entrando al ejecutor.\n");
+	ft_create_command(ms);
+	if (ft_strncmp("echo", ms->command[0], 4) == 0)
+		ft_echo(ms);
+	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
+		ft_exit(ms);
+	if (DEBUG)
+		printf("DEBUG. Saliendo del ejecutor.\n");
+}

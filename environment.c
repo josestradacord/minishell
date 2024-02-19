@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:15 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:48:17 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/18 01:28:10 by jestradac        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,19 @@ void	ft_get_env(t_ms *ms, char **envp)
 		ft_lste_addback(&ms->env, node);
 		index++;
 	}
+}
+
+char	*ft_get_env_value(char *name, t_ms *ms)
+{
+	//char		*value;
+	t_list_e	*node;
+
+	node = ms->env;
+	while (node)
+	{
+		if (!ft_strncmp(name, node->name, ft_strlen(name)))
+			return (node->value);
+		node = node->next;
+	}
+	return (NULL);
 }

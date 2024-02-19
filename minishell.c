@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/12 20:31:22 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:49:18 by jestradac        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ void	minishell(t_ms *ms)
 	int		times;
 	int		status;
 
-	/*DEBUG
-	printf("ANTES:\n");	
-	ft_print_env(envp);
-	FIN DEBUG*/
+	if (DEBUG)
+	{
+		printf("DEBUG: Variables de entorno:\n");	
+		ft_print_env(ms->envp);
+	}
 	times = 0;
 	status = TRUE;
 	while (status)
@@ -50,12 +51,15 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
-		//status = ft_executor(ms);
+
+		if (DEBUG)
+			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
 		
-		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
 		//ft_executor(ms);
+		
 		ft_echo(ms);
-		ft_free_cmds(ms);
+		
+		ft_free_command(ms);
 		ft_free_toks(ms);
 	}
 	/*DEBUG
@@ -73,10 +77,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_usage();
 	else
 	{
-		//ms = (t_ms *) malloc(sizeof(t_ms));
-		//ms->tokens = (t_token *) malloc(sizeof(t_token));
-		//ms->cmds = (t_cmd *) malloc(sizeof(t_cmd));
-		//printf("DEBUG: Voy a iniciar\n");
+		if (DEBUG)
+			printf("DEBUG: Voy a iniciar\n");
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);
