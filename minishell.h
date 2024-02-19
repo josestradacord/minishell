@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/18 18:34:01 by jestradac        ###   ########.fr       */
+/*   Updated: 2024/02/19 21:25:14 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@
 # define INPREDIR	13
 # define OUTREDIR	14
 # define OUTREDIR_A	15
-# define PIPE		16
-# define HEREDOC	17
+# define HEREDOC	16
+# define PIPE		17
 
 // Struct to keep the environment variables as a list
 typedef struct s_list_e
@@ -112,11 +112,17 @@ char		*ft_get_env_value(char *name, t_ms *ms);
 // Parser functions
 void		ft_parser(t_ms *ms);
 void		ft_parse_tokens(t_ms *ms);
-void		ft_print_tok_list(t_ms *ms);
+void		ft_print_tok_list(t_token *tok);
+void		ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot);
+void		ft_dbl_quote(t_ms *ms, int *start, int *end, char s_quot);
+void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
+void		ft_new_token(t_ms *ms, int start, int end);
+void		ft_normal_tok(t_ms *ms, int *start, int *index);
+void		ft_token_type(t_ms *ms);
 
 // Executor functions
 void		ft_executor(t_ms *ms);
-void		ft_create_command(t_ms *ms);
+char		**ft_create_command(t_token *tok);
 
 // Builtins functions
 void		ft_echo(t_ms *ms);
@@ -126,5 +132,6 @@ void		ft_exit(t_ms *ms);
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
 void		ft_free_toks(t_ms *ms);
+void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 #endif

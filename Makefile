@@ -6,25 +6,26 @@
 #    By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 18:48:41 by joestrad          #+#    #+#              #
-#    Updated: 2024/02/07 17:52:12 by joestrad         ###   ########.fr        #
+#    Updated: 2024/02/19 21:21:42 by joestrad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c
+SRCS = minishell.c init_checks.c environment.c list_env.c parser.c parser_token.c \
+	   parser_token_aux.c builtins.c executor.c clean_free.c 
 
 CC = gcc
 
 #42
-#LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
+LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
 
-#INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
+INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
 #Home
-LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
+#LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
 
-INC_READLINE = -I/usr/local/opt/readline/include
+#INC_READLINE = -I/usr/local/opt/readline/include
 
 FLAGS = -Wall -Werror -Wextra 
 

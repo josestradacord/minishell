@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:38 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/18 18:06:25 by jestradac        ###   ########.fr       */
+/*   Updated: 2024/02/19 20:18:45 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
 	else
 	{
 		waitpid(ms->child_pid, &status, WUNTRACED);
-		
 	}
 }
 
@@ -61,51 +60,66 @@ void	ft_execute_command(t_ms *ms)
 	}
 }
 
-void	ft_create_command(t_ms *ms)
+/**
+ * @brief 		Counts the number of tokens that must have the command line
+ * 				it stops when it finds a PIPE
+ * 
+ * @param tok 
+ * @return int 
+ */
+int	ft_count_tokens(t_token *tok)
 {
-	t_token	*node;
-	char	*cmd;
-	char	*cmd1;
+	int		nbr;
+	t_token	*aux;
+
+	nbr = 0;
+	aux = tok;
+	while (aux && aux->type != PIPE)
+	{
+		if (aux->type <= DBLQUOTE && aux->type >= NOQUOTE)
+			nbr++;
+		aux = aux->next;
+	}
+	return (nbr);
+}
+
+char	**ft_create_command(t_token *toks)
+{
+	char	**res;
+	int		index;
 
 	if (DEBUG)
 	{
 		printf("DEBUG. Entrando a crear el comando.\nLista de tokens:\n");
-		ft_print_tok_list(ms);
+		ft_print_tok_list(toks);
 	}
-	cmd = NULL;
-	node = ms->tokens;
-	while (node && node->type <= DBLQUOTE)
+	res = malloc(sizeof(char *) * ft_count_tokens(toks) + 1);
+	index = 0;
+	while (toks && toks->type != PIPE)
 	{
 		if (DEBUG)
-			printf("DEBUG. Copio el token: #%s#\n", node->token);
-		cmd1 = ft_strdup(node->token);
-		if (DEBUG)
-			printf("DEBUG. Uno el token.\n");
-		cmd1 = ft_strjoin(cmd1, " ");
-		cmd = ft_strjoin(cmd, cmd1);
-		free(cmd1);
-		if (DEBUG)
-			printf("DEBUG. Token unido: #%s#\n", cmd);
-		node = node->next;
+			printf("DEBUG. Copio el token: #%s#\n", toks->token);
+		if (toks->type <= DBLQUOTE && toks->type >= NOQUOTE)
+			res[index] = ft_strdup(toks->token);
+		index++;
+		toks = toks->next;
 	}
 	if (DEBUG)
-	{
 		printf("DEBUG. Fuera del bucle.\n");
-		printf("DEBUG. Comando antes del split: #%s#\n", cmd);
-	}
-	ms->command = ft_split(cmd, ' ');
-	free(cmd);
+	res[index] = NULL;
+	return (res);
 }
 
 void	ft_executor(t_ms *ms)
 {
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");
-	ft_create_command(ms);
+	ms->command = ft_create_command(ms->tokens);
 	if (ft_strncmp("echo", ms->command[0], 4) == 0)
 		ft_echo(ms);
 	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
 		ft_exit(ms);
+	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");
 }

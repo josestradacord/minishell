@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/18 20:49:18 by jestradac        ###   ########.fr       */
+/*   Updated: 2024/02/19 20:52:54 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
-	int		times;
-	int		status;
+	//int		times;
+	//int		status;
 
 	if (DEBUG)
 	{
 		printf("DEBUG: Variables de entorno:\n");	
-		ft_print_env(ms->envp);
+		//ft_print_env(ms->envp);
 	}
-	times = 0;
-	status = TRUE;
-	while (status)
+	//times = 0;
+	//status = TRUE;
+	while (TRUE)
 	{
 		ms->line = readline("minishell_V0.7$ ");
-		times++;
+		/*times++;
 		if (times == 3)
-			status = FALSE;
+			status = FALSE;*/
 		if (ms->line == NULL)
 		{
 			ft_printf("Linea NULL\n");//despues solo /n
@@ -54,12 +54,11 @@ void	minishell(t_ms *ms)
 
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		ft_executor(ms);
 		
-		//ft_executor(ms);
+		//ft_echo(ms);
 		
-		ft_echo(ms);
-		
-		ft_free_command(ms);
+
 		ft_free_toks(ms);
 	}
 	/*DEBUG
