@@ -56,12 +56,24 @@ int	ft_search(t_ms *ms, char *cmd)
 	return (1);
 }
 
-void	ft_cmd(t_ms *ms, char *cmd)
+int	ft_cmd(t_ms *ms, char *cmd)
 {
+	int	pid;
+	int	status;
+
 	if (ft_search(ms, cmd) == 0)	//necesita hacer un hijo para no salirse
-		execve(ms->wanted, ms->command, ms->envp);
+	{
+		pid = fork();
+		if (pid == 0)
+			execve(ms->wanted, ms->command, ms->envp);
+		else
+		{
+			waitpid(pid, &status, 0);
+			return (0);
+		}
+	}
 	ft_error(2);
-	exit(1);
+	return (1);
 }
 
 void	ft_temp(char *wtd, int fdin)

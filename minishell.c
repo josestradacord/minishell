@@ -51,11 +51,11 @@ void	minishell(t_ms *ms)
 		}
 		ft_parser(ms);
 		//status = ft_executor(ms);
-		ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
 
-		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens++->token);
+		ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
 		//ft_executor(ms);
-		ft_echo(ms);
+		//ft_echo(ms);
 		ft_free_cmds(ms);
 		//ft_free_toks(ms);
 	}

@@ -131,7 +131,7 @@ int			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
-void	ft_cmd(t_ms *ms, char *cmd);
+int	ft_cmd(t_ms *ms, char *cmd);
 
 
 //Clean and free functions
