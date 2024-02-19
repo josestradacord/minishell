@@ -200,10 +200,10 @@ int	ft_pipe(t_ms *ms)
 		end = argc - 2; */
 	while (ft_strncmp (temp->next->token, "|", 1) == 0) //mientras haya pipes
 	{
+			printf("Estoy en %s\n", temp->token);
 		if (temp->next->next != NULL && ft_search(ms, temp->next->next->token) == 0)
 		{
 			temp = temp->next->next;
-			printf("Estoy en %s\n", temp->token);
 		}
 		else
 		{

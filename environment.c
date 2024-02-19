@@ -87,6 +87,21 @@ void	ft_get_env(t_ms *ms, char **envp)
 	}
 }
 
+char	*ft_get_env_value(char *name, t_ms *ms)
+{
+	//char		*value;
+	t_list_e	*node;
+
+	node = ms->env;
+	while (node)
+	{
+		if (!ft_strncmp(name, node->name, ft_strlen(name)))
+			return (node->value);
+		node = node->next;
+	}
+	return (NULL);
+}
+
 		//added by Gabriel 09/02/2024
 
 void	ft_lste_rm(t_list_e *env, char *tofind)		//unset

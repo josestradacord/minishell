@@ -52,9 +52,10 @@ void	minishell(t_ms *ms)
 		ft_parser(ms);
 		//status = ft_executor(ms);
 
-		printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		if (DEBUG)
+			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
 		ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
-		//ft_pipe(ms);
+		ft_pipe(ms);
 		//ft_executor(ms);
 		//ft_echo(ms);
 		ft_free_cmds(ms);
@@ -157,14 +158,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else
 	{
-		//ms = (t_ms *) malloc(sizeof(t_ms));
-		//ms->tokens = (t_token *) malloc(sizeof(t_token));
-		//ms->cmds = (t_cmd *) malloc(sizeof(t_cmd));
+		if (DEBUG)
+			printf("DEBUG: Voy a iniciar\n");
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

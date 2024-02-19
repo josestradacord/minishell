@@ -25,12 +25,16 @@
 
 # include "libft/libft.h"
 
+// DEBUG = 0 no debug; DEBUG = 1 debug
+# define DEBUG	0
+
 # define FALSE	0
 # define TRUE	1
 
 // Token delimiters
 # define TOKSTR		"><|;"
 # define SEPCHAR	"><| "
+# define ENVCHARS	"><| '\"$"
 
 // Types of tokens
 # define NOQUOTE	10
@@ -112,6 +116,7 @@ void		ft_get_env(t_ms *ms, char **envp);
 void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
+char		*ft_get_env_value(char *name, t_ms *ms);
 
 void		ft_lste_rm(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
@@ -120,14 +125,16 @@ void		ft_env_rm(t_ms *ms, char *tofind);
 // Parser functions
 void		ft_parser(t_ms *ms);
 void		ft_parse_tokens(t_ms *ms);
+void		ft_print_tok_list(t_ms *ms);
 
 // Executor functions
 void		ft_executor(t_ms *ms);
+void		ft_create_command(t_ms *ms);
 
 // Builtins functions
 void		ft_echo(t_ms *ms);
 void		ft_cd(char *dir);
-int			ft_exit(t_ms *ms);
+void			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
@@ -137,7 +144,8 @@ int	ft_pipe(t_ms *ms);
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
-void		ft_free_envp(t_ms *ms);
+void		ft_free_toks(t_ms *ms);
+void		ft_free_command(t_ms *ms);
 
 //Utils
 char		**ft_joineq(char *astr, char *cr);

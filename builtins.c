@@ -17,7 +17,8 @@ void	ft_echo(t_ms *ms)
 {
 	int		index;
 	
-	ms->command = ft_split(ms->tokens->token, ' ');
+	//ms->command = ft_split(ms->tokens->token, ' ');
+	ft_create_command(ms);
 	index = 1;
 	while (ms->command[index])
 	{
@@ -52,9 +53,20 @@ void	ft_echo(t_ms *ms)
 		ft_printf("%s", str[i]);
 } */
 
-int	ft_exit(t_ms *ms)
+/* int	ft_exit(t_ms *ms)
 {
 	exit(0);
+} */
+
+void	ft_exit(t_ms *ms)
+{
+	int	index;
+
+	index = 0;
+	while (ms->command[index])
+		index++;
+	if (index == 1)
+		ft_free(ms, EXIT_SUCCESS);
 }
 
 
