@@ -16,9 +16,7 @@
 void	ft_echo(t_ms *ms)
 {
 	int		index;
-	
-	//ms->command = ft_split(ms->tokens->token, ' ');
-	ft_create_command(ms);
+
 	index = 1;
 	while (ms->command[index])
 	{
@@ -66,7 +64,11 @@ void	ft_exit(t_ms *ms)
 	while (ms->command[index])
 		index++;
 	if (index == 1)
+	{
+		ft_putstr_fd(ms->command[index - 1], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
+	}
 }
 
 

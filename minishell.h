@@ -125,11 +125,17 @@ void		ft_env_rm(t_ms *ms, char *tofind);
 // Parser functions
 void		ft_parser(t_ms *ms);
 void		ft_parse_tokens(t_ms *ms);
-void		ft_print_tok_list(t_ms *ms);
+void		ft_print_tok_list(t_token *tok);
+void		ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot);
+void		ft_dbl_quote(t_ms *ms, int *start, int *end, char s_quot);
+void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
+void		ft_new_token(t_ms *ms, int start, int end);
+void		ft_normal_tok(t_ms *ms, int *start, int *index);
+void		ft_token_type(t_ms *ms);
 
 // Executor functions
 void		ft_executor(t_ms *ms);
-void		ft_create_command(t_ms *ms);
+char		**ft_create_command(t_token *tok);
 
 // Builtins functions
 void		ft_echo(t_ms *ms);
@@ -145,6 +151,7 @@ int	ft_pipe(t_ms *ms);
 void		ft_free(t_ms *ms, int exit_code);
 void		ft_free_cmds(t_ms *ms);
 void		ft_free_toks(t_ms *ms);
+void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 
 //Utils
