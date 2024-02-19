@@ -107,9 +107,9 @@ void	ft_temp(char *wtd, int fdin)
 	dup2(fdin, STDIN_FILENO);
 	close(fdin);
 	return (3);
-}
+} */
 
-int	ft_enter(t_ms *ms)
+/* int	ft_enter(t_ms *ms)
 {
 	int	i;
 	int	fdin;
@@ -134,8 +134,8 @@ int	ft_enter(t_ms *ms)
 		}
 		return (i = 1);
 	}
-}
- */
+} */
+
 
 /* void	son(t_ms *ms)
 {
@@ -184,23 +184,36 @@ void	last_son(t_ms *ms)
 		waitpid(pid, &status, 0);
 }
 	//atexit(ft_leaks);
-
-int	pipe(t_ms *ms)
+*/
+int	ft_pipe(t_ms *ms)
 {
 	int		i;
 	int		end;
+	t_token	*temp;
 
-	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
+	temp = ms->tokens;
+
+/* 	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
 	if(ft_search(&data, argv[argc - 1]) == 0)
 		end = argc - 1;
 	else
-		end = argc - 2;
-	while (i < end) //mientras haya pipes
+		end = argc - 2; */
+	while (ft_strncmp (temp->next->token, "|", 1) == 0) //mientras haya pipes
 	{
-		son(&ms);
-		i++;
+		if (temp->next->next != NULL && ft_search(ms, temp->next->next->token) == 0)
+		{
+			temp = temp->next->next;
+			printf("Estoy en %s\n", temp->token);
+		}
+		else
+		{
+			perror("Perror");
+			break ;
+		}	//comando no encontrado
+		//son(ms);
 	}
-	last_son(&ms);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
+	puts("salgo de los pipes");
+	//last_son(ms);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
     //añadir algo para el > y el >>, usar else de ft_enter
 	unlink(".tmp");
-} */
+}

@@ -132,7 +132,7 @@ void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
 int	ft_cmd(t_ms *ms, char *cmd);
-
+int	ft_pipe(t_ms *ms);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
