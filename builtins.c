@@ -72,7 +72,7 @@ void	ft_exit(t_ms *ms)
 }
 
 
-void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el ..
+void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el .. y aumentar el SHLVL
 {
 	t_list_e	*temp;
 

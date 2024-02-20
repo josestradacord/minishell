@@ -7,20 +7,17 @@ char	**ft_joineq(char *astr, char *cr)
 	char	*temp;
 	char	*temp2;
 
-	i = 1;
+	i = 2;
 	pair = ft_split(astr, cr[0]);
-	temp = ft_strdup(pair[1]);
-	while (pair[i + 1])
+	//temp = ft_strdup(pair[1]);
+	while (pair[i])
 	{
-		temp2 = ft_strjoin(temp, cr);
-		temp = ft_strdup(temp2);
-		temp2 = ft_strjoin(pair[i], cr);
-		free(temp2);
+		pair[1] = ft_strjoin(pair[1], cr);
+		pair[1] = ft_strjoin(pair[1], pair[i]);
 		//temp = ft_strdup(temp2);
 		i++;
 	}
-	pair[1] = ft_strdup(temp);
-	free(temp);
+//	free(temp);
 		//pair[1] = ft_strjoin(pair[1], pair[i]);
 	//ft_free2(pair);
 	return (pair);

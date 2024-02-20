@@ -35,7 +35,7 @@ void	ft_init_data(t_ms *ms, char **argv, char **envp)
 	ms->rout = ft_routes(envp);
 	//ms->line_args = argv;
 	//ms->env = NULL;
-	ft_copy_envp(ms, envp);
+	//ft_copy_envp(ms, envp);
 	ft_get_env(ms, envp);
 	//ms->envp = NULL;
 }

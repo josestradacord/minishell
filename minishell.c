@@ -54,8 +54,6 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
-		if (ft_strncmp(ms->tokens->token , "env", 3) == 0)
-			ft_print_env_lst(ms->env);
 		//status = ft_executor(ms);
 
 		if (DEBUG)
