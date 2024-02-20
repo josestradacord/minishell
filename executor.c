@@ -110,15 +110,36 @@ char	**ft_create_command(t_token *toks)
 	return (res);
 }
 
+void		ft_builtins(t_ms *ms)
+{
+	if (DEBUG)
+		printf("Es un builtin\n");
+	if (ft_strncmp("echo", ms->command[0], 4) == 0)
+		ft_echo(ms);
+	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
+		ft_exit(ms);
+	else if (ft_strncmp("cd", ms->command[0], 2) == 0)
+		ft_cd(ms, ms->command[1]);
+	else if (ft_strncmp("pwd", ms->command[0], 3) == 0)
+		ft_pwd(ms);
+	else if (ft_strncmp("env", ms->command[0], 3) == 0)
+		ft_print_env_lst(ms->env);
+	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
+		ft_lste_rm(ms->env, ms->command[1]);
+	else if (ft_strncmp("export", ms->command[0], 6) == 0)
+		ft_export(ms);
+	//return (0);
+}
+
 void	ft_executor(t_ms *ms)
 {
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");
 	ms->command = ft_create_command(ms->tokens);
-	if (ft_strncmp("echo", ms->command[0], 4) == 0)
-		ft_echo(ms);
-	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
-		ft_exit(ms);
+	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		ft_builtins(ms);
+	else
+		ft_cmd(ms);
 	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");

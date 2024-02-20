@@ -72,16 +72,31 @@ void	ft_exit(t_ms *ms)
 }
 
 
-void	ft_cd(char *dir)
+void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el ..
 {
+	t_list_e	*temp;
+
+	temp = ms->env;
 	if (chdir(dir) != 0)
 	{
 		dup2(STDERR_FILENO, STDIN_FILENO);
 		ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
 	}
+	else
+	{
+		puts("entra en el bucle");
+		while (temp && ft_strncmp(temp->name, "PWD", 3) != 0)
+		{
+			//if (temp != NULL)
+			printf("%s\n", temp->name);
+				temp = temp->next;
+		}
+		temp->value = ft_strjoin (ft_get_env_value("PWD", ms), "/");
+		temp->value = ft_strjoin (temp->value, dir);
+	}
 }
 
-//Tener en cuenta que al ejecutarssssssssse una shell dentro de la shell el SHLVL aumenta en 1
+//Tener en cuenta que al ejecutarse una shell dentro de la shell el SHLVL aumenta en 1
 
 void	ft_pwd(t_ms *ms)
 {
@@ -120,7 +135,7 @@ char	**ft_free2(char **str)
 
 void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que el nombre de la variable exista(ej. b= 23(mal); 23(mal))
 {
-	char		**args;
+	//char		**args;
 	t_list_e	*temp;
 	t_list_e	*new;
 	char		**val;
@@ -128,17 +143,17 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 
 	i = 0;
 	temp = ms->env;
-	args = ft_split(ms->cmds->cmd, ' ');
-	if (!args[1])
+	//args = ft_split(ms->cmds->cmd, ' ');
+	if (!ms->command[1])
 		while (temp)
 		{
 			ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 			temp = temp->next;
 		}
 	else
-		while(args[++i] != NULL)
+		while(ms->command[++i] != NULL)
 		{
-			val = ft_joineq(args[i], "=");
+			val = ft_joineq(ms->command[i], "=");
 			if (ft_isalpha(val[0][0]) == 1)
 				if (ft_liste_comp(ms->env, val) != 0)
 				{	
@@ -147,5 +162,33 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 				}
 			ft_free2(val);
 		}
-	ft_free2(args);
+	//ft_free2(args);
+}
+
+void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
+{
+	t_list_e	*temp;				//Si no existe la variiiiiable a borrar no hace nadddddddda
+	t_list_e	*temp2;
+
+	if (env == NULL || env->next == NULL)
+		return ;
+	temp = env;
+	temp2 = temp;
+	if (ft_strncmp(env->next->name, tofind, ft_strlen(tofind)) == 0)
+	{
+		temp = env->next;
+		env->next = temp->next;
+		free(temp); //liberar nodo y enlazar el siguiente con el anterior
+	}
+	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
+	{
+		temp = env;
+		*env = *env->next;
+		//free(temp);
+	}
+	else
+	{
+		temp = env;
+		ft_lste_rm(temp->next, tofind);
+	}
 }

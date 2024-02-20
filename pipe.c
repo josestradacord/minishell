@@ -41,12 +41,12 @@ char	**ft_routes(char **envp)
 	return (rout);
 }
 
-int	ft_search(t_ms *ms, char *cmd)
+int	ft_search(t_ms *ms)
 {
 	int	i;
 
 	i = -1;
-	ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
+	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
 	while (ms->rout[++i])
 	{
 		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
@@ -56,12 +56,12 @@ int	ft_search(t_ms *ms, char *cmd)
 	return (1);
 }
 
-int	ft_cmd(t_ms *ms, char *cmd)
+int	ft_cmd(t_ms *ms)
 {
 	int	pid;
 	int	status;
 
-	if (ft_search(ms, cmd) == 0)	//necesita hacer un hijo para no salirse
+	if (ft_search(ms) == 0)	//necesita hacer un hijo para no salirse
 	{
 		pid = fork();
 		if (pid == 0)
@@ -72,8 +72,8 @@ int	ft_cmd(t_ms *ms, char *cmd)
 			return (0);
 		}
 	}
-	ft_error(2);
-	return (1);
+	//ft_error(2);
+	return (0);
 }
 
 void	ft_temp(char *wtd, int fdin)
@@ -185,7 +185,7 @@ void	last_son(t_ms *ms)
 }
 	//atexit(ft_leaks);
 */
-int	ft_pipe(t_ms *ms)
+/* int	ft_pipe(t_ms *ms)
 {
 	int		i;
 	int		end;
@@ -193,11 +193,11 @@ int	ft_pipe(t_ms *ms)
 
 	temp = ms->tokens;
 
-/* 	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
+ 	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
 	if(ft_search(&data, argv[argc - 1]) == 0)
 		end = argc - 1;
 	else
-		end = argc - 2; */
+		end = argc - 2;
 	while (ft_strncmp (temp->next->token, "|", 1) == 0) //mientras haya pipes
 	{
 			printf("Estoy en %s\n", temp->token);
@@ -216,4 +216,5 @@ int	ft_pipe(t_ms *ms)
 	//last_son(ms);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
     //añadir algo para el > y el >>, usar else de ft_enter
 	unlink(".tmp");
-}
+	return (0);
+} */

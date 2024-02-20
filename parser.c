@@ -116,7 +116,7 @@ void	ft_find_vars(t_ms *ms)
 	{
 		if (node->type == SNGQUOTE || node->type == DBLQUOTE)
 			ft_noquote(node);
-		if ((node->type == NOQUOTE || node->type == DBLQUOTE)
+		while ((node->type == NOQUOTE || node->type == DBLQUOTE)
 			&& ft_strchr(node->token, '$'))
 		{
 			if (DEBUG)

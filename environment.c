@@ -40,12 +40,27 @@ t_list_e	*ft_create_node(char *env_var)		//modified by Gabriel 09/02/2024
 {
 	char		**pair;
 	t_list_e	*node;
+	int			i;
+	int			len;
 
-	pair = ft_joineq(env_var, "=");
+	i = 0;
+	//pair = ft_joineq(env_var, "=");
+	len = ft_strlen(env_var);
+	while (env_var[i] != '=')
+		i++;
+	pair[0] = ft_substr(env_var, 0, i);
+	//pair[1] = ft_strdup(&env_var[i + 1]);
+	pair[1] = malloc(sizeof(char) * (len - i + 1));
+	while (i < len)
+	{
+		pair[1][len - i + 1] = env_var[len];
+		len--;
+	}
 	node = ft_lste_new(pair[0], pair[1]);
-	free(pair[0]);
-	free(pair[1]);
-	free(pair);
+	//ft_free2(pair);
+	//free(pair[0]);
+	//free(pair[1]);
+	//free(pair);
 	return (node);
 }
 
@@ -104,32 +119,5 @@ char	*ft_get_env_value(char *name, t_ms *ms)
 
 		//added by Gabriel 09/02/2024
 
-void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
-{
-	t_list_e	*temp;				//Si no existe la variiiiiable a borrar no hace nadddddddda
-	t_list_e	*temp2;
-
-	if (env == NULL || env->next == NULL)
-		return ;
-	temp = env;
-	temp2 = temp;
-	if (ft_strncmp(env->next->name, tofind, ft_strlen(tofind)) == 0)
-	{
-		temp = env->next;
-		env->next = temp->next;
-		free(temp); //liberar nodo y enlazar el siguiente con el anterior
-	}
-	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
-	{
-		temp = env;
-		*env = *env->next;
-		//free(temp);
-	}
-	else
-	{
-		temp = env;
-		ft_lste_rm(temp->next, tofind);
-	}
-}
 
 		//end add

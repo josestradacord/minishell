@@ -26,7 +26,7 @@
 # include "libft/libft.h"
 
 // DEBUG = 0 no debug; DEBUG = 1 debug
-# define DEBUG	0
+# define DEBUG	1
 
 # define FALSE	0
 # define TRUE	1
@@ -139,13 +139,15 @@ char		**ft_create_command(t_token *tok);
 
 // Builtins functions
 void		ft_echo(t_ms *ms);
-void		ft_cd(char *dir);
+void		ft_cd(t_ms *ms, char *dir);
 void			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
-int	ft_cmd(t_ms *ms, char *cmd);
+int	ft_cmd(t_ms *ms);
 int	ft_pipe(t_ms *ms);
+int	ft_search(t_ms *ms);
+char	**ft_free2(char **str);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
@@ -157,4 +159,5 @@ void		ft_free_command(t_ms *ms);
 //Utils
 char		**ft_joineq(char *astr, char *cr);
 int			ft_liste_comp(t_list_e *env, char **val);
+
 #endif

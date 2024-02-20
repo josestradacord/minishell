@@ -54,13 +54,15 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
+		if (ft_strncmp(ms->tokens->token , "env", 3) == 0)
+			ft_print_env_lst(ms->env);
 		//status = ft_executor(ms);
 
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
-		ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
-		ft_pipe(ms);
-		//ft_executor(ms);
+		//ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
+		//ft_pipe(ms);
+		ft_executor(ms);
 		//ft_echo(ms);
 		//ft_free_cmds(ms);
 		ft_free_toks(ms);
