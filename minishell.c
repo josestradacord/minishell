@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/21 19:16:34 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:32:00 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,25 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
+	int		times;
+	int		status;
+
 	//int		times;
 	//int		status;
 
 	if (DEBUG)
 	{
-		printf("DEBUG: Variables de entorno del char**:\n");	
+		printf("DEBUG: Variables de entorno:\n");	
 		//ft_print_env(ms->envp);
-		printf("DEBUG: Variables de entorno de la lista:\n");	
-		//ft_print_env_lst(ms->env);
 	}
 	//times = 0;
 	//status = TRUE;
 	while (TRUE)
 	{
 		ms->line = readline("minishell_V0.9$ ");
-		/*times++;
-		if (times == 3)
-			status = FALSE;*/
+/* 		times++;
+		if (times == 100)
+			status = FALSE; */
 		if (ms->line == NULL)
 		{
 			ft_printf("Linea NULL\n");//despues solo /n
@@ -53,14 +54,13 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
+		//status = ft_executor(ms);
 
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		//ft_pipe(ms);
 		ft_executor(ms);
-		
 		//ft_echo(ms);
-		
-
 		ft_free_toks(ms);
 	}
 	/*DEBUG

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/21 19:47:18 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:46:20 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
+# include <sys/types.h> 
+# include <fcntl.h>
+# include <errno.h>
 
 # include "libft/libft.h"
 
@@ -63,9 +68,11 @@ typedef struct s_ms
 {
 	char		*line;
 	char		**command;
+	char		*wanted;
+	char		**rout;		//added by Gabriel
 	t_token		*tokens;
 	int			num_pipes;
-	pid_t		child_pid;
+	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
 	int			status;
@@ -79,19 +86,27 @@ int			ft_blank_line(char *line);
 // Init functions
 void		ft_init_data(t_ms *ms, char **argv, char **envp);
 
+char		**ft_routes(char **envp);
+
 // Functions used to manage the list of environment variables
+void		ft_copy_env2lst(t_ms *ms, char **envp);
 t_list_e	*ft_lste_new(char *key, char *value);
 int			ft_lste_size(t_list_e *lst);
+t_list_e	*ft_create_node(char *env_var);
 void		ft_lste_addback(t_list_e **lst, t_list_e *new);
 void		ft_lste_delone(t_list_e *lst, void (*del)(void *));
 void		ft_lste_clear(t_list_e *lst, void (*del)(void *));
 
 // Functions used to manage the environment variables
-void		ft_copy_env2lst(t_ms *ms, char **envp);
+void		ft_get_env(t_ms *ms, char **envp);
 void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
 char		*ft_get_env_value(char *name, t_ms *ms);
+
+void		ft_lste_rm(t_list_e *env, char *tofind);
+void		ft_env_rm(t_ms *ms, char *tofind);
+
 
 // Parser functions
 void		ft_parser(t_ms *ms);
@@ -110,7 +125,15 @@ char		**ft_create_command(t_token *tok);
 
 // Builtins functions
 void		ft_echo(t_ms *ms);
-void		ft_exit(t_ms *ms);
+void		ft_cd(t_ms *ms, char *dir);
+void			ft_exit(t_ms *ms);
+void		ft_pwd(t_ms *ms);
+void		ft_export(t_ms *ms);
+
+int	ft_cmd(t_ms *ms);
+int	ft_pipe(t_ms *ms);
+int	ft_search(t_ms *ms);
+char	**ft_free2(char **str);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
@@ -118,4 +141,9 @@ void		ft_free_cmds(t_ms *ms);
 void		ft_free_toks(t_ms *ms);
 void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
+
+//Utils
+char		**ft_joineq(char *astr, char *cr);
+int			ft_liste_comp(t_list_e *env, char **val);
+
 #endif

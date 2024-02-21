@@ -3,31 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+         #
+#    By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 18:48:41 by joestrad          #+#    #+#              #
-#    Updated: 2024/02/19 21:21:42 by joestrad         ###   ########.fr        #
+#    Updated: 2024/02/11 16:05:06 by gpaez-ga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c parser_token.c \
-	   parser_token_aux.c builtins.c executor.c clean_free.c 
+SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c utils.c pipe.c parser_token_aux.c parser_token.c
 
 CC = gcc
 
-#42
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
+
+
 
 INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
-#Home
-#LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
-
-#INC_READLINE = -I/usr/local/opt/readline/include
-
-FLAGS = -Wall -Werror -Wextra 
+FLAGS = #-Wall -Werror -Wextra 
 
 RM = rm -f
 
@@ -52,7 +47,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@echo $(YELLOW)minishell norminette...$(NOCOLOR)
 #	@norminette $(SRCS)
 	@echo $(GREEN)Compiling minishell...$(NOCOLOR)
-	@$(CC) $(INC_READLINE) $(LIB_READLINE) $(FLAGS) $(INC) $(LIBFT) $(SRCS) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJS) $(INC) $(LIBFT) -o $(NAME) $(INC_READLINE) $(LIB_READLINE)
 	@echo $(GREEN)Program minishell ready$(NOCOLOR)
 
 $(LIBFT):
