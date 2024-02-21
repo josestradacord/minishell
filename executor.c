@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:38 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:47:40 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:07:47 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,91 @@ void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
 
 	ms->child_pid = fork();
 	if (ms->child_pid < 0)
-		perror(ms->cmds->cmd);
+		perror(ms->command[0]);
 	else if (ms->child_pid == 0)
 	{
-		if(execve(ms->cmds->cmd, ft_split(ms->cmds->cmd,' '), ms->envp) == -1)
-			perror(ms->cmds->cmd);
+		if (execve(ms->command[0], ms->command, ms->envp) == - 1)
+			perror(ms->command[0]);
 		ft_free(ms, EXIT_FAILURE);
 	}
 	else
 	{
 		waitpid(ms->child_pid, &status, WUNTRACED);
-		
 	}
 }
 
+/**
+ * @brief 		Counts the number of tokens that must have the command line
+ * 				it stops when it finds a PIPE
+ * 
+ * @param tok 
+ * @return int 
+ */
+int	ft_count_tokens(t_token *tok)
+{
+	int		nbr;
+	t_token	*aux;
 
-void	ft_executor(t_ms *ms)
+	nbr = 0;
+	aux = tok;
+	while (aux && aux->type != PIPE)
+	{
+		if (aux->type <= DBLQUOTE && aux->type >= NOQUOTE)
+			nbr++;
+		aux = aux->next;
+	}
+	return (nbr);
+}
+
+char	**ft_create_command(t_token *toks)
+{
+	char	**res;
+	int		index;
+
+	if (DEBUG)
+	{
+		printf("DEBUG. Entrando a crear el comando.\nLista de tokens:\n");
+		ft_print_tok_list(toks);
+	}
+	res = malloc(sizeof(char *) * ft_count_tokens(toks) + 1);
+	index = 0;
+	while (toks && toks->type != PIPE)
+	{
+		if (DEBUG)
+			printf("DEBUG. Copio el token: #%s#\n", toks->token);
+		if (toks->type <= DBLQUOTE && toks->type >= NOQUOTE)
+			res[index] = ft_strdup(toks->token);
+		index++;
+		toks = toks->next;
+	}
+	if (DEBUG)
+		printf("DEBUG. Fuera del bucle.\n");
+	res[index] = NULL;
+	return (res);
+}
+
+void		ft_builtins(t_ms *ms)
+{
+	if (DEBUG)
+		printf("Es un builtin\n");
+	if (ft_strncmp("echo", ms->command[0], 4) == 0)
+		ft_echo(ms);
+	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
+		ft_exit(ms);
+	else if (ft_strncmp("cd", ms->command[0], 2) == 0)
+		ft_cd(ms, ms->command[1]);
+	else if (ft_strncmp("pwd", ms->command[0], 3) == 0)
+		ft_pwd(ms);
+	else if (ft_strncmp("env", ms->command[0], 3) == 0)
+		ft_print_env_lst(ms->env);
+	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
+		ft_lste_rm(ms->env, ms->command[1]);
+	else if (ft_strncmp("export", ms->command[0], 6) == 0)
+		ft_export(ms);
+	//return (0);
+}
+
+void	ft_execute_command(t_ms *ms)
 {
 	int	fd_pipe[2];
 	int	fd_in;
@@ -61,24 +130,17 @@ void	ft_executor(t_ms *ms)
 	}
 }
 
-
-/*
-int	ft_executor(t_ms *ms)
+void	ft_executor(t_ms *ms)
 {
-	if (!ft_strncmp(ms->cmd->name, "echo", 4))
-	{
-		return (ft_echo(ms));
-	}
-	else if (!ft_strncmp(ms->cmd->name, "exit", 4))
-	{
-		ft_printf("DEBUG: Saliendo, comando exit\n");
-		return (ft_exit(ms));
-	}
+	if (DEBUG)
+		printf("DEBUG. Entrando al ejecutor.\n");
+	ms->command = ft_create_command(ms->tokens);
+	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		ft_builtins(ms);
 	else
-	{
-		ft_printf("minishell: %s: command not found\n", ms->cmd->name);
-		return (TRUE);
-	}
+		ft_cmd(ms);
+		//ft_execute_command(ms);
+	ft_free_command(ms);
+	if (DEBUG)
+		printf("DEBUG. Saliendo del ejecutor.\n");
 }
-
-*/

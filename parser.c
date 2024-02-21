@@ -3,114 +3,201 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:57 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/07 20:08:34 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:53:25 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_new_cmd(t_ms *ms, int s, int e)
+void	ft_print_tok_list(t_token *tok)
 {
-	t_cmd	*new;
-	t_cmd	*tmp;
-	char	*cmd;
-
-	cmd = ft_substr(ms->line, s, e - s);
-	printf("DEBUG: Obteniendo el comando ft_new_cmd(). Comando: #%s#\n", cmd);
-	new = (t_cmd *) malloc(sizeof(t_cmd));
-	if (!new)
-		return ;
-	new->cmd = cmd;
-	//free(cmd);
-	printf("DEBUG: Comando: #%s#\n", new->cmd);
-	new->next = NULL;
-	if (!ms->cmds)
-		ms->cmds = new;
-	else
-	{
-		tmp = ms->cmds;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
-
-void	ft_new_tkn(t_ms *ms, int s, int e)
-{
-	t_token	*new;
 	t_token	*aux;
-	char	*tkn;
+	int		index;
 
-	tkn = ft_substr(ms->line, s, e - s);
-	printf("DEBUG: Obteniendo el token ft_new_tkn(). Token: #%s#\n", tkn);
-	new = (t_token *) malloc(sizeof(t_token));
-	if (!new)
-		return ;
-	new->type = NOQUOTE;
-	new->token = tkn;
-	//free(tkn);
-	printf("DEBUG: Token: #%s#\n", new->token);
-	new->next = NULL;
-	new->prev = NULL;
-	if (!ms->tokens)
-		ms->tokens = new;
-	else
+	aux = tok;
+	index = 1;
+	while (aux)
 	{
-		aux = ms->tokens;
-		while (aux->next)
-			aux = aux->next;
-		new->prev = aux;
-		aux->next = new;
+		printf("DEBUG. Token nº %d\nType:\t%d\nValue:\t#%s#\n", index, aux->type, aux->token);
+		index++;
+		aux = aux->next;
 	}
 }
 
-void	ft_getcmd(t_ms *ms)
+void	ft_noquote(t_token *tok)
 {
-	int	ini;
-	int	end;
+	size_t	len;
+	char	*str;
 
-	ini = 0;
-	end = ini;
-	printf("DEBUG: Obteniendo el comando. La linea es: %s, posición: %d\n", ms->line, ini);
-	while (ms->line[end] && ms->line[end] != ' ')
-		end++;
-	printf("DEBUG: Posición final: %d\n", end);
-	ft_new_cmd(ms, ini, end);
-	//ms->cmds->cmd = ft_substr(ms->line, (*p), index - (*p));
-	printf("DEBUG: En ft_getcmd(), el comando es: %s\n", ms->cmds->cmd);
+	if (DEBUG)
+		printf("DEBUG. Antes de quitar comillas: #%s#\n", tok->token);
+	len = ft_strlen(tok->token);
+	str = (char *) malloc(sizeof(char) * (len - 1));
+	if (!str)
+		return ;
+	len = 0;
+	while (tok->token[len])
+	{
+		str[len] = tok->token[len + 1];
+		len++;
+	}
+	str[len - 2] = '\0';
+	free(tok->token);
+	tok->token = str;
+	if (DEBUG)
+		printf("DEBUG. Después de quitar comillas: #%s#\n", tok->token);
 }
 
-void	ft_parse_tokens(t_ms *ms)
+/*void	ft_change_tok(t_token *tok, int s, int e, char *val, size_t len_val)
 {
-	int	index1;
-	int	index2;
+	char	*new_t;
+	int		index1;
+	int		index2;
+	size_t	len_tok;
 
 	index1 = 0;
-	while (ms->line[index1])
+	index2 = 0;
+	if (val == NULL)
+		val = "";
+	len_tok = ft_strlen(tok->token);
+	new_t = (char *) malloc(sizeof(char) * (len_tok - (e - s) + len_val + 1));
+	if (!new_t)
+		return ;
+	while (index2 < s)
+		new_t[index1++] = tok->token[index2++];
+	index2 = 0;
+	while (val[index2])
+		new_t[index1++] = val[index2++];
+	index2 = e;
+	while (tok->token[index2])
+		new_t[index1++] = tok->token[index2++];
+	new_t[index1] = '\0';
+	free(tok->token);
+	tok->token = new_t;
+}*/
+
+void	ft_change_tok(t_token *tok, int s, int e, char *val)
+{
+	char	*new_t;
+	int		index1;
+	int		index2;
+
+	index1 = 0;
+	index2 = 0;
+	if (val == NULL)
+		val = "";
+	//len_tok = ;
+	new_t = (char *) malloc(sizeof(char) * (ft_strlen(tok->token) \
+							- (e - s) + ft_strlen(val) + 1));
+	if (!new_t)
+		return ;
+	while (index2 < s)
+		new_t[index1++] = tok->token[index2++];
+	index2 = 0;
+	while (val[index2])
+		new_t[index1++] = val[index2++];
+	index2 = e;
+	while (tok->token[index2])
+		new_t[index1++] = tok->token[index2++];
+	new_t[index1] = '\0';
+	free(tok->token);
+	tok->token = new_t;
+}
+
+void	ft_expand(t_ms *ms, t_token *tok)
+{
+	int		start;
+	int		end;
+	char	*name;
+	char	*value;
+
+	if (DEBUG)
 	{
-		index2 = index1;
-		if (ms->line[index1] == '\'')
-			ft_simp_quote(ms, &index1, &index2, ms->line[index1]);
-		else if (ms->line[index1] == '\"')
-			ft_dbl_quote(ms, &index1, &index2, ms->line[index1]);
-		else if (ft_strchr(TOKSTR, ms->line[index1]))
-			ft_redir_pipe_node(ms, &index1, &index2, ms->line[index1]);
-		else
-			ft_normal_tok(ms, &index1, &index2);
+		printf("DEBUG. Dentro de expand. Lista de tokens:\n");
+		ft_print_tok_list(ms->tokens);
+		printf("DEBUG. Dentro de expand. Token a expandir:\n");
+		ft_print_tok_list(tok);
+
 	}
+	start = 0;
+	while (tok->token[start] && tok->token[start] != '$')
+		start++;
+	if (tok->token[start] == '$')
+	{
+		start++;
+		end = start;
+		while (tok->token[end] && !ft_strchr(ENVCHARS, tok->token[end]))
+			end++;
+		name = ft_substr(tok->token, start, end - start);
+		value = ft_get_env_value(name, ms);
+		if (DEBUG)
+			printf("DEBUG: Encontrada variable de entorno #%s# con valor #%s#\n", name, value);
+		ft_change_tok(tok, start - 1, end, value);
+		free(name);
+	}
+}
+
+/*void	ft_expand(t_ms *ms, t_token *tok)
+{
+	int		start;
+	int		end;
+	char	*name;
+	char	*value;
+
+	start = 0;
+	while (tok->token[start] && tok->token[start] != '$')
+		start++;
+	if (tok->token[start] == '$')
+	{
+		start++;
+		end = start;
+		while (tok->token[end] && !ft_strchr(ENVCHARS, tok->token[end]))
+			end++;
+		name = ft_substr(tok->token, start, end - start);
+		value = ft_get_env_value(name, ms);
+		if (DEBUG)
+			printf("DEBUG: Encontrada variable de entorno #%s# con valor #%s#\n", name, value);
+		ft_change_tok(tok, start - 1, end, value, ft_strlen(value));
+		free(name);
+		free(value);
+	}
+}*/
+
+void	ft_find_vars(t_ms *ms)
+{
+	t_token	*node;
+
+	if (DEBUG)
+		printf("DEBUG. Dentro de ft_find_vars()\n");
+	node = ms->tokens;
+	while (node)
+	{
+		if (node->type == SNGQUOTE || node->type == DBLQUOTE)
+			ft_noquote(node);
+		while ((node->type == NOQUOTE || node->type == DBLQUOTE)
+			&& ft_strchr(node->token, '$'))
+		{
+			if (DEBUG)
+				printf("DEBUG. Encontrada variable de entorno.\n");
+			ft_expand(ms, node);
+		}
+		node = node->next;
+	}
+	if (DEBUG)
+		printf("DEBUG. Saliendo de ft_find_vars()\n");
 }
 
 void	ft_parser(t_ms *ms)
 {
-	ft_printf("DEBUG: Dentro del parser. La linea es: #%s#\n", ms->line);
+	if (DEBUG)
+		ft_printf("\nDEBUG: Dentro del parser. La linea es: #%s#\n", ms->line);
+	if (DEBUG)
+		ft_print_tok_list(ms->tokens);
 	ft_parse_tokens(ms);
-	
-	//ft_getcmd(ms);
-	
-	//ft_printf("DEBUG: El comando es: %s\n", ms->cmds->cmd);
-	//ft_getargs(ms, line, &pos);
-	//ft_printf("DEBUG: El comando tiene %d argumentos\n", ft_lstsize(ms->cmd->args));
+	ft_find_vars(ms);
+	if (DEBUG)
+		ft_print_tok_list(ms->tokens);
 }

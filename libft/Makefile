@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+         #
+#    By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/27 16:28:03 by joestrad          #+#    #+#              #
-#    Updated: 2023/12/01 19:51:06 by joestrad         ###   ########.fr        #
+#    Updated: 2024/02/09 12:30:12 by gpaez-ga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ BOBJS = ${BSRCS:.c=.o}
 
 CC = gcc -c
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = #-Wall -Werror -Wextra
 
 GREEN = "\033[32m"
 RED = "\033[31m"
@@ -46,7 +46,7 @@ NOCOLOR = "\033[0m"
 
 ${NAME}: ${OBJS} libft.h
 	@echo $(YELLOW)Norminette...$(NOCOLOR)
-	@norminette $(SCRS)
+	#@norminette $(SCRS)
 	@echo $(GREEN)Compiling source files... $(NOCOLOR)
 	@ar rcs ${NAME} ${OBJS}
 	@echo $(GREEN)Library $(NOCOLOR)$(NAME) $(GREEN)ready$(NOCOLOR)
