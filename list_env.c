@@ -6,13 +6,13 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:28 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/05 18:48:29 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:05:10 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list_e *ft_lste_new(char *key, char *value)
+t_list_e	*ft_lste_new(char *key, char *value)
 {
 	t_list_e	*node;
 
@@ -68,6 +68,21 @@ void	ft_lste_delone(t_list_e *lst, void (*del)(void *))
 	free(lst);
 }
 
+void	ft_lste_clear(t_list_e *lst, void (*del)(void *))
+{
+	t_list_e	*node;
+
+	node = lst;
+	while (lst != NULL)
+	{
+		node = lst->next;
+		ft_lste_delone(lst, del);
+		lst = node;
+	}
+	lst = NULL;
+}
+
+
 /**
  * @brief 			This function clears (removes of elements) of the
  * 					given list
@@ -75,7 +90,7 @@ void	ft_lste_delone(t_list_e *lst, void (*del)(void *))
  * @param lst 		The list to be cleared
  * @param del 		A pointer to the remove function
  */
-void	ft_lste_clear(t_list_e **lst, void (*del)(void *))
+/*void	ft_lste_clear(t_list_e **lst, void (*del)(void *))
 {
 	t_list_e	*node;
 
@@ -86,4 +101,4 @@ void	ft_lste_clear(t_list_e **lst, void (*del)(void *))
 		*lst = node;
 	}
 	*lst = NULL;
-}
+}*/

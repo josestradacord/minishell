@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:38 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/19 20:18:45 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:22:40 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
 
 	ms->child_pid = fork();
 	if (ms->child_pid < 0)
-		perror(ms->cmds->cmd);
+		perror(ms->command[0]);
 	else if (ms->child_pid == 0)
 	{
-		if(execve(ms->cmds->cmd, ft_split(ms->cmds->cmd,' '), ms->envp) == -1)
-			perror(ms->cmds->cmd);
+		if (execve(ms->command[0], ms->command, ms->envp) == - 1)
+			perror(ms->command[0]);
 		ft_free(ms, EXIT_FAILURE);
 	}
 	else
@@ -119,6 +119,8 @@ void	ft_executor(t_ms *ms)
 		ft_echo(ms);
 	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
 		ft_exit(ms);
+	else
+		(ft_execute_command(ms));
 	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");

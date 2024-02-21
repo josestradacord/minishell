@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:47:25 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/19 20:52:54 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/21 19:16:34 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ void	minishell(t_ms *ms)
 
 	if (DEBUG)
 	{
-		printf("DEBUG: Variables de entorno:\n");	
+		printf("DEBUG: Variables de entorno del char**:\n");	
 		//ft_print_env(ms->envp);
+		printf("DEBUG: Variables de entorno de la lista:\n");	
+		//ft_print_env_lst(ms->env);
 	}
 	//times = 0;
 	//status = TRUE;
 	while (TRUE)
 	{
-		ms->line = readline("minishell_V0.7$ ");
+		ms->line = readline("minishell_V0.9$ ");
 		/*times++;
 		if (times == 3)
 			status = FALSE;*/

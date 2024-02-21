@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:48:50 by joestrad          #+#    #+#             */
-/*   Updated: 2024/02/19 21:25:14 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/02/21 19:47:18 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,6 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-/*typedef struct s_string_l
-{
-	char				*string;
-	struct s_string_l	*next;
-}	t_string_l;
-*/
-typedef struct s_cmd
-{
-	char			*cmd;
-	int				has_pipe;
-	int				file_in;
-	int				file_out;
-	struct s_cmd	*next;
-}	t_cmd;
-
 typedef struct s_ms
 {
 	char		*line;
@@ -84,7 +69,6 @@ typedef struct s_ms
 	t_list_e	*env;
 	char		**envp;
 	int			status;
-	t_cmd		*cmds;
 }	t_ms;
 
 // Check functions
@@ -100,10 +84,10 @@ t_list_e	*ft_lste_new(char *key, char *value);
 int			ft_lste_size(t_list_e *lst);
 void		ft_lste_addback(t_list_e **lst, t_list_e *new);
 void		ft_lste_delone(t_list_e *lst, void (*del)(void *));
-void		ft_lste_clear(t_list_e **lst, void (*del)(void *));
+void		ft_lste_clear(t_list_e *lst, void (*del)(void *));
 
 // Functions used to manage the environment variables
-void		ft_get_env(t_ms *ms, char **envp);
+void		ft_copy_env2lst(t_ms *ms, char **envp);
 void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
