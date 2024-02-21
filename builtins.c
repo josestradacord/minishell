@@ -84,10 +84,9 @@ void	changepwd(t_ms *ms, char *dir)
 	{
 		while (old && ft_strncmp(old->name, "HOME", 4) != 0)
 			old = old->next;
-		printf("es %s\n", old->value);
 		chdir(old->value);
 		free(temp->value);
-		temp->value =malloc(100 * sizeof(char));	//tener cuidado con la cantidad de memoria
+		temp->value =malloc(100 * sizeof(char));
 		getcwd(temp->value, 100);
 		return ;
 	}
@@ -98,18 +97,17 @@ void	changepwd(t_ms *ms, char *dir)
  	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
-	temp->value =malloc(100 * sizeof(char));	//tener cuidado con la cantidad de memoria
+	temp->value =malloc(100 * sizeof(char));
 	getcwd(temp->value, 100);
-	printf("\n %s \n",temp->value);
 	if (ft_strncmp(dir, "/", 1) == 0)
 		chdir("/");
 }
 
-void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el .. y aumentar el SHLVL
+void	ft_cd(t_ms *ms, char *dir)		//aumentar el SHLVL
 {
 	if (dir == NULL)
 		changepwd(ms, dir);
-	else if (chdir(dir) != 0 && (dir[0] != '-' && dir[1] == '\0'))
+	else if (chdir(dir) != 0)
 	{
 		dup2(STDERR_FILENO, STDIN_FILENO);
 		//changepwd(ms, dir);
@@ -136,11 +134,6 @@ void	ft_pwd(t_ms *ms)
 	}
 	ft_printf("%s\n", temp->env->value);
 	}
-
-		//export a secas muestra las variables(ver en detalle),
-		//puedes declarar varias variables con y sin valor en la misma linea de comando
-		//(ej:export a=1 b=2 ext ; export a b c)
-		//si tiene un pipe parece que no hace nada
 
 char	**ft_free2(char **str)
 {
@@ -192,7 +185,7 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 
 void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
 {
-	t_list_e	*temp;				//Si no existe la variiiiiable a borrar no hace nadddddddda
+	t_list_e	*temp;				//Si no existe la variable a borrar no hace nada
 	t_list_e	*temp2;
 
 	if (env == NULL || env->next == NULL)
