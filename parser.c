@@ -51,7 +51,7 @@ void	ft_noquote(t_token *tok)
 		printf("DEBUG. Después de quitar comillas: #%s#\n", tok->token);
 }
 
-void	ft_change_tok(t_token *tok, int s, int e, char *val, size_t len_val)
+/*void	ft_change_tok(t_token *tok, int s, int e, char *val, size_t len_val)
 {
 	char	*new_t;
 	int		index1;
@@ -77,9 +77,70 @@ void	ft_change_tok(t_token *tok, int s, int e, char *val, size_t len_val)
 	new_t[index1] = '\0';
 	free(tok->token);
 	tok->token = new_t;
+}*/
+
+void	ft_change_tok(t_token *tok, int s, int e, char *val)
+{
+	char	*new_t;
+	int		index1;
+	int		index2;
+
+	index1 = 0;
+	index2 = 0;
+	if (val == NULL)
+		val = "";
+	//len_tok = ;
+	new_t = (char *) malloc(sizeof(char) * (ft_strlen(tok->token) \
+							- (e - s) + ft_strlen(val) + 1));
+	if (!new_t)
+		return ;
+	while (index2 < s)
+		new_t[index1++] = tok->token[index2++];
+	index2 = 0;
+	while (val[index2])
+		new_t[index1++] = val[index2++];
+	index2 = e;
+	while (tok->token[index2])
+		new_t[index1++] = tok->token[index2++];
+	new_t[index1] = '\0';
+	free(tok->token);
+	tok->token = new_t;
 }
 
 void	ft_expand(t_ms *ms, t_token *tok)
+{
+	int		start;
+	int		end;
+	char	*name;
+	char	*value;
+
+	if (DEBUG)
+	{
+		printf("DEBUG. Dentro de expand. Lista de tokens:\n");
+		ft_print_tok_list(ms->tokens);
+		printf("DEBUG. Dentro de expand. Token a expandir:\n");
+		ft_print_tok_list(tok);
+
+	}
+	start = 0;
+	while (tok->token[start] && tok->token[start] != '$')
+		start++;
+	if (tok->token[start] == '$')
+	{
+		start++;
+		end = start;
+		while (tok->token[end] && !ft_strchr(ENVCHARS, tok->token[end]))
+			end++;
+		name = ft_substr(tok->token, start, end - start);
+		value = ft_get_env_value(name, ms);
+		if (DEBUG)
+			printf("DEBUG: Encontrada variable de entorno #%s# con valor #%s#\n", name, value);
+		ft_change_tok(tok, start - 1, end, value);
+		free(name);
+	}
+}
+
+/*void	ft_expand(t_ms *ms, t_token *tok)
 {
 	int		start;
 	int		end;
@@ -103,7 +164,7 @@ void	ft_expand(t_ms *ms, t_token *tok)
 		free(name);
 		free(value);
 	}
-}
+}*/
 
 void	ft_find_vars(t_ms *ms)
 {

@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
@@ -26,7 +27,7 @@
 # include "libft/libft.h"
 
 // DEBUG = 0 no debug; DEBUG = 1 debug
-# define DEBUG	1
+# define DEBUG	0
 
 # define FALSE	0
 # define TRUE	1
@@ -43,8 +44,8 @@
 # define INPREDIR	13
 # define OUTREDIR	14
 # define OUTREDIR_A	15
-# define PIPE		16
-# define HEREDOC	17
+# define HEREDOC	16
+# define PIPE		17
 
 // Struct to keep the environment variables as a list
 typedef struct s_list_e
@@ -63,21 +64,6 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-/*typedef struct s_string_l
-{
-	char				*string;
-	struct s_string_l	*next;
-}	t_string_l;
-*/
-typedef struct s_cmd
-{
-	char			*cmd;
-	int				has_pipe;
-	int				file_in;
-	int				file_out;
-	struct s_cmd	*next;
-}	t_cmd;
-
 typedef struct s_ms
 {
 	char		*line;
@@ -90,7 +76,6 @@ typedef struct s_ms
 	t_list_e	*env;
 	char		**envp;
 	int			status;
-	t_cmd		*cmds;
 }	t_ms;
 
 // Check functions
@@ -104,12 +89,13 @@ void		ft_init_data(t_ms *ms, char **argv, char **envp);
 char		**ft_routes(char **envp);
 
 // Functions used to manage the list of environment variables
+void		ft_copy_env2lst(t_ms *ms, char **envp);
 t_list_e	*ft_lste_new(char *key, char *value);
 int			ft_lste_size(t_list_e *lst);
 t_list_e	*ft_create_node(char *env_var);
 void		ft_lste_addback(t_list_e **lst, t_list_e *new);
 void		ft_lste_delone(t_list_e *lst, void (*del)(void *));
-void		ft_lste_clear(t_list_e **lst, void (*del)(void *));
+void		ft_lste_clear(t_list_e *lst, void (*del)(void *));
 
 // Functions used to manage the environment variables
 void		ft_get_env(t_ms *ms, char **envp);

@@ -71,44 +71,54 @@ void	ft_exit(t_ms *ms)
 	}
 }
 
+void	changepwd(t_ms *ms, char *dir)
+{
+	t_list_e	*temp;
+	t_list_e	*old;
+
+	temp = ms->env;
+	old = ms->env;
+	while (temp && ft_strncmp(temp->name, "PWD", 3) != 0)
+		temp = temp->next;
+	if (dir == NULL)
+	{
+		while (old && ft_strncmp(old->name, "HOME", 4) != 0)
+			old = old->next;
+		printf("es %s\n", old->value);
+		chdir(old->value);
+		free(temp->value);
+		temp->value =malloc(100 * sizeof(char));	//tener cuidado con la cantidad de memoria
+		getcwd(temp->value, 100);
+		return ;
+	}
+	while (old && ft_strncmp(old->name, "OLDPWD", 6) != 0)
+		old = old->next;
+	if (ft_strncmp(dir, "-", 1) == 0)
+		chdir(old->value);
+ 	free(old->value);
+	old->value = ft_strdup(temp->value);
+	free(temp->value);
+	temp->value =malloc(100 * sizeof(char));	//tener cuidado con la cantidad de memoria
+	getcwd(temp->value, 100);
+	printf("\n %s \n",temp->value);
+	if (ft_strncmp(dir, "/", 1) == 0)
+		chdir("/");
+}
 
 void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el .. y aumentar el SHLVL
 {
-	t_list_e	*temp;
-
-	temp = ms->env;
-	if (chdir(dir) != 0)
+	if (dir == NULL)
+		changepwd(ms, dir);
+	else if (chdir(dir) != 0 && (dir[0] != '-' && dir[1] == '\0'))
 	{
 		dup2(STDERR_FILENO, STDIN_FILENO);
+		//changepwd(ms, dir);
 		ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
 	}
 	else
 	{
-		while (temp && ft_strncmp(temp->name, "PWD", 3) != 0)
-		{
-			//if (temp != NULL)
-			printf("%s\n", temp->name);
-				temp = temp->next;
-		}
-/* 		if (ft_strncmp(dir, "..", 2) == 0)
-		{
-
-		}
-		if (ft_strncmp(dir, "-", 1) == 0)
-		{
-
-		}
-		if (ft_strncmp(dir, "/", 1) == 0)
-		{
-
-		}
-		if (dir == NULL)
-		{
-
-		} */
-		temp->value = ft_strjoin (ft_get_env_value("PWD", ms), "/");
-		temp->value = ft_strjoin (temp->value, dir);
-	}
+		printf("existe el dir %s", dir);
+			changepwd(ms, dir);}
 }
 
 //Tener en cuenta que al ejecutarse una shell dentro de la shell el SHLVL aumenta en 1

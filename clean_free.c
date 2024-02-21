@@ -69,14 +69,14 @@ void	ft_free_command(t_ms *ms)
 	free(ms->command);
 }
 
-void	ft_free_cmds(t_ms *ms)
+/*void	ft_free_cmds(t_ms *ms)
 {
 	t_cmd	*node;
 
 	if (DEBUG)
 		ft_printf("DEBUG: Empiezo a liberar ft_free_cmds()\n");
-	/*if (ms->line)
-		free(ms->line);*/
+	//if (ms->line)
+		//free(ms->line);
 	node = ms->cmds;
 	while (node)
 	{
@@ -88,7 +88,7 @@ void	ft_free_cmds(t_ms *ms)
 	if (ms->cmds)
 		free(ms->cmds);
 	ft_free_command(ms);
-}
+}*/
 
 void	ft_free(t_ms *ms, int exit_code)
 {
@@ -97,7 +97,7 @@ void	ft_free(t_ms *ms, int exit_code)
 	rl_clear_history();
 	if (DEBUG)
 		ft_printf("DEBUG: Libero env\n");
-	ft_lste_clear(&ms->env, free);
+	ft_lste_clear(ms->env, free);
 	ft_free_envp(ms);
 	if (DEBUG)
 		ft_printf("DEBUG: Liberado env\n");

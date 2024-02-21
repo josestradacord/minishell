@@ -38,7 +38,7 @@ void	minishell(t_ms *ms)
 	//status = TRUE;
 	while (TRUE)
 	{
-		ms->line = readline("minishell_V0.7$ ");
+		ms->line = readline("minishell_V0.9$ ");
 /* 		times++;
 		if (times == 100)
 			status = FALSE; */
@@ -58,11 +58,9 @@ void	minishell(t_ms *ms)
 
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
-		//ft_cmd(ms, ms->tokens->token); //added by Gabriel 18/02/24
 		//ft_pipe(ms);
 		ft_executor(ms);
 		//ft_echo(ms);
-		//ft_free_cmds(ms);
 		ft_free_toks(ms);
 	}
 	/*DEBUG
