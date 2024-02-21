@@ -84,13 +84,28 @@ void	ft_cd(t_ms *ms, char *dir)		//tenr en cuenta el .. y aumentar el SHLVL
 	}
 	else
 	{
-		puts("entra en el bucle");
 		while (temp && ft_strncmp(temp->name, "PWD", 3) != 0)
 		{
 			//if (temp != NULL)
 			printf("%s\n", temp->name);
 				temp = temp->next;
 		}
+/* 		if (ft_strncmp(dir, "..", 2) == 0)
+		{
+
+		}
+		if (ft_strncmp(dir, "-", 1) == 0)
+		{
+
+		}
+		if (ft_strncmp(dir, "/", 1) == 0)
+		{
+
+		}
+		if (dir == NULL)
+		{
+
+		} */
 		temp->value = ft_strjoin (ft_get_env_value("PWD", ms), "/");
 		temp->value = ft_strjoin (temp->value, dir);
 	}
