@@ -111,11 +111,12 @@ void	minishell(t_ms *ms)
 /* 		if (ft_mother(ms, pip, ms->env) == 1)
 			return ; */
 		//wait(&status);
-		ft_executor(ms);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
-		//ft_pipe(ms);
+		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
+		if (ft_pipe(ms) != 0)
+			perror("pipe sale mal");
 		/* while(toks->next && toks->type != PIPE)
 			toks = toks->next; */
-		printf("toks es %s\n", toks->token);
+		//printf("toks es %s\n", toks->token);
 		ms->num_pipes = 0;
 		ft_free_toks(ms);
 	}

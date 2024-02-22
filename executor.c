@@ -178,13 +178,15 @@ void	ft_nump(t_ms *ms)
 	printf("%d num pipes\n", ms->num_pipes);
 }
 
-/* void	ft_executor(t_ms *ms, t_token *toks)
+void	ft_executor(t_ms *ms, t_token *toks)
 {
 
 	//lo de abajo es porvisional
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");
-
+	ms->command = ft_create_command(toks);
+	//perror("estoy en el ejecutor");
+	//printf("el comando es %s\n", ms->command[0]);
 	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
 		ft_builtins(ms);
 	else
@@ -193,9 +195,9 @@ void	ft_nump(t_ms *ms)
 	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");
-} */
+}
 
-void	ft_executor(t_ms *ms)	//original
+/* void	ft_executor(t_ms *ms)	//original
 {
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");
@@ -208,4 +210,4 @@ void	ft_executor(t_ms *ms)	//original
 	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");
-}
+} */

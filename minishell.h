@@ -124,7 +124,7 @@ void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
 
 // Executor functions
-void		ft_executor(t_ms *ms);
+void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
@@ -151,8 +151,8 @@ char		**ft_joineq(char *astr, char *cr);
 int			ft_liste_comp(t_list_e *env, char **val);
 
 
-void	last_son(t_ms *ms);
-void	son(t_ms *ms, t_token *toks);
+int		last_son(t_ms *ms, t_token *toks);
+int		son(t_ms *ms, t_token *toks);
 void	ft_nump(t_ms *ms);
 
 
