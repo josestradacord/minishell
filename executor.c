@@ -175,7 +175,7 @@ void	ft_nump(t_ms *ms)
 			ms->num_pipes++;
 		toks = toks->next;
 	}
-	printf("%d num pipes\n", ms->num_pipes);
+	//printf("%d num pipes\n", ms->num_pipes);
 }
 
 void	ft_executor(t_ms *ms, t_token *toks)

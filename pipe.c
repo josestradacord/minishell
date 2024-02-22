@@ -41,41 +41,6 @@ char	**ft_routes(char **envp)
 	return (rout);
 }
 
-int	ft_search(t_ms *ms)
-{
-	int	i;
-
-	i = -1;
-	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
-	while (ms->rout[++i])
-	{
-		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
-		if (access(ms->wanted, 0) == 0)
-			return (0);
-	}
-	return (1);
-}
-
-int	ft_cmd(t_ms *ms)
-{
-	int	pid;
-	int	status;
-
-	if (ft_search(ms) == 0)	//necesita hacer un hijo para no salirse
-	{
-		pid = fork();
-		if (pid == 0)
-			execve(ms->wanted, ms->command, ms->envp);
-		else
-		{
-			waitpid(pid, &status, 0);
-			return (0);
-		}
-	}
-	//ft_error(2);
-	return (0);
-}
-
 void	ft_temp(char *wtd, int fdin)
 {
 	char	*str;
@@ -173,6 +138,48 @@ void	ft_temp(char *wtd, int fdin)
 	}
 }*/
 
+int	ft_search(t_ms *ms)
+{
+	int	i;
+
+	i = -1;
+	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
+	while (ms->rout[++i])
+	{
+		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
+		if (access(ms->wanted, 0) == 0)
+			return (0);
+	}
+	return (1);
+}
+
+/* int	ft_cmd(t_ms *ms)
+{
+	int	pid;
+	int	status;
+
+	if (ft_search(ms) == 0)	//necesita hacer un hijo para no salirse
+	{
+		pid = fork();
+		if (pid == 0)
+			execve(ms->wanted, ms->command, ms->envp);
+		else
+		{
+			waitpid(pid, &status, 0);
+			return (0);
+		}
+	}
+	//ft_error(2);
+	return (0);
+} */
+
+
+int	ft_cmd(t_ms * ms)
+{
+	if (ft_search(ms) == 0)
+		execve(ms->wanted, ms->command, ms->envp);
+	return (1);
+}
 
 int	son(t_ms *ms, t_token *toks)
 {
@@ -186,10 +193,7 @@ int	son(t_ms *ms, t_token *toks)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		//ft_executor(ms, toks);
-		printf("el son funciona bien");
-		perror("estoy en el hijo");
-		//puts("pasa el dup");
+		ft_executor(ms, toks);
 	}
 	else if (pid < 0)
 		return (1);
@@ -197,7 +201,6 @@ int	son(t_ms *ms, t_token *toks)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		perror("entra en son");
 		waitpid(pid, &status, 0);
 	}
 	return (0);
@@ -222,16 +225,12 @@ int	last_son(t_ms *ms, t_token *toks)
 		}
 		else
 			dup2(1, 1);
-		//ft_executor(ms, toks);
-		perror("estoy en el ultimo hijo");
-		printf("el last son funciona bien");
+		ft_executor(ms, toks);
 	}
 	else if (pid < 0)
 		return (1);
 	else
-	{
-		perror("estoy en el ultimo hijo 2");
-		waitpid(pid, &status, 0);}
+		waitpid(pid, &status, 0);
 	return (0);
 }
 	//atexit(ft_leaks);
@@ -251,33 +250,19 @@ int	ft_pipe(t_ms *ms)
 		end = argc - 1;
 	else
 		end = argc - 2; */
-/* 	while (first)
-	{ */
-	puts("estoy en el pipe");
-		//printf("Estoy en %s\n", temp->token);
-		while (ms->num_pipes > 0)
+	while (ms->num_pipes > 0)
+	{
+		if (temp->type == PIPE && ms->num_pipes > 0)
 		{
-			if (temp->type == PIPE && ms->num_pipes > 0)
-			{
-				printf("Estoy en %s y el siguiente de temp es %s\n", first->token,temp->next->token);
-				son(ms, first);
-				perror("salgo del hijo");
-				first = temp->next;
-				ms->num_pipes--;
-			}
-/* 			else
-			{
-				perror("Perror");
-				break ;
-			}	//comando no encontrado */
-				temp = temp->next;
+			if (son(ms, first) == 1)
+				exit (1);
+			first = temp->next;
+			ms->num_pipes--;
 		}
-		//printf("Estoy en %s\n", first->token);
-		if (last_son(ms, first) < 0)
-			exit (1);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
-		//printf("Estoy en %s al salir\n", temp->token);
-//	}
-	perror("salgo de los pipes");
+		temp = temp->next;
+	}
+	last_son(ms, first);	//saca linea NULL
+	//	ft_executor(ms, first);	//se sale del programa
     //añadir algo para el > y el >>, usar else de ft_enter
 	//unlink(".tmp");
 	return (0);

@@ -73,7 +73,6 @@ void	minishell(t_ms *ms)
 {
 	int		times;
 	int		status;
-	t_token	*toks;
 	int		pip[2];
 
 	//int		times;
@@ -94,6 +93,7 @@ void	minishell(t_ms *ms)
 		if (ms->line == NULL)
 		{
 			ft_printf("Linea NULL\n");//despues solo /n
+			perror ("Linea NULL");
 			break ;
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
@@ -104,22 +104,16 @@ void	minishell(t_ms *ms)
 		}
 		ft_parser(ms);
 		ft_nump(ms);
-		toks = ms->tokens;
 		//status = ft_executor(ms);
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
-/* 		if (ft_mother(ms, pip, ms->env) == 1)
-			return ; */
-		//wait(&status);
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
-		/* while(toks->next && toks->type != PIPE)
-			toks = toks->next; */
-		//printf("toks es %s\n", toks->token);
 		ms->num_pipes = 0;
 		ft_free_toks(ms);
 	}
+	return ;
 	/*DEBUG
 	printf("DESPUÉS:\n");
 	ft_print_env_lst(ms->env);
