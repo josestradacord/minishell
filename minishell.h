@@ -76,6 +76,10 @@ typedef struct s_ms
 	t_list_e	*env;
 	char		**envp;
 	int			status;
+
+
+	int			fdout;
+
 }	t_ms;
 
 // Check functions
@@ -145,5 +149,11 @@ void		ft_free_command(t_ms *ms);
 //Utils
 char		**ft_joineq(char *astr, char *cr);
 int			ft_liste_comp(t_list_e *env, char **val);
+
+
+void	last_son(t_ms *ms);
+void	son(t_ms *ms, t_token *toks);
+void	ft_nump(t_ms *ms);
+
 
 #endif

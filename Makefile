@@ -18,7 +18,8 @@ CC = gcc
 
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
 
-
+#GLFW_FLAGS  = -ldl -lglfw -lm
+#GLFW_FLAGS = -lglfw -L /Users/$(USER)/.brew/opt/glfw/lib/ -lm
 
 INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
@@ -49,7 +50,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@echo $(GREEN)Compiling minishell...$(NOCOLOR)
 	@$(CC) $(FLAGS) $(OBJS) $(INC) $(LIBFT) -o $(NAME) $(INC_READLINE) $(LIB_READLINE)
 	@echo $(GREEN)Program minishell ready$(NOCOLOR)
-
+#	$(GLFW_FLAGS) -o $(NAME)
 $(LIBFT):
 	@echo $(YELLOW)Compiling libft$(NOCOLOR)
 	@make -C libft --silent

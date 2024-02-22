@@ -130,7 +130,72 @@ void	ft_execute_command(t_ms *ms)
 	}
 }
 
-void	ft_executor(t_ms *ms)
+/* void	ft_executor(t_ms *ms, t_token *toks)
+{
+	if (DEBUG)
+		printf("DEBUG. Entrando al ejecutor.\n");
+	ms->command = ft_create_command(toks);
+	printf("command 0 es %s\n", ms->command[0]);
+	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		ft_builtins(ms);
+	else
+		ft_cmd(ms);
+		//ft_execute_command(ms);
+	ft_free_command(ms);
+	if (DEBUG)
+		printf("DEBUG. Saliendo del ejecutor.\n");
+	while(toks->next && toks->type != PIPE)
+		toks = toks->next;
+	if (toks->type == PIPE && toks->next)
+	{
+		printf("son y token %s\n", toks->next->token);
+		son(ms, toks->next);
+		puts("pasa");
+		//last_son(ms);
+		//ft_executor(ms, toks->next);
+	}
+	else if (toks->type == PIPE && !toks->next)
+	{
+		//son(ms);
+		puts("last son");
+		last_son(ms);
+		//ft_executor(ms, toks);
+	}
+	return ;
+} */
+
+void	ft_nump(t_ms *ms)
+{
+	t_token *toks;
+
+	toks = ms->tokens;
+	while (toks)
+	{
+		if (toks->type == PIPE)
+			ms->num_pipes++;
+		toks = toks->next;
+	}
+	printf("%d num pipes\n", ms->num_pipes);
+}
+
+/* void	ft_executor(t_ms *ms, t_token *toks)
+{
+
+	//lo de abajo es porvisional
+	if (DEBUG)
+		printf("DEBUG. Entrando al ejecutor.\n");
+
+	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		ft_builtins(ms);
+	else
+		ft_cmd(ms);
+		//ft_execute_command(ms);
+	ft_free_command(ms);
+	if (DEBUG)
+		printf("DEBUG. Saliendo del ejecutor.\n");
+} */
+
+void	ft_executor(t_ms *ms)	//original
 {
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");

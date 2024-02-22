@@ -114,9 +114,7 @@ void	ft_cd(t_ms *ms, char *dir)		//aumentar el SHLVL
 		ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
 	}
 	else
-	{
-		printf("existe el dir %s", dir);
-			changepwd(ms, dir);}
+		changepwd(ms, dir);
 }
 
 //Tener en cuenta que al ejecutarse una shell dentro de la shell el SHLVL aumenta en 1

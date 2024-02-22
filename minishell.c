@@ -21,14 +21,63 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
+/* static int	firstson(t_ms *data, int *pip, t_list_e *envp)
+{
+	if (ft_search(data, data->command[0]) == 1)
+		return (1);
+	dup2(data->fdin, STDIN_FILENO);
+	dup2(pip[1], STDOUT_FILENO);
+	close(pip[0]);
+	close(pip[1]);
+	execve(data->wanted, data->command, envp);
+	return (0);
+}
+
+static int	secondson(t_ms *data, int *pip, t_list_e *envp)
+{
+	if (ft_search(data, data->command[0]) == 1)
+		return (1);
+	data->fdout = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	dup2(pip[0], STDIN_FILENO);
+	close(pip[0]);
+	close(pip[1]);
+	dup2(data->fdout, STDOUT_FILENO);
+	execve(data->wanted, data->command, envp);
+	return (0);
+}
+
+int	ft_mother(t_ms *data, int *pip, t_list_e *envp)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (firstson(data, pip, envp) == 1)
+			return (1);
+	}
+	else if (pid < 0)
+		return (1);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (secondson(data, pip, envp) == 1)
+			return (1);
+	}
+	else if (pid < 0)
+		return (1);
+	return (0);
+}
+ */
 void	minishell(t_ms *ms)
 {
 	int		times;
 	int		status;
+	t_token	*toks;
+	int		pip[2];
 
 	//int		times;
 	//int		status;
-
 	if (DEBUG)
 	{
 		printf("DEBUG: Variables de entorno:\n");	
@@ -54,13 +103,20 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
+		ft_nump(ms);
+		toks = ms->tokens;
 		//status = ft_executor(ms);
-
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+/* 		if (ft_mother(ms, pip, ms->env) == 1)
+			return ; */
+		//wait(&status);
+		ft_executor(ms);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		//ft_pipe(ms);
-		ft_executor(ms);
-		//ft_echo(ms);
+		/* while(toks->next && toks->type != PIPE)
+			toks = toks->next; */
+		printf("toks es %s\n", toks->token);
+		ms->num_pipes = 0;
 		ft_free_toks(ms);
 	}
 	/*DEBUG
@@ -68,6 +124,18 @@ void	minishell(t_ms *ms)
 	ft_print_env_lst(ms->env);
 	FIN DEBUG*/
 }
+
+/* 		while(toks->next && toks->type != PIPE)
+			toks = toks->next;
+		//printf("son y token %s\n", toks->next->token);
+ 		if (toks->type == PIPE && toks->next)
+		{
+			printf("son y token %s\n", toks->next->token);
+			son(ms, toks->next);
+			puts("pasa");
+			//last_son(ms);
+			//ft_executor(ms, toks->next);
+		} */
 
 int	main(int argc, char **argv, char **envp)
 {

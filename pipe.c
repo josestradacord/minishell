@@ -109,6 +109,19 @@ void	ft_temp(char *wtd, int fdin)
 	return (3);
 } */
 
+/* int	here_doc(char *str, t_data *data, char *outfl)
+{
+	int	fdin;
+
+	fdin = open(".tmp", O_WRONLY | O_CREAT, 0644);
+	//ft_temp(str, fdin);
+	close(fdin);
+	fdin = open(".tmp", O_RDONLY);
+	dup2(fdin, STDIN_FILENO);
+	close(fdin);
+	return (3);
+} */
+
 /* int	ft_enter(t_ms *ms)
 {
 	int	i;
@@ -136,7 +149,6 @@ void	ft_temp(char *wtd, int fdin)
 	}
 } */
 
-
 /* void	son(t_ms *ms)
 {
 	int	fd[2];
@@ -159,7 +171,40 @@ void	ft_temp(char *wtd, int fdin)
 		dup2(fd[0], STDIN_FILENO);
 		waitpid(pid, &status, 0);
 	}
+}*/
+
+
+void	son(t_ms *ms, t_token *toks)
+{
+	int	fd[2];
+	int	pid;
+	int	status;
+	int	fdin;
+
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		puts("entra");
+		fdin = open(".tmp", O_WRONLY | O_CREAT, 0644);
+		dup2(fdin, STDOUT_FILENO);
+		ft_executor(ms, toks);
+		close(fdin);
+		fdin = open(".tmp", O_RDONLY);
+		dup2(fdin, STDIN_FILENO);
+		close(fdin);
+		//puts("pasa el dup");
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid, &status, 0);
+	}
 }
+
+/* 	else if (pid < 0)
+		ft_error(3); */
 
 void	last_son(t_ms *ms)
 {
@@ -167,24 +212,23 @@ void	last_son(t_ms *ms)
 	int	status;
 
 	pid = fork();
+	ms->fdout = 0;
 	if (pid == 0)
 	{
-		if (data->fdout != 0)
+		if (ms->fdout != 0)
 		{	
-			dup2(data->fdout, STDOUT_FILENO);
-			close(data->fdout);
+			dup2(ms->fdout, STDOUT_FILENO);
+			close(ms->fdout);
 		}
 		else
 			dup2(1, 1);
-		ft_cmd(data, str, envp);
+		//ft_executor(ms);
 	}
-	else if (pid < 0)
-		ft_error(3);
 	else
 		waitpid(pid, &status, 0);
 }
 	//atexit(ft_leaks);
-*/
+
 /* int	ft_pipe(t_ms *ms)
 {
 	int		i;
@@ -194,7 +238,7 @@ void	last_son(t_ms *ms)
 	temp = ms->tokens;
 
  	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
-	if(ft_search(&data, argv[argc - 1]) == 0)
+	if(ft_search(ms) == 0)
 		end = argc - 1;
 	else
 		end = argc - 2;
