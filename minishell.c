@@ -79,21 +79,23 @@ void	minishell(t_ms *ms)
 	//int		status;
 	if (DEBUG)
 	{
-		printf("DEBUG: Variables de entorno:\n");	
+		printf("\033[36;1mDEBUG: Variables de entorno:\033[0m\n");	
 		//ft_print_env(ms->envp);
 	}
 	//times = 0;
 	//status = TRUE;
 	while (TRUE)
 	{
-		ms->line = readline("minishell_V0.9$ ");
+		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 /* 		times++;
 		if (times == 100)
 			status = FALSE; */
+		//printf("line es %s\n", ms->line);
 		if (ms->line == NULL)
 		{
-			ft_printf("Linea NULL\n");//despues solo /n
+			ft_printf("\033[36;1mLinea NULL\033[0m\n");//despues solo /n
 			perror ("Linea NULL");
+			//exit (1);
 			break ;
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
@@ -110,7 +112,7 @@ void	minishell(t_ms *ms)
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
-		ms->num_pipes = 0;
+		//ms->num_pipes = 0;
 		ft_free_toks(ms);
 	}
 	return ;

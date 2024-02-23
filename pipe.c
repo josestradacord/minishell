@@ -233,7 +233,6 @@ int	last_son(t_ms *ms, t_token *toks)
 		waitpid(pid, &status, 0);
 	return (0);
 }
-	//atexit(ft_leaks);
 
 int	ft_pipe(t_ms *ms)
 {
@@ -241,6 +240,7 @@ int	ft_pipe(t_ms *ms)
 	int		end;
 	t_token	*temp;
 	t_token	*first;
+	int		status;
 
 	temp = ms->tokens;
 	first = ms->tokens;
@@ -254,15 +254,20 @@ int	ft_pipe(t_ms *ms)
 	{
 		if (temp->type == PIPE && ms->num_pipes > 0)
 		{
+			//printf("tok es %s\n", first->token);
 			if (son(ms, first) == 1)
 				exit (1);
-			first = temp->next;
+			//wait(&status);
 			ms->num_pipes--;
+			first = temp->next;
 		}
 		temp = temp->next;
 	}
-	last_son(ms, first);	//saca linea NULL
-	//	ft_executor(ms, first);	//se sale del programa
+	//printf("tok es %s\n", first->token);
+	if (ms->num_pipes == 0)
+		last_son(ms, first);	//saca linea NULL
+	//wait(&status);
+	//ft_executor(ms, first);	//se sale del programa
     //añadir algo para el > y el >>, usar else de ft_enter
 	//unlink(".tmp");
 	return (0);

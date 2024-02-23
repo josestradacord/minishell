@@ -130,7 +130,7 @@ void	ft_pwd(t_ms *ms)
 			return ;
 		temp->env = temp->env->next;
 	}
-	ft_printf("%s\n", temp->env->value);
+	printf("%s\n", temp->env->value);
 	}
 
 char	**ft_free2(char **str)

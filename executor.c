@@ -84,7 +84,7 @@ char	**ft_create_command(t_token *toks)
 	return (res);
 }
 
-void		ft_builtins(t_ms *ms)
+int	ft_builtins(t_ms *ms)
 {
 	if (DEBUG)
 		printf("Es un builtin\n");
@@ -102,7 +102,7 @@ void		ft_builtins(t_ms *ms)
 		ft_lste_rm(ms->env, ms->command[1]);
 	else if (ft_strncmp("export", ms->command[0], 6) == 0)
 		ft_export(ms);
-	//return (0);
+	return (0);
 }
 
 void	ft_execute_command(t_ms *ms)

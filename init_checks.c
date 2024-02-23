@@ -26,7 +26,7 @@ void	ft_usage(void)
 
 void	ft_welcome_msg(void)
 {
-	ft_putstr_fd("W E L C O M E  T O  M I N I S H E L L\n", STDOUT_FILENO);
+	ft_putstr_fd("\033[32;1mW E L C O M E  T O  M I N I S H E L L\n\033[0m", STDOUT_FILENO);
 }
 
 void	ft_init_data(t_ms *ms, char **argv, char **envp)
