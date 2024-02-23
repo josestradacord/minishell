@@ -61,13 +61,26 @@ void	ft_free_command(t_ms *ms)
 	/*if (ms->line)
 		free(ms->line);*/
 	index = 0;
-	while (ms->command[index])
+	if (DEBUG)
+		perror("va a liberar comandos");
+	//printf("libero comando %s\n", ms->command[0]);
+	while (ms->command && ms->command[index])
 	{
+		if (DEBUG)
+			printf("libero comando %s\n", ms->command[index]);
 		free(ms->command[index]);
 		index++;
 	}
-	free(ms->wanted);
-	free(ms->command);
+	if (DEBUG)
+		perror("va a liberar wanted");
+	if (ms->wanted)
+		free(ms->wanted);
+	if (DEBUG)
+		perror("va a liberar command");
+	if (ms->command)
+		free(ms->command);
+	if (DEBUG)
+		perror("todo liberado");
 }
 
 /*void	ft_free_cmds(t_ms *ms)

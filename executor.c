@@ -67,7 +67,8 @@ char	**ft_create_command(t_token *toks)
 		printf("%sDEBUG:%s Entrando a crear el comando.\nLista de tokens:\n", BLUE, RESET);
 		ft_print_tok_list(toks);
 	}
-	res = malloc(sizeof(char *) * ft_count_tokens(toks) + 1);
+	res = malloc(sizeof(char *) * (ft_count_tokens(toks) + 1));
+	res[ft_count_tokens(toks) + 1] = NULL;
 	index = 0;
 	while (toks && toks->type != PIPE)
 	{
@@ -188,11 +189,13 @@ void	ft_executor(t_ms *ms, t_token *toks)
 	//perror("estoy en el ejecutor");
 	//printf("el comando es %s\n", ms->command[0]);
 	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+	{
 		ft_builtins(ms);
+		ft_free_command(ms);
+	}
 	else
 		ft_cmd(ms);
 		//ft_execute_command(ms);
-	ft_free_command(ms);
 	if (DEBUG)
 		printf("%sDEBUG:%s Saliendo del ejecutor.\n", BLUE, RESET);
 }

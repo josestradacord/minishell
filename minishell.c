@@ -86,6 +86,7 @@ void	minishell(t_ms *ms)
 	//status = TRUE;
 	while (TRUE)
 	{
+		//ft_bzero(ms->line,sizeof(char *));
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 /* 		times++;
 		if (times == 100)
@@ -93,8 +94,9 @@ void	minishell(t_ms *ms)
 		//printf("line es %s\n", ms->line);
 		if (ms->line == NULL)
 		{
-			ft_printf("\033[36;1mLinea NULL\033[0m\n");//despues solo /n
-			perror ("Linea NULL");
+			//ft_printf("\n");
+			ft_printf("%sLinea NULL%s\n", RED, RESET);//despues solo /n
+			//perror ("Linea NULL");
 			//exit (1);
 			break ;
 		}
@@ -108,7 +110,7 @@ void	minishell(t_ms *ms)
 		ft_nump(ms);
 		//status = ft_executor(ms);
 		if (DEBUG)
-			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET , ms->tokens->token);
+			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
@@ -138,13 +140,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
+		ft_bzero(&ms, sizeof(ms));
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

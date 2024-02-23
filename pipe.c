@@ -194,6 +194,7 @@ int	son(t_ms *ms, t_token *toks)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		ft_executor(ms, toks);
+		exit (0);
 	}
 	else if (pid < 0)
 		return (1);
@@ -226,6 +227,8 @@ int	last_son(t_ms *ms, t_token *toks)
 		else
 			dup2(1, 1);
 		ft_executor(ms, toks);
+		//printf("\033[31;1mSale del hijo\033[0m\n");
+		exit (0);
 	}
 	else if (pid < 0)
 		return (1);
@@ -233,6 +236,11 @@ int	last_son(t_ms *ms, t_token *toks)
 		waitpid(pid, &status, 0);
 	return (0);
 }
+
+/* int	ft_pipe(t_ms *ms)
+{
+	ft_executor()
+} */
 
 int	ft_pipe(t_ms *ms)
 {
@@ -246,10 +254,12 @@ int	ft_pipe(t_ms *ms)
 	first = ms->tokens;
 
  	//i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
-/* 	if(ft_search(ms) == 0)
-		end = argc - 1;
-	else
-		end = argc - 2; */
+// 	if(ft_search(ms) == 0)
+//		end = argc - 1;
+//	else
+//		end = argc - 2;
+	if (ft_strncmp(ms->tokens->token, "exit", 4) == 0)
+		ft_exit(ms);
 	while (ms->num_pipes > 0)
 	{
 		if (temp->type == PIPE && ms->num_pipes > 0)
@@ -258,6 +268,7 @@ int	ft_pipe(t_ms *ms)
 			if (son(ms, first) == 1)
 				exit (1);
 			//wait(&status);
+			//ft_free_command(ms);
 			ms->num_pipes--;
 			first = temp->next;
 		}
@@ -266,6 +277,7 @@ int	ft_pipe(t_ms *ms)
 	//printf("tok es %s\n", first->token);
 	if (ms->num_pipes == 0)
 		last_son(ms, first);	//saca linea NULL
+	//ft_free_command(ms);
 	//wait(&status);
 	//ft_executor(ms, first);	//se sale del programa
     //añadir algo para el > y el >>, usar else de ft_enter

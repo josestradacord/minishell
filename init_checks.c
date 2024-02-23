@@ -36,6 +36,7 @@ void	ft_init_data(t_ms *ms, char **argv, char **envp)
 	ms->num_pipes = 0;
 	ms->status = 0;
 	ms->line = NULL;
+	ms->wanted = NULL;
 	ms->rout = ft_routes(envp);
 	ft_welcome_msg();
 	ft_copy_envp(ms, envp);

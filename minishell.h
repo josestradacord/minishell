@@ -30,7 +30,7 @@
 # include "libft/libft.h"
 
 // DEBUG = 0 no debug; DEBUG = 1 debug
-# define DEBUG	1
+# define DEBUG	0
 
 # define FALSE	0
 # define TRUE	1
@@ -142,6 +142,8 @@ void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
+int		ft_builtins(t_ms *ms);
+
 void		ft_echo(t_ms *ms);
 void		ft_cd(t_ms *ms, char *dir);
 void		ft_exit(t_ms *ms);
