@@ -108,7 +108,7 @@ void	minishell(t_ms *ms)
 		ft_nump(ms);
 		//status = ft_executor(ms);
 		if (DEBUG)
-			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET , ms->tokens->token);
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
@@ -144,7 +144,7 @@ int	main(int argc, char **argv, char **envp)
 	else
 	{
 		if (DEBUG)
-			printf("DEBUG: Voy a iniciar\n");
+			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

@@ -116,13 +116,13 @@ char	*ft_get_env_value(char *name, t_ms *ms)
 	{
 		if (DEBUG)
 		{
-			printf("DEBUG. Buscando variable de entorno con nombre: #%s#\n", name);
+			printf("%sDEBUG:%s Buscando variable de entorno con nombre: #%s#\n", BLUE, RESET, name);
 		}
 		if (!ft_strncmp(name, node->name, ft_strlen(name)))
 		{
 			if (DEBUG)
 			{
-				printf("DEBUG. Buscando variable de entorno con nombre: #%s# en #%s# y valor #%s#\n", name, node->name, node->value);
+				printf("%sDEBUG:%s Buscando variable de entorno con nombre: #%s# en #%s# y valor #%s#\n", BLUE, RESET , name, node->name, node->value);
 			}
 			return (node->value);
 		}

@@ -21,7 +21,7 @@ void	ft_print_tok_list(t_token *tok)
 	index = 1;
 	while (aux)
 	{
-		printf("DEBUG. Token nº %d\nType:\t%d\nValue:\t#%s#\n", index, aux->type, aux->token);
+		printf("%sDEBUG:%s Token nº %d\nType:\t%d\nValue:\t#%s#\n", BLUE, RESET , index, aux->type, aux->token);
 		index++;
 		aux = aux->next;
 	}
@@ -33,7 +33,7 @@ void	ft_noquote(t_token *tok)
 	char	*str;
 
 	if (DEBUG)
-		printf("DEBUG. Antes de quitar comillas: #%s#\n", tok->token);
+		printf("%sDEBUG:%s Antes de quitar comillas: #%s#\n", BLUE, RESET , tok->token);
 	len = ft_strlen(tok->token);
 	str = (char *) malloc(sizeof(char) * (len - 1));
 	if (!str)
@@ -48,7 +48,7 @@ void	ft_noquote(t_token *tok)
 	free(tok->token);
 	tok->token = str;
 	if (DEBUG)
-		printf("DEBUG. Después de quitar comillas: #%s#\n", tok->token);
+		printf("%sDEBUG:%s Después de quitar comillas: #%s#\n", BLUE, RESET , tok->token);
 }
 
 /*void	ft_change_tok(t_token *tok, int s, int e, char *val, size_t len_val)
@@ -116,9 +116,9 @@ void	ft_expand(t_ms *ms, t_token *tok)
 
 	if (DEBUG)
 	{
-		printf("DEBUG. Dentro de expand. Lista de tokens:\n");
+		printf("%sDEBUG:%s Dentro de expand. Lista de tokens:\n", BLUE, RESET);
 		ft_print_tok_list(ms->tokens);
-		printf("DEBUG. Dentro de expand. Token a expandir:\n");
+		printf("%sDEBUG:%s Dentro de expand. Token a expandir:\n", BLUE, RESET);
 		ft_print_tok_list(tok);
 
 	}
@@ -134,7 +134,7 @@ void	ft_expand(t_ms *ms, t_token *tok)
 		name = ft_substr(tok->token, start, end - start);
 		value = ft_get_env_value(name, ms);
 		if (DEBUG)
-			printf("DEBUG: Encontrada variable de entorno #%s# con valor #%s#\n", name, value);
+			printf("%sDEBUG:%s Encontrada variable de entorno #%s# con valor #%s#\n", BLUE, RESET , name, value);
 		ft_change_tok(tok, start - 1, end, value);
 		free(name);
 	}
@@ -171,7 +171,7 @@ void	ft_find_vars(t_ms *ms)
 	t_token	*node;
 
 	if (DEBUG)
-		printf("DEBUG. Dentro de ft_find_vars()\n");
+		printf("%sDEBUG:%s Dentro de ft_find_vars()\n", BLUE, RESET);
 	node = ms->tokens;
 	while (node)
 	{
@@ -181,19 +181,19 @@ void	ft_find_vars(t_ms *ms)
 			&& ft_strchr(node->token, '$'))
 		{
 			if (DEBUG)
-				printf("DEBUG. Encontrada variable de entorno.\n");
+				printf("%sDEBUG:%s Encontrada variable de entorno.\n", BLUE, RESET);
 			ft_expand(ms, node);
 		}
 		node = node->next;
 	}
 	if (DEBUG)
-		printf("DEBUG. Saliendo de ft_find_vars()\n");
+		printf("%sDEBUG:%s Saliendo de ft_find_vars()\n", BLUE, RESET);
 }
 
 void	ft_parser(t_ms *ms)
 {
 	if (DEBUG)
-		ft_printf("\nDEBUG: Dentro del parser. La linea es: #%s#\n", ms->line);
+		ft_printf("\n%sDEBUG:%s Dentro del parser. La linea es: #%s#\n", BLUE, RESET , ms->line);
 	if (DEBUG)
 		ft_print_tok_list(ms->tokens);
 	ft_parse_tokens(ms);
