@@ -23,9 +23,6 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
-	int		times;
-	int		status;
-
 	//int		times;
 	//int		status;
 

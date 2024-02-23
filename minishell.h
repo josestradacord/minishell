@@ -23,6 +23,7 @@
 # include <sys/types.h> 
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
 
 # include "libft/libft.h"
 
@@ -145,5 +146,9 @@ void		ft_free_command(t_ms *ms);
 //Utils
 char		**ft_joineq(char *astr, char *cr);
 int			ft_liste_comp(t_list_e *env, char **val);
+
+//Signals management
+void		ft_signals(void);
+void		ft_set_signal(int s);
 
 #endif

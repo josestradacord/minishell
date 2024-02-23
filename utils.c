@@ -4,8 +4,8 @@ char	**ft_joineq(char *astr, char *cr)
 {
 	int		i;
 	char	**pair;
-	char	*temp;
-	char	*temp2;
+	//char	*temp;
+	//char	*temp2;
 
 	i = 2;
 	pair = ft_split(astr, cr[0]);
