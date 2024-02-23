@@ -51,12 +51,12 @@ void	ft_echo(t_ms *ms)
 		ft_printf("%s", str[i]);
 } */
 
-/* int	ft_exit(t_ms *ms)
+void	ft_exit(t_ms *ms)
 {
 	exit(0);
-} */
+}
 
-void	ft_exit(t_ms *ms)
+/* void	ft_exit(t_ms *ms)
 {
 	int	index;
 
@@ -69,7 +69,7 @@ void	ft_exit(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
 	}
-}
+} */
 
 void	changepwd(t_ms *ms, char *dir)
 {
