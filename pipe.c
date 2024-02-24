@@ -41,7 +41,7 @@ char	**ft_routes(char **envp)
 	return (rout);
 }
 
-void	ft_temp(char *wtd, int fdin)
+/* void	ft_temp(char *wtd, int fdin)
 {
 	char	*str;
 	char	*str2;
@@ -57,7 +57,7 @@ void	ft_temp(char *wtd, int fdin)
 	}
 	dup2(fdin, STDOUT_FILENO);
 	ft_printf("%s", str);
-}
+} */
 
 /* int	here_doc(char *str, t_data *data, char *outfl)
 {
@@ -159,17 +159,27 @@ int	ft_cmd(t_ms * ms)
 
 int	son(t_ms *ms)
 {
-	int	fd[2];
+//	int	fd[2];
 	int	pid;
 	int	status;
 
-	pipe(fd);
+	pipe(ms->fd);
 	pid = fork();
 	if (pid == 0)
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		ft_cmd(ms);
+		close(ms->fd[0]);
+		dup2(ms->fd[1], STDOUT_FILENO);
+		//perror("hiojo");
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{	
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+		{
+			//ft_free_command(ms);
+			ft_cmd(ms);
+		}
 		//ft_executor(ms, toks);
 		exit (0);
 	}
@@ -177,8 +187,8 @@ int	son(t_ms *ms)
 		return (1);
 	else
 	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
+		close(ms->fd[1]);
+		dup2(ms->fd[0], STDIN_FILENO);
 		waitpid(pid, &status, 0);
 	}
 	return (0);
@@ -202,7 +212,11 @@ int	last_son(t_ms *ms)
 			close(ms->fdout);
 		}
 		else
-			dup2(1, 1);
+		{	
+			dup(STDIN_FILENO);
+			dup(STDOUT_FILENO);
+		}
+		//ft_free_command(ms);	//si desomento entra como resultado el valor del 1er arg, si no sale linea nULL
 		ft_cmd(ms);
 		//ft_executor(ms, toks);
 		//printf("\033[31;1mSale del hijo\033[0m\n");
@@ -211,7 +225,10 @@ int	last_son(t_ms *ms)
 	else if (pid < 0)
 		return (1);
 	else
+	{
+		//close(ms->fd[0]);
 		waitpid(pid, &status, 0);
+	}
 	return (0);
 }
 
@@ -243,7 +260,7 @@ int	ft_pipe(t_ms *ms)
 			ms->command = ft_create_command(first);
 			//perror("estoy en el ejecutor");
 			//printf("el comando es %s\n", ms->command[0]);
-			if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)	//dividir las quie tiene que hacer el padre(aqui) y las del hijo(en el son qeu son pwd y echo en un principio)
+			if (ft_strnstr("exit cd", ms->command[0], 7) != 0)
 			{
 				ft_builtins(ms);
 				ft_free_command(ms);
@@ -253,12 +270,14 @@ int	ft_pipe(t_ms *ms)
 				//ft_execute_command(ms);
 			if (DEBUG)
 				printf("%sDEBUG:%s Saliendo del ejecutor.\n", BLUE, RESET);
-/* 			if (son(ms, first) == 1)
-				exit (1); */
+ //			if (son(ms, first) == 1)
+	//			exit (1);
 			//ft_free_command(ms);
 			ms->num_pipes--;
 			first = temp->next;
 		}
+		if (ms->num_pipes == 0)
+			break ;
 		temp = temp->next;
 	}
 	if (ms->num_pipes == 0)
@@ -276,6 +295,22 @@ int	ft_pipe(t_ms *ms)
 		else
 			last_son(ms);
 	}
+	//mete dos comandos de forma manual
+/* 	ms->command =malloc( sizeof(char *) * 1);
+	ms->command[0] = ft_strdup("PRUEBA");
+	printf("comando final es %s\n", ms->command[0]); */
+/* 	ms->command = ft_create_command(first);
+	printf("hace command %s\n", ms->command[0]);
+	if (ft_search(ms) != 0)
+		exit (0);
+	son(ms);
+	ft_free_command(ms);
+	ms->command = ft_create_command(first->next->next);
+	ft_printf("hace command %s\n", ms->command[0]);
+	last_son(ms);
+	ft_printf("hace command %s\n", ms->command[0]);
+	ft_free_command(ms);
+	ft_printf("hace command %s\n", ms->command[0]); */
     //añadir algo para el > y el >>, usar else de ft_enter
 	//unlink(".tmp");
 	return (0);

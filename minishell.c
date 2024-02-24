@@ -69,6 +69,7 @@ int	ft_mother(t_ms *data, int *pip, t_list_e *envp)
 	return (0);
 }
  */
+
 void	minishell(t_ms *ms)
 {
 	int		times;
@@ -86,21 +87,22 @@ void	minishell(t_ms *ms)
 	//status = TRUE;
 	while (TRUE)
 	{
-		//usleep(1000);
+		//usleep(10000);
 		//ft_bzero(ms->line,sizeof(char *));
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
+		//ms->line = ft_temp();
 /* 		times++;
 		if (times == 100)
 			status = FALSE; */
-		//printf("line es %s\n", ms->line);
+		printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
 /* 		if (ms->line == NULL)
-			ms->line = ft_strdup("a"); */
+			ms->line = ft_strdup("a"); */	//bucle de linea NULL
 		if (ms->line == NULL)
 		{
 			//ft_printf("\n");
 			ft_printf("%sLinea NULL%s\n", RED, RESET);//despues solo /n
-			perror ("Linea NULL");
-			exit (1);
+			//perror ("Linea NULL");
+			//exit (1);
 			break ;
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial

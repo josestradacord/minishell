@@ -49,6 +49,8 @@ void	ft_free_toks(t_ms *ms)
 		ft_printf("%sDEBUG:%s Empiezo a liberar ft_free_toks()\n", BLUE, RESET);
 	if (ms->line)
 		free(ms->line);
+	if (ms->wanted)
+		free(ms->wanted);
 	node = ms->tokens;
 	ft_free_tok_list(node);
 	ms->tokens = NULL;

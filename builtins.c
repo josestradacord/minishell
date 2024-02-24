@@ -87,6 +87,8 @@ void	changepwd(t_ms *ms, char *dir)
 		chdir(old->value);
 		free(temp->value);
 		temp->value =malloc(100 * sizeof(char));
+		if (!temp->value)
+			perror("malloc error");
 		getcwd(temp->value, 100);
 		return ;
 	}
@@ -98,6 +100,8 @@ void	changepwd(t_ms *ms, char *dir)
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
 	temp->value =malloc(100 * sizeof(char));
+	if (!temp->value)
+		perror("malloc error");
 	getcwd(temp->value, 100);
 	if (ft_strncmp(dir, "/", 1) == 0)
 		chdir("/");

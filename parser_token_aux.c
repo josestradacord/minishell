@@ -27,7 +27,10 @@ void	ft_new_token(t_ms *ms, int start, int end)
 		printf("%sDEBUG:%s Obteniendo el token en ft_new_token(). Comando token: #%s#\n", BLUE, RESET , token);
 	new_tok = (t_token *) malloc(sizeof(t_token));
 	if (!new_tok)
+	{
+		perror("malloc error");
 		return ;
+	}
 	new_tok->token = token;
 	if (DEBUG)
 		printf("%sDEBUG:%s Comando (en ms): #%s#\n", BLUE, RESET , new_tok->token);

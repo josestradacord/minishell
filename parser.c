@@ -37,7 +37,10 @@ void	ft_noquote(t_token *tok)
 	len = ft_strlen(tok->token);
 	str = (char *) malloc(sizeof(char) * (len - 1));
 	if (!str)
+	{
+		perror("malloc error");
 		return ;
+	}
 	len = 0;
 	while (tok->token[len])
 	{

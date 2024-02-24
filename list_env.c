@@ -20,6 +20,8 @@ t_list_e	*ft_lste_new(char *key, char *value)
 
 	node = (t_list_e *) malloc(sizeof(t_list_e));
 	if (!node)
+		perror("malloc error");
+	if (!node)
 		return (NULL);
 	node->name = ft_strdup(key);
 	node->value = ft_strdup(value);
