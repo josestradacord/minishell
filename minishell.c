@@ -86,18 +86,21 @@ void	minishell(t_ms *ms)
 	//status = TRUE;
 	while (TRUE)
 	{
+		//usleep(1000);
 		//ft_bzero(ms->line,sizeof(char *));
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 /* 		times++;
 		if (times == 100)
 			status = FALSE; */
 		//printf("line es %s\n", ms->line);
+/* 		if (ms->line == NULL)
+			ms->line = ft_strdup("a"); */
 		if (ms->line == NULL)
 		{
 			//ft_printf("\n");
 			ft_printf("%sLinea NULL%s\n", RED, RESET);//despues solo /n
-			//perror ("Linea NULL");
-			//exit (1);
+			perror ("Linea NULL");
+			exit (1);
 			break ;
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
@@ -140,7 +143,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else

@@ -82,7 +82,7 @@ void	changepwd(t_ms *ms, char *dir)
 		temp = temp->next;
 	if (dir == NULL)
 	{
-		while (old && ft_strncmp(old->name, "HOME", 4) != 0)
+		while (old && ft_strncmp(old->name, "HOME", 4) != 0)	//si haces cd; pwd; cd se rompe
 			old = old->next;
 		chdir(old->value);
 		free(temp->value);
@@ -109,9 +109,9 @@ void	ft_cd(t_ms *ms, char *dir)		//aumentar el SHLVL
 		changepwd(ms, dir);
 	else if (chdir(dir) != 0)
 	{
-		dup2(STDERR_FILENO, STDIN_FILENO);
-		//changepwd(ms, dir);
-		ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
+		//dup2(STDERR_FILENO, STDIN_FILENO);
+		changepwd(ms, dir);
+		//ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
 	}
 	else
 		changepwd(ms, dir);
@@ -121,16 +121,16 @@ void	ft_cd(t_ms *ms, char *dir)		//aumentar el SHLVL
 
 void	ft_pwd(t_ms *ms)
 {
-	t_ms *temp;
+	t_list_e *temp;
 
-	temp = ms;
-	while(strncmp(temp->env->name,"PWD", 3) != 0)
+	temp = ms->env;
+	while(strncmp(temp->name,"PWD", 3) != 0)
 	{
-		if (temp == NULL  || temp->env->next == NULL) // COMPROBAR QUE AL BORRAR PWD  y usar este comando no pete
+		if (temp == NULL  || temp->next == NULL) // COMPROBAR QUE AL BORRAR PWD  y usar este comando no pete
 			return ;
-		temp->env = temp->env->next;
+		temp = temp->next;
 	}
-	printf("%s\n", temp->env->value);
+	printf("%s\n", temp->value);
 	}
 
 char	**ft_free2(char **str)

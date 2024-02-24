@@ -167,8 +167,8 @@ char		**ft_joineq(char *astr, char *cr);
 int			ft_liste_comp(t_list_e *env, char **val);
 
 
-int			last_son(t_ms *ms, t_token *toks);
-int			son(t_ms *ms, t_token *toks);
+int			last_son(t_ms *ms);
+int			son(t_ms *ms);
 void		ft_nump(t_ms *ms);
 
 

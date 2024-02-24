@@ -68,7 +68,6 @@ char	**ft_create_command(t_token *toks)
 		ft_print_tok_list(toks);
 	}
 	res = malloc(sizeof(char *) * (ft_count_tokens(toks) + 1));
-	res[ft_count_tokens(toks) + 1] = NULL;
 	index = 0;
 	while (toks && toks->type != PIPE)
 	{
