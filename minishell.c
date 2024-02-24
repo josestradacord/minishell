@@ -41,8 +41,9 @@ void	minishell(t_ms *ms)
 			status = FALSE; */
 		if (ms->line == NULL)
 		{
-			ft_printf("Linea NULL\n");//despues solo /n
-			break ;
+			/*ft_printf("Linea NULL\n");//despues solo /n
+			break ;*/
+			ft_control_d();
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
 		if (ft_blank_line(ms->line))
@@ -70,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else

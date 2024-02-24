@@ -24,6 +24,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
 
 # include "libft/libft.h"
 
@@ -150,5 +151,5 @@ int			ft_liste_comp(t_list_e *env, char **val);
 //Signals management
 void		ft_signals(void);
 void		ft_set_signal(int s);
-
+void		ft_control_d(void);
 #endif
