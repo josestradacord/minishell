@@ -212,11 +212,9 @@ int	last_son(t_ms *ms)
 			close(ms->fdout);
 		}
 		else
-		{	
-			dup(STDIN_FILENO);
-			dup(STDOUT_FILENO);
-		}
+			dup2(1, 1);
 		//ft_free_command(ms);	//si desomento entra como resultado el valor del 1er arg, si no sale linea nULL
+		//close(ms->fd[1]);
 		ft_cmd(ms);
 		//ft_executor(ms, toks);
 		//printf("\033[31;1mSale del hijo\033[0m\n");
@@ -226,7 +224,7 @@ int	last_son(t_ms *ms)
 		return (1);
 	else
 	{
-		//close(ms->fd[0]);
+		close(ms->fd[0]);
 		waitpid(pid, &status, 0);
 	}
 	return (0);
