@@ -114,21 +114,6 @@ char	**ft_routes(char **envp)
 	}
 } */
 
-int	ft_search(t_ms *ms)
-{
-	int	i;
-
-	i = -1;
-	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
-	while (ms->rout[++i])
-	{
-		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
-		if (access(ms->wanted, 0) == 0)
-			return (0);
-	}
-	return (1);
-}
-
 /* int	ft_cmd(t_ms *ms)
 {
 	int	pid;
@@ -149,6 +134,20 @@ int	ft_search(t_ms *ms)
 	return (0);
 } */
 
+int	ft_search(t_ms *ms)
+{
+	int	i;
+
+	i = -1;
+	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
+	while (ms->rout[++i])
+	{
+		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
+		if (access(ms->wanted, 0) == 0)
+			return (0);
+	}
+	return (1);
+}
 
 int	ft_cmd(t_ms * ms)
 {
@@ -156,6 +155,41 @@ int	ft_cmd(t_ms * ms)
 		execve(ms->wanted, ms->command, ms->envp);
 	return (1);
 }
+
+
+/* int	ft_search(t_ms *ms, char **temp)
+{
+	int	i;
+
+	i = -1;
+	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
+	while (ms->rout[++i])
+	{
+		ms->wanted = ft_strjoin(ms->rout[i], temp[0]);
+		if (access(ms->wanted, 0) == 0)
+			return (0);
+	}
+	return (1);
+}
+
+int	ft_cmd(t_ms *ms)
+{
+	int i = 0;
+	char *temp;
+	temp = ft_strdup("");
+	char **temp2;
+
+	temp2 = ft_split(temp, ' ');
+	while (ms->command[i])
+	{
+		temp = ft_strjoin(temp, ms->command[i]);
+		i++;
+	}
+	printf("temp es %s\n", temp);
+	if (ft_search(ms, temp2) == 0)
+		execve(temp, temp2, ms->envp);
+	return (1);
+} */
 
 int	son(t_ms *ms)
 {
@@ -167,6 +201,8 @@ int	son(t_ms *ms)
 	pid = fork();
 	if (pid == 0)
 	{
+/* 		printf("en son el hijo es %s\n", ms->command[0]);
+		printf("en son el hijo es %s\n", ms->command[1]); */
 		close(ms->fd[0]);
 		dup2(ms->fd[1], STDOUT_FILENO);
 		//perror("hiojo");
@@ -187,9 +223,10 @@ int	son(t_ms *ms)
 		return (1);
 	else
 	{
+		waitpid(pid, &status, 0);
 		close(ms->fd[1]);
 		dup2(ms->fd[0], STDIN_FILENO);
-		waitpid(pid, &status, 0);
+		//ft_printf("hijo nº %d\n", pid);
 	}
 	return (0);
 }
@@ -203,9 +240,9 @@ int	last_son(t_ms *ms)
 	int	status;
 
 	pid = fork();
-	ms->fdout = 0;
 	if (pid == 0)
 	{
+		ms->fdout = 0;
 		if (ms->fdout != 0)
 		{	
 			dup2(ms->fdout, STDOUT_FILENO);
@@ -215,6 +252,8 @@ int	last_son(t_ms *ms)
 			dup2(1, 1);
 		//ft_free_command(ms);	//si desomento entra como resultado el valor del 1er arg, si no sale linea nULL
 		//close(ms->fd[1]);
+		//close(ms->fd[0]);
+		//printf("%sen last son el hijo es %s%s\n", RED,RESET, ms->command[1]);
 		ft_cmd(ms);
 		//ft_executor(ms, toks);
 		//printf("\033[31;1mSale del hijo\033[0m\n");
@@ -224,8 +263,9 @@ int	last_son(t_ms *ms)
 		return (1);
 	else
 	{
-		close(ms->fd[0]);
+		//close(ms->fd[0]);
 		waitpid(pid, &status, 0);
+		//ft_printf("hijo nº %d\n", pid);
 	}
 	return (0);
 }
@@ -282,6 +322,7 @@ int	ft_pipe(t_ms *ms)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
+		printf("first es %s\n", first->token);
 		ms->command = ft_create_command(first);
 		//perror("estoy en el ejecutor");
 		//printf("el comando es %s\n", ms->command[0]);
@@ -293,7 +334,14 @@ int	ft_pipe(t_ms *ms)
 		else
 			last_son(ms);
 	}
+/* 		printf("en last son el hijo es %s\n", ms->command[0]);
+		ms->command[1] = ft_strdup("hola\n\0");
+		printf("en last son el hijo es %s\n", ms->command[1]); */
+
+
 	//mete dos comandos de forma manual
+
+
 /* 	ms->command =malloc( sizeof(char *) * 1);
 	ms->command[0] = ft_strdup("PRUEBA");
 	printf("comando final es %s\n", ms->command[0]); */
