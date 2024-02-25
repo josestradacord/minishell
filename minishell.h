@@ -153,6 +153,7 @@ void		ft_export(t_ms *ms);
 
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
+int			ft_pipe2(t_ms *ms);
 int			ft_search(t_ms *ms);
 char		**ft_free2(char **str);
 

@@ -117,7 +117,7 @@ void	minishell(t_ms *ms)
 		if (DEBUG)
 			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
-		if (ft_pipe(ms) != 0)
+		if (ft_pipe2(ms) != 0)
 			perror("pipe sale mal");
 		//ms->num_pipes = 0;
 		ft_free_toks(ms);

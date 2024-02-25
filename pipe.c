@@ -270,7 +270,7 @@ int	last_son(t_ms *ms)
 	return (0);
 }
 
-/* int	ft_pipe(t_ms *ms)
+int	ft_pipe(t_ms *ms)
 {
 	int		i;
 	int		end;
@@ -336,7 +336,7 @@ int	last_son(t_ms *ms)
 	}
 /* 		printf("en last son el hijo es %s\n", ms->command[0]);
 		ms->command[1] = ft_strdup("hola\n\0");
-		printf("en last son el hijo es %s\n", ms->command[1]); */
+		printf("en last son el hijo es %s\n", ms->command[1]);*/
 
 
 	//mete dos comandos de forma manual
@@ -357,12 +357,12 @@ int	last_son(t_ms *ms)
 	ft_printf("hace command %s\n", ms->command[0]);
 	ft_free_command(ms);
 	ft_printf("hace command %s\n", ms->command[0]);
-    //añadir algo para el > y el >>, usar else de ft_enter
+    //añadir algo para el > y el >>, usar else de ft_enter */
 	//unlink(".tmp");
 	return (0);
-} */
+} 
 
-int	ft_pipe(t_ms *ms)
+int	ft_pipe2(t_ms *ms)
 {
 	int		i;
 	int		end;
@@ -380,7 +380,7 @@ int	ft_pipe(t_ms *ms)
 		int	pid;
 		int	status;
 
-		puts("entra en el primer if");
+		//puts("entra en el primer if");
 		pipe(ms->fd);
 		pid = fork();
 		//close(ms->fd[0]);
@@ -419,7 +419,7 @@ int	ft_pipe(t_ms *ms)
 				//close(ms->fd[1]);
 				dup2(1, STDOUT_FILENO);
 				ms->command = ft_create_command(temp->next);
-				printf("comand 2 es %s\n",ms-> command[0]);
+				//printf("comand 2 es %s\n",ms-> command[0]);
 				if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
 				{	
 					ft_builtins(ms);
@@ -439,10 +439,10 @@ int	ft_pipe(t_ms *ms)
 	}
 	else if (ms->num_pipes == 0)
 	{
-		puts("entra en 0");
+		//puts("entra en 0");
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-		printf("first es %s\n", first->token);
+		//printf("first es %s\n", first->token);
 		ms->command = ft_create_command(first);
 		//perror("estoy en el ejecutor");
 		//printf("el comando es %s\n", ms->command[0]);
