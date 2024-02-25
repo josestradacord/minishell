@@ -270,7 +270,7 @@ int	last_son(t_ms *ms)
 	return (0);
 }
 
-int	ft_pipe(t_ms *ms)
+/* int	ft_pipe(t_ms *ms)
 {
 	int		i;
 	int		end;
@@ -322,7 +322,7 @@ int	ft_pipe(t_ms *ms)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-		printf("first es %s\n", first->token);
+		//printf("first es %s\n", first->token);
 		ms->command = ft_create_command(first);
 		//perror("estoy en el ejecutor");
 		//printf("el comando es %s\n", ms->command[0]);
@@ -344,8 +344,8 @@ int	ft_pipe(t_ms *ms)
 
 /* 	ms->command =malloc( sizeof(char *) * 1);
 	ms->command[0] = ft_strdup("PRUEBA");
-	printf("comando final es %s\n", ms->command[0]); */
-/* 	ms->command = ft_create_command(first);
+	printf("comando final es %s\n", ms->command[0]);
+ 	ms->command = ft_create_command(first);
 	printf("hace command %s\n", ms->command[0]);
 	if (ft_search(ms) != 0)
 		exit (0);
@@ -356,8 +356,103 @@ int	ft_pipe(t_ms *ms)
 	last_son(ms);
 	ft_printf("hace command %s\n", ms->command[0]);
 	ft_free_command(ms);
-	ft_printf("hace command %s\n", ms->command[0]); */
+	ft_printf("hace command %s\n", ms->command[0]);
     //añadir algo para el > y el >>, usar else de ft_enter
 	//unlink(".tmp");
+	return (0);
+} */
+
+int	ft_pipe(t_ms *ms)
+{
+	int		i;
+	int		end;
+	t_token	*temp;
+	t_token	*first;
+	int		status;
+
+	if (ms->tokens->next)
+		temp = ms->tokens->next;
+	first = ms->tokens;
+
+	if (temp->type == PIPE && ms->num_pipes > 0)
+	{
+		//	int	fd[2];
+		int	pid;
+		int	status;
+
+		puts("entra en el primer if");
+		pipe(ms->fd);
+		pid = fork();
+		//close(ms->fd[0]);
+		if (pid == 0)
+		{
+		//	printf("en son el hijo es %s\n", ms->command[0]);
+		//	printf("en son el hijo es %s\n", ms->command[1]);
+			dup2(ms->fd[1], STDOUT_FILENO);
+			//perror("hiojo");
+			ms->command = ft_create_command(first);
+			if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+			{	
+				ft_builtins(ms);
+				ft_free_command(ms);
+			}
+			else
+			{
+				//ft_free_command(ms);
+				ft_cmd(ms);
+			}
+			//ft_executor(ms, toks);
+			exit (0);
+		}
+		else if (pid < 0)
+			return (1);
+		else
+		{
+			//close(ms->fd[1]);
+			waitpid(pid, &status, 0);
+			//pipe(ms->fd);
+			close(ms->fd[1]);
+			pid = fork();
+			if (pid == 0)
+			{
+				dup2(ms->fd[0], STDIN_FILENO);
+				//close(ms->fd[1]);
+				dup2(1, STDOUT_FILENO);
+				ms->command = ft_create_command(temp->next);
+				printf("comand 2 es %s\n",ms-> command[0]);
+				if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+				{	
+					ft_builtins(ms);
+					ft_free_command(ms);
+				}
+				else
+				{
+					//ft_free_command(ms);
+					ft_cmd(ms);
+				}
+			}
+			waitpid(pid, &status, 0);
+			close(ms->fd[0]);
+			ms->num_pipes--;
+			//ft_printf("hijo nº %d\n", pid);
+		}
+	}
+	else if (ms->num_pipes == 0)
+	{
+		puts("entra en 0");
+		if (DEBUG)
+			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
+		printf("first es %s\n", first->token);
+		ms->command = ft_create_command(first);
+		//perror("estoy en el ejecutor");
+		//printf("el comando es %s\n", ms->command[0]);
+		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		{
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+			last_son(ms);
+	}
 	return (0);
 }
