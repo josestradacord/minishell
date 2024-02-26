@@ -303,6 +303,7 @@ void	ft_first(t_ms *ms, t_token *first)
 	int	status;
 
 	pipe(ms->fd[0]);
+	perror("First");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -328,6 +329,7 @@ void	ft_mid(t_ms *ms, t_token *mid)
 	int	status;
 
 	pipe(ms->fd[1]);
+	perror("Mid");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -354,6 +356,7 @@ void	ft_last(t_ms *ms, t_token *last)
 	int	status;
 
 	close(ms->fd[0][0]);	//tiene que estar aqui
+	perror("last");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -389,6 +392,7 @@ int	ft_pipe2(t_ms *ms)
 	if (ms->num_pipes > 0)
 	{
 		ft_first(ms, first);
+		ms->num_pipes--;
 		if (ms->child_pid < 0)
 			exit (1);
 		while (ms->num_pipes > 0)
@@ -401,7 +405,8 @@ int	ft_pipe2(t_ms *ms)
 			}
 			temp = temp->next;
 		}
-		ft_last(ms, temp);
+		printf("temp es %s\n", temp->token);
+		ft_last(ms, temp->next->next->next);
 	}
 	//ms->num_pipes = 0;
 	else if (ms->num_pipes == 0)
