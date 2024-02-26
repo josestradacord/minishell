@@ -224,8 +224,9 @@ int	son(t_ms *ms)
 	else
 	{
 		waitpid(pid, &status, 0);
-		close(ms->fd[1]);
 		dup2(ms->fd[0], STDIN_FILENO);
+		close(ms->fd[1]);
+		close(ms->fd[0]);
 		//ft_printf("hijo nº %d\n", pid);
 	}
 	return (0);
@@ -249,7 +250,8 @@ int	last_son(t_ms *ms)
 			close(ms->fdout);
 		}
 		else
-			dup2(1, 1);
+			dup2(1, ms->fd[1]);
+		dup2(ms->fd[0], STDIN_FILENO);
 		//ft_free_command(ms);	//si desomento entra como resultado el valor del 1er arg, si no sale linea nULL
 		//close(ms->fd[1]);
 		//close(ms->fd[0]);
@@ -264,6 +266,7 @@ int	last_son(t_ms *ms)
 	else
 	{
 		//close(ms->fd[0]);
+		//dup(STDIN_FILENO, ms->fd[0]);
 		waitpid(pid, &status, 0);
 		//ft_printf("hijo nº %d\n", pid);
 	}
@@ -362,34 +365,19 @@ int	ft_pipe(t_ms *ms)
 	return (0);
 } 
 
-int	ft_pipe2(t_ms *ms)
+void	ft_first(t_ms *ms, t_token *first)
 {
-	int		i;
-	int		end;
-	t_token	*temp;
-	t_token	*first;
-	int		status;
-
-	if (ms->tokens->next)
-		temp = ms->tokens->next;
-	first = ms->tokens;
-
-	if (temp->type == PIPE && ms->num_pipes > 0)
-	{
-		//	int	fd[2];
-		int	pid;
-		int	status;
-
-		//puts("entra en el primer if");
 		pipe(ms->fd);
-		pid = fork();
+		ms->child_pid = fork();
 		//close(ms->fd[0]);
-		if (pid == 0)
+		if (ms->child_pid == 0)
 		{
 		//	printf("en son el hijo es %s\n", ms->command[0]);
 		//	printf("en son el hijo es %s\n", ms->command[1]);
 			dup2(ms->fd[1], STDOUT_FILENO);
 			//perror("hiojo");
+			close(ms->fd[1]);
+			close(ms->fd[0]);
 			ms->command = ft_create_command(first);
 			if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
 			{	
@@ -404,39 +392,112 @@ int	ft_pipe2(t_ms *ms)
 			//ft_executor(ms, toks);
 			exit (0);
 		}
-		else if (pid < 0)
-			return (1);
+}
+
+void	ft_mid(t_ms *ms, t_token *mid)
+{
+	int	status;
+	int pip[2];
+
+	close(ms->fd[1]);
+	//close(ms->fd[0]);
+	waitpid(ms->child_pid, &status, 0);
+	pipe(ms->fd2);
+	//close(ms->fd[1]);
+	ms->child_pid = fork();
+	if (ms->child_pid == 0)
+	{
+		dup2(ms->fd[0], STDIN_FILENO);
+		//close(ms->fd[1]);
+		close(ms->fd[0]);
+		dup2(ms->fd2[1], STDOUT_FILENO);
+		close(ms->fd[1]);
+		ms->command = ft_create_command(mid);
+		//printf("comand 2 es %s\n",ms-> command[0]);
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{	
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
 		else
 		{
-			//close(ms->fd[1]);
-			waitpid(pid, &status, 0);
-			//pipe(ms->fd);
-			close(ms->fd[1]);
-			pid = fork();
-			if (pid == 0)
-			{
-				dup2(ms->fd[0], STDIN_FILENO);
-				//close(ms->fd[1]);
-				dup2(1, STDOUT_FILENO);
-				ms->command = ft_create_command(temp->next);
-				//printf("comand 2 es %s\n",ms-> command[0]);
-				if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
-				{	
-					ft_builtins(ms);
-					ft_free_command(ms);
-				}
-				else
-				{
-					//ft_free_command(ms);
-					ft_cmd(ms);
-				}
-			}
-			waitpid(pid, &status, 0);
-			close(ms->fd[0]);
-			ms->num_pipes--;
-			//ft_printf("hijo nº %d\n", pid);
+			//ft_free_command(ms);
+			ft_cmd(ms);
+		}
+		exit (0);
+	}
+	waitpid(ms->child_pid, &status, 0);
+}
+
+void	ft_last(t_ms *ms, t_token *last)
+{
+	int	status;
+
+	ms->child_pid = fork();
+	if (ms->child_pid == 0)
+	{
+		//close(pip[1]);
+		//dup2(ms->fd[0], STDIN_FILENO);
+		//close(ms->fd[1]);
+		//close(ms->fd[0]);
+		dup2 (STDOUT_FILENO, ms->fd2[1]);
+		dup2(ms->fd2[0], STDIN_FILENO);
+		close(ms->fd2[1]);
+		close(ms->fd2[0]);
+		close(ms->fd[0]);
+		//close(pip[0]);
+		ms->command = ft_create_command(last);
+		//printf("comand 2 es %s\n",ms-> command[0]);
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{	
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+		{
+			//ft_free_command(ms);
+			ft_cmd(ms);
 		}
 	}
+	//dup2(STDIN_FILENO, pip[0]);
+	//dup2(pip[0], STDIN_FILENO);
+	close(ms->fd2[1]);
+	close(ms->fd2[0]);
+	close(ms->fd[0]);
+	waitpid(ms->child_pid, &status, 0);
+	//ft_printf("hijo nº %d\n", pid);
+}
+
+int	ft_pipe2(t_ms *ms)
+{
+	int		i;
+	int		end;
+	t_token	*temp;
+	t_token	*first;
+	int		status;
+
+	temp = ms->tokens->next;
+	first = ms->tokens;
+
+	if (ms->num_pipes > 0)
+	{
+		ft_first(ms, first);
+		if (ms->child_pid < 0)
+			exit (1);
+		while (ms->num_pipes > 0)
+		{
+			if (temp->type == PIPE && ms->num_pipes > 0)
+			{
+				ft_mid(ms, temp->next);
+				ms->num_pipes--;
+				//ms->fd[0] = ms->fd2[0];
+				//ms->fd2[1] = ms->fd[1];
+			}
+			temp = temp->next;
+		}
+		ft_last(ms, temp);
+	}
+	//ms->num_pipes = 0;
 	else if (ms->num_pipes == 0)
 	{
 		//puts("entra en 0");

@@ -87,6 +87,7 @@ typedef struct s_ms
 	t_token		*tokens;
 	int			num_pipes;
 	int			fd[2];
+	int			fd2[2];
 	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
