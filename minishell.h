@@ -86,8 +86,8 @@ typedef struct s_ms
 	char		**rout;		//added by Gabriel
 	t_token		*tokens;
 	int			num_pipes;
-	int			fd[2];
-	int			fd2[2];
+	int			fd[20][2];
+	int			control;
 	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
