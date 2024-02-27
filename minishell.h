@@ -49,6 +49,11 @@
 # define HEREDOC	16
 # define PIPE		17
 
+// Syntax error messages
+# define SYNTAXQUOT	"minishell: syntax error: unclosed quotes\n"
+# define SYNTAXIN_R	"minishell: syntax error near unexpected token '<'\n"
+# define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
+
 // Colours definitions
 # define BOLD		"\033[1m"
 # define RED		"\033[31;1m"
@@ -96,6 +101,7 @@ typedef struct s_ms
 int			ft_check_args(int n_arg);
 void		ft_usage(void);
 int			ft_blank_line(char *line);
+int			ft_check_line(char *line);
 
 // Init functions
 void		ft_init_data(t_ms *ms, char **argv, char **envp);

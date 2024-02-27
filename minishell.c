@@ -46,6 +46,11 @@ void	minishell(t_ms *ms)
 			ft_control_d();
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
+		if (!ft_check_line(ms->line))
+		{
+			free(ms->line);
+			continue ;
+		}
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
