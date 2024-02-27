@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 19:45:00 by gpaez-ga          #+#    #+#             */
+/*   Updated: 2024/02/27 19:45:00 by gpaez-ga         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_error(int i)
@@ -135,50 +147,6 @@ int	ft_cmd(t_ms * ms)
 	return (1);
 }
 
-/* int	son(t_ms *ms)
-{
-//	int	fd[2];
-	int	pid;
-	int	status;
-
-	pipe(ms->fd);
-	pid = fork();
-	if (pid == 0)
-	{
-//		printf("en son el hijo es %s\n", ms->command[0]);
-//		printf("en son el hijo es %s\n", ms->command[1]);
-		close(ms->fd[0]);
-		dup2(ms->fd[1], STDOUT_FILENO);
-		//perror("hiojo");
-		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
-		{	
-			ft_builtins(ms);
-			ft_free_command(ms);
-		}
-		else
-		{
-			//ft_free_command(ms);
-			ft_cmd(ms);
-		}
-		//ft_executor(ms, toks);
-		exit (0);
-	}
-	else if (pid < 0)
-		return (1);
-	else
-	{
-		waitpid(pid, &status, 0);
-		dup2(ms->fd[0], STDIN_FILENO);
-		close(ms->fd[1]);
-		close(ms->fd[0]);
-		//ft_printf("hijo nº %d\n", pid);
-	}
-	return (0);
-}
-
-//	else if (pid < 0)
-//		ft_error(3);
-*/
 int	last_son(t_ms *ms)
 {
 	int	pid;
@@ -189,7 +157,7 @@ int	last_son(t_ms *ms)
 	{
 		ms->fdout = 0;
 		if (ms->fdout != 0)
-		{	
+		{
 			dup2(ms->fdout, STDOUT_FILENO);
 			close(ms->fdout);
 		}
@@ -206,104 +174,11 @@ int	last_son(t_ms *ms)
 	return (0);
 }
 
-/* int	ft_pipe(t_ms *ms)
-{
-	int		i;
-	int		end;
-	t_token	*temp;
-	t_token	*first;
-	int		status;
-
-	temp = ms->tokens;
-	first = ms->tokens;
-
- 	//i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
-// 	if(ft_search(ms) == 0)
-//		end = argc - 1;
-//	else
-//		end = argc - 2;
-	if (ft_strncmp(ms->tokens->token, "exit", 4) == 0)
-		ft_exit(ms);
-	while (ms->num_pipes > 0)
-	{
-		if (temp->type == PIPE && ms->num_pipes > 0)
-		{
-		
-			if (DEBUG)
-				printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-			ms->command = ft_create_command(first);
-			//perror("estoy en el ejecutor");
-			//printf("el comando es %s\n", ms->command[0]);
-			if (ft_strnstr("exit cd", ms->command[0], 7) != 0)
-			{
-				ft_builtins(ms);
-				ft_free_command(ms);
-			}
-			else
-				son(ms);
-				//ft_execute_command(ms);
-			if (DEBUG)
-				printf("%sDEBUG:%s Saliendo del ejecutor.\n", BLUE, RESET);
- //			if (son(ms, first) == 1)
-	//			exit (1);
-			//ft_free_command(ms);
-			ms->num_pipes--;
-			first = temp->next;
-		}
-		if (ms->num_pipes == 0)
-			break ;
-		temp = temp->next;
-	}
-	if (ms->num_pipes == 0)
-	{
-		if (DEBUG)
-			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-		//printf("first es %s\n", first->token);
-		ms->command = ft_create_command(first);
-		//perror("estoy en el ejecutor");
-		//printf("el comando es %s\n", ms->command[0]);
-		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
-		{
-			ft_builtins(ms);
-			ft_free_command(ms);
-		}
-		else
-			last_son(ms);
-	} */
-/* 		printf("en last son el hijo es %s\n", ms->command[0]);
-		ms->command[1] = ft_strdup("hola\n\0");
-		printf("en last son el hijo es %s\n", ms->command[1]);*/
-
-
-	//mete dos comandos de forma manual
-
-
-/* 	ms->command =malloc( sizeof(char *) * 1);
-	ms->command[0] = ft_strdup("PRUEBA");
-	printf("comando final es %s\n", ms->command[0]);
- 	ms->command = ft_create_command(first);
-	printf("hace command %s\n", ms->command[0]);
-	if (ft_search(ms) != 0)
-		exit (0);
-	son(ms);
-	ft_free_command(ms);
-	ms->command = ft_create_command(first->next->next);
-	ft_printf("hace command %s\n", ms->command[0]);
-	last_son(ms);
-	ft_printf("hace command %s\n", ms->command[0]);
-	ft_free_command(ms);
-	ft_printf("hace command %s\n", ms->command[0]);
-    //añadir algo para el > y el >>, usar else de ft_enter */
-	//unlink(".tmp");
-//	return (0);
-//}
-
 void	ft_first(t_ms *ms, t_token *first)
 {
 	int	status;
 
 	pipe(ms->fd[ms->status]);
-	perror("First");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -329,7 +204,6 @@ void	ft_mid(t_ms *ms, t_token *mid)
 	int	status;
 
 	pipe(ms->fd[ms->status]);
-	perror("Mid");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -340,7 +214,7 @@ void	ft_mid(t_ms *ms, t_token *mid)
 		close(ms->fd[ms->status][1]);
 		ms->command = ft_create_command(mid);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
-		{	
+		{
 			ft_builtins(ms);
 			ft_free_command(ms);
 		}
@@ -349,6 +223,7 @@ void	ft_mid(t_ms *ms, t_token *mid)
 		exit (0);
 	}
 	waitpid(ms->child_pid, &status, 0);
+	close(ms->fd[ms->status][1]);
 	close(ms->fd[ms->status - 1][0]);
 }
 
@@ -356,7 +231,6 @@ void	ft_last(t_ms *ms, t_token *last)
 {
 	int	status;
 
-	perror("last");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -366,7 +240,7 @@ void	ft_last(t_ms *ms, t_token *last)
 		close(ms->fd[ms->status][0]);
 		ms->command = ft_create_command(last);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
-		{	
+		{
 			ft_builtins(ms);
 			ft_free_command(ms);
 		}
@@ -378,56 +252,50 @@ void	ft_last(t_ms *ms, t_token *last)
 	waitpid(ms->child_pid, &status, 0);
 }
 
+void	ft_family(t_ms *ms, t_token *temp)
+{
+	ft_first(ms, temp);
+	ms->num_pipes--;
+	if (ms->child_pid < 0)
+		exit (1);
+	while (ms->num_pipes > 0)
+	{
+		if (temp->type == PIPE && ms->num_pipes > 0)
+		{
+			ms->status++;
+			if (ms->wanted)
+				free (ms->wanted);
+			ft_mid(ms, temp->next);
+			ms->num_pipes--;
+			temp = temp->next;
+		}
+		else
+			temp = temp->next;
+	}
+	while (temp->type != PIPE)
+		temp = temp->next;
+	ft_last(ms, temp->next);
+}
+
 int	ft_pipe2(t_ms *ms)
 {
 	int		i;
 	int		end;
 	t_token	*temp;
-	t_token	*first;
 	int		status;
 
-	temp = ms->tokens->next;
-	first = ms->tokens;
+	temp = ms->tokens;
 	ms->status = 0;
 	if (ms->num_pipes > 0)
 	{
-		ft_first(ms, first);
-		ms->num_pipes--;
-		if (ms->child_pid < 0)
-			exit (1);
-		while (ms->num_pipes > 0)
-		{
-			if (temp->type == PIPE && ms->num_pipes > 0)
-			{
-				printf("status : %d con fd0 %d y fd1 %d\n", ms->status, ms->fd[ms->status][0], ms->fd[ms->status][1]);
-				ms->status++;
-				if (ms->wanted)
-					free (ms->wanted);
-				ft_mid(ms, temp->next);
-				ms->num_pipes--;
-				temp = temp->next;
-				//system("ps");
-				printf("en iterador temp es %s\n", temp->token);
-			}
-			else
-				temp = temp->next;
-		}
-		while (temp->type != PIPE)
-			temp = temp->next;
-		printf("temp es %s\n", temp->next->token);
-		ft_last(ms, temp->next);
+		ft_family(ms, temp);
 	}
-	//ms->num_pipes = 0;
 	else if (ms->num_pipes == 0)
 	{
-		//puts("entra en 0");
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-		//printf("first es %s\n", first->token);
-		ms->command = ft_create_command(first);
-		//perror("estoy en el ejecutor");
-		//printf("el comando es %s\n", ms->command[0]);
-		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+		ms->command = ft_create_command(temp);
+		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
 			ft_builtins(ms);
 			ft_free_command(ms);

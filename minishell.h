@@ -23,9 +23,8 @@
 # include <sys/types.h> 
 # include <fcntl.h>
 # include <errno.h>
-
-
-#include <sys/ioctl.h>
+# include <signal.h>
+# include <termios.h>
 
 # include "libft/libft.h"
 
@@ -49,6 +48,11 @@
 # define OUTREDIR_A	15
 # define HEREDOC	16
 # define PIPE		17
+
+// Syntax error messages
+# define SYNTAXQUOT	"minishell: syntax error: unclosed quotes\n"
+# define SYNTAXIN_R	"minishell: syntax error near unexpected token '<'\n"
+# define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
 
 # define BOLD	 "\033[1m"
 # define RED	 "\033[31;1m"
@@ -87,7 +91,7 @@ typedef struct s_ms
 	t_token		*tokens;
 	int			num_pipes;
 	int			fd[20][2];
-	int			control;
+	//int			control;
 	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
@@ -174,6 +178,10 @@ int			last_son(t_ms *ms);
 int			son(t_ms *ms);
 void		ft_nump(t_ms *ms);
 
+//Signals management
+void		ft_signals(void);
+void		ft_set_signal(int s);
+void		ft_control_d(void);
 
 #endif
 

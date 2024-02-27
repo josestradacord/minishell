@@ -12,8 +12,9 @@
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c utils.c pipe.c parser_token_aux.c parser_token.c
-
+SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c \
+		executor.c clean_free.c utils.c pipe.c parser_token_aux.c parser_token.c \
+		signals.c
 CC = gcc
 
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
@@ -50,7 +51,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@echo $(GREEN)Compiling minishell...$(NOCOLOR)
 	@$(CC) $(FLAGS) $(OBJS) $(INC) $(LIBFT) -o $(NAME) $(INC_READLINE) $(LIB_READLINE)
 	@echo $(GREEN)Program minishell ready$(NOCOLOR)
-#	$(GLFW_FLAGS) -o $(NAME)
+
 $(LIBFT):
 	@echo $(YELLOW)Compiling libft$(NOCOLOR)
 	@make -C libft --silent

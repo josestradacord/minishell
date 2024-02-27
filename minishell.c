@@ -94,16 +94,14 @@ void	minishell(t_ms *ms)
 /* 		times++;
 		if (times == 100)
 			status = FALSE; */
-		printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
+		//printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
 /* 		if (ms->line == NULL)
 			ms->line = ft_strdup("a"); */	//bucle de linea NULL
 		if (ms->line == NULL)
 		{
-			//ft_printf("\n");
-			ft_printf("%sLinea NULL%s\n", RED, RESET);//despues solo /n
-			//perror ("Linea NULL");
-			//exit (1);
-			break ;
+			/*ft_printf("Linea NULL\n");//despues solo /n
+			break ;*/
+			ft_control_d();
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
 		if (ft_blank_line(ms->line))
@@ -129,18 +127,6 @@ void	minishell(t_ms *ms)
 	FIN DEBUG*/
 }
 
-/* 		while(toks->next && toks->type != PIPE)
-			toks = toks->next;
-		//printf("son y token %s\n", toks->next->token);
- 		if (toks->type == PIPE && toks->next)
-		{
-			printf("son y token %s\n", toks->next->token);
-			son(ms, toks->next);
-			puts("pasa");
-			//last_son(ms);
-			//ft_executor(ms, toks->next);
-		} */
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
@@ -157,6 +143,5 @@ int	main(int argc, char **argv, char **envp)
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);
 	}
-	
 	return (0);
 }
