@@ -336,7 +336,7 @@ void	ft_mid(t_ms *ms, t_token *mid)
 		dup2(ms->fd[0][0], STDIN_FILENO);
 		dup2(ms->fd[1][1], STDOUT_FILENO);
 		close(ms->fd[0][0]);
-		close(ms->fd[0][1]);
+		close(ms->fd[1][0]);
 		close(ms->fd[1][1]);
 		ms->command = ft_create_command(mid);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
@@ -349,13 +349,13 @@ void	ft_mid(t_ms *ms, t_token *mid)
 		exit (0);
 	}
 	waitpid(ms->child_pid, &status, 0);
+	close(ms->fd[0][0]);	//tiene que estar aqui
 }
 
 void	ft_last(t_ms *ms, t_token *last)
 {
 	int	status;
 
-	close(ms->fd[0][0]);	//tiene que estar aqui
 	perror("last");
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
