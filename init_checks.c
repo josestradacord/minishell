@@ -26,7 +26,7 @@ void	ft_usage(void)
 
 void	ft_welcome_msg(void)
 {
-	ft_putstr_fd("W E L C O M E  T O  M I N I S H E L L\n", STDOUT_FILENO);
+	ft_putstr_fd("\033[32;1mW E L C O M E  T O  M I N I S H E L L\033[0m\n", STDOUT_FILENO);
 }
 
 void	ft_init_data(t_ms *ms, char **argv, char **envp)
@@ -41,6 +41,7 @@ void	ft_init_data(t_ms *ms, char **argv, char **envp)
 	ft_copy_envp(ms, envp);
 	ft_copy_env2lst(ms, envp);
 	ft_signals();
+	ft_shlvlup(ms);
 	//ft_set_signal(0);
 }
 

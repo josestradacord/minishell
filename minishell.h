@@ -91,10 +91,12 @@ typedef struct s_ms
 	char		**rout;		//added by Gabriel
 	t_token		*tokens;
 	int			num_pipes;
-	pid_t			child_pid;
+	int			fd[20][2];
+	pid_t		child_pid;
 	t_list_e	*env;
 	char		**envp;
 	int			status;
+	int			fdout;
 }	t_ms;
 
 // Check functions
@@ -140,20 +142,22 @@ void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
 
 // Executor functions
-void		ft_executor(t_ms *ms);
+void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
+void		ft_builtins(t_ms *ms);
 void		ft_echo(t_ms *ms);
 void		ft_cd(t_ms *ms, char *dir);
-void			ft_exit(t_ms *ms);
+void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
-int	ft_cmd(t_ms *ms);
-int	ft_pipe(t_ms *ms);
-int	ft_search(t_ms *ms);
-char	**ft_free2(char **str);
+int			ft_cmd(t_ms *ms);
+int			ft_pipe(t_ms *ms);
+int			ft_pipe2(t_ms *ms);
+int			ft_search(t_ms *ms);
+char		**ft_free2(char **str);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
@@ -163,8 +167,12 @@ void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 
 //Utils
-char		**ft_joineq(char *astr, char *cr);
+char		**ft_joineq(char *astr);
 int			ft_liste_comp(t_list_e *env, char **val);
+int			ft_shlvlup(t_ms *ms);
+int			last_son(t_ms *ms);
+int			son(t_ms *ms);
+void		ft_nump(t_ms *ms);
 
 //Signals management
 void		ft_signals(void);

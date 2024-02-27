@@ -24,7 +24,7 @@ INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
 #Home
 #LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
-#INC_READLINE = -I/usr/local/opt/readline/include
+#sINC_READLINE = -I/usr/local/opt/readline/include
 
 FLAGS = -Wall -Werror -Wextra 
 

@@ -25,6 +25,7 @@ void	minishell(t_ms *ms)
 {
 	//int		times;
 	//int		status;
+	//int	pip[2];
 
 	if (DEBUG)
 	{
@@ -57,13 +58,17 @@ void	minishell(t_ms *ms)
 			continue ;
 		}
 		ft_parser(ms);
+		ft_nump(ms);
 		//status = ft_executor(ms);
-
 		if (DEBUG)
 			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
+		if (ft_pipe2(ms) != 0)
+			perror("pipe sale mal");
 		//ft_pipe(ms);
-		ft_executor(ms);
+		//ft_executor(ms);
 		//ft_echo(ms);
+
+
 		ft_free_toks(ms);
 	}
 	/*DEBUG

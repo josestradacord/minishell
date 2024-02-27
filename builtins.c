@@ -178,7 +178,7 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	else
 		while(ms->command[++i] != NULL)
 		{
-			val = ft_joineq(ms->command[i], "=");
+			val = ft_joineq(ms->command[i]);
 			if (ft_isalpha(val[0][0]) == 1)
 				if (ft_liste_comp(ms->env, val) != 0)
 				{	

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 19:45:00 by gpaez-ga          #+#    #+#             */
+/*   Updated: 2024/02/27 23:19:09 by jestradac        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_error(int i)
@@ -41,42 +53,7 @@ char	**ft_routes(char **envp)
 	return (rout);
 }
 
-int	ft_search(t_ms *ms)
-{
-	int	i;
-
-	i = -1;
-	//ms->command = ft_split(cmd, ' ');	//commt doble char **	wanted char *
-	while (ms->rout[++i])
-	{
-		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
-		if (access(ms->wanted, 0) == 0)
-			return (0);
-	}
-	return (1);
-}
-
-int	ft_cmd(t_ms *ms)
-{
-	int	pid;
-	int	status;
-
-	if (ft_search(ms) == 0)	//necesita hacer un hijo para no salirse
-	{
-		pid = fork();
-		if (pid == 0)
-			execve(ms->wanted, ms->command, ms->envp);
-		else
-		{
-			waitpid(pid, &status, 0);
-			return (0);
-		}
-	}
-	//ft_error(2);
-	return (0);
-}
-
-void	ft_temp(char *wtd, int fdin)
+/* void	ft_temp(char *wtd, int fdin)
 {
 	char	*str;
 	char	*str2;
@@ -92,7 +69,7 @@ void	ft_temp(char *wtd, int fdin)
 	}
 	dup2(fdin, STDOUT_FILENO);
 	ft_printf("%s", str);
-}
+} */
 
 /* int	here_doc(char *str, t_data *data, char *outfl)
 {
@@ -102,6 +79,19 @@ void	ft_temp(char *wtd, int fdin)
 	if (ft_search(data, outfl) == 1)
 		data->fdout = open(outfl, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	ft_temp(str, fdin);
+	close(fdin);
+	fdin = open(".tmp", O_RDONLY);
+	dup2(fdin, STDIN_FILENO);
+	close(fdin);
+	return (3);
+} */
+
+/* int	here_doc(char *str, t_data *data, char *outfl)
+{
+	int	fdin;
+
+	fdin = open(".tmp", O_WRONLY | O_CREAT, 0644);
+	//ft_temp(str, fdin);
 	close(fdin);
 	fdin = open(".tmp", O_RDONLY);
 	dup2(fdin, STDIN_FILENO);
@@ -136,32 +126,28 @@ void	ft_temp(char *wtd, int fdin)
 	}
 } */
 
-
-/* void	son(t_ms *ms)
+int	ft_search(t_ms *ms)
 {
-	int	fd[2];
-	int	pid;
-	int	status;
+	int	i;
 
-	pipe(fd);
-	pid = fork();
-	if (pid == 0)
+	i = -1;
+	while (ms->rout[++i])
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		ft_cmd(data, cmd, envp);
+		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
+		if (access(ms->wanted, 0) == 0)
+			return (0);
 	}
-	else if (pid < 0)
-		ft_error(3);
-	else
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		waitpid(pid, &status, 0);
-	}
+	return (1);
 }
 
-void	last_son(t_ms *ms)
+int	ft_cmd(t_ms * ms)
+{
+	if (ft_search(ms) == 0)
+		return (execve(ms->wanted, ms->command, ms->envp));
+	return (1);
+}
+
+int	last_son(t_ms *ms)
 {
 	int	pid;
 	int	status;
@@ -169,52 +155,153 @@ void	last_son(t_ms *ms)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (data->fdout != 0)
-		{	
-			dup2(data->fdout, STDOUT_FILENO);
-			close(data->fdout);
+		ms->fdout = 0;
+		if (ms->fdout != 0)
+		{
+			dup2(ms->fdout, STDOUT_FILENO);
+			close(ms->fdout);
 		}
 		else
-			dup2(1, 1);
-		ft_cmd(data, str, envp);
+			dup2(1, ms->fd[0][1]);
+		dup2(ms->fd[0][0], STDIN_FILENO);
+		ft_cmd(ms);
+		exit (0);
 	}
 	else if (pid < 0)
-		ft_error(3);
+		return (1);
 	else
 		waitpid(pid, &status, 0);
+	return (0);
 }
-	//atexit(ft_leaks);
-*/
-/* int	ft_pipe(t_ms *ms)
+
+void	ft_first(t_ms *ms, t_token *first)
 {
-	int		i;
-	int		end;
+	int	status;
+
+	pipe(ms->fd[ms->status]);
+	ms->child_pid = fork();
+	if (ms->child_pid == 0)
+	{
+		dup2(ms->fd[ms->status][1], STDOUT_FILENO);
+		close(ms->fd[ms->status][1]);
+		close(ms->fd[ms->status][0]);
+		ms->command = ft_create_command(first);
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{	
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+			ft_cmd(ms);
+		exit (0);
+	}
+	close(ms->fd[ms->status][1]);
+	waitpid(ms->child_pid, &status, 0);
+}
+
+void	ft_mid(t_ms *ms, t_token *mid)
+{
+	int	status;
+
+	pipe(ms->fd[ms->status]);
+	ms->child_pid = fork();
+	if (ms->child_pid == 0)
+	{
+		dup2(ms->fd[ms->status - 1][0], STDIN_FILENO);
+		dup2(ms->fd[ms->status][1], STDOUT_FILENO);
+		close(ms->fd[ms->status - 1][0]);
+		close(ms->fd[ms->status][0]);
+		close(ms->fd[ms->status][1]);
+		ms->command = ft_create_command(mid);
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+			ft_cmd(ms);
+		exit (0);
+	}
+	waitpid(ms->child_pid, &status, 0);
+	close(ms->fd[ms->status][1]);
+	close(ms->fd[ms->status - 1][0]);
+}
+
+void	ft_last(t_ms *ms, t_token *last)
+{
+	int	status;
+
+	ms->child_pid = fork();
+	if (ms->child_pid == 0)
+	{
+		dup2 (STDOUT_FILENO, ms->fd[ms->status][1]);
+		dup2(ms->fd[ms->status][0], STDIN_FILENO);
+		close(ms->fd[ms->status][1]);
+		close(ms->fd[ms->status][0]);
+		ms->command = ft_create_command(last);
+		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
+		{
+			ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+			ft_cmd(ms);
+	}
+	close(ms->fd[ms->status][1]);
+	close(ms->fd[ms->status][0]);
+	waitpid(ms->child_pid, &status, 0);
+}
+
+void	ft_family(t_ms *ms, t_token *temp)
+{
+	ft_first(ms, temp);
+	ms->num_pipes--;
+	if (ms->child_pid < 0)
+		exit (1);
+	while (ms->num_pipes > 0)
+	{
+		if (temp->type == PIPE && ms->num_pipes > 0)
+		{
+			ms->status++;
+			if (ms->wanted)
+				free (ms->wanted);
+			ft_mid(ms, temp->next);
+			ms->num_pipes--;
+			temp = temp->next;
+		}
+		else
+			temp = temp->next;
+	}
+	while (temp->type != PIPE)
+		temp = temp->next;
+	ft_last(ms, temp->next);
+}
+
+int	ft_pipe2(t_ms *ms)
+{
+	//int		i;
+	//int		end;
 	t_token	*temp;
+	//int		status;
 
 	temp = ms->tokens;
-
- 	i = ft_enter(argc, argv, &data);    //cambiar para que coja el < y el <<
-	if(ft_search(&data, argv[argc - 1]) == 0)
-		end = argc - 1;
-	else
-		end = argc - 2;
-	while (ft_strncmp (temp->next->token, "|", 1) == 0) //mientras haya pipes
+	ms->status = 0;
+	if (ms->num_pipes > 0)
 	{
-			printf("Estoy en %s\n", temp->token);
-		if (temp->next->next != NULL && ft_search(ms, temp->next->next->token) == 0)
+		ft_family(ms, temp);
+	}
+	else if (ms->num_pipes == 0)
+	{
+		if (DEBUG)
+			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
+		ms->command = ft_create_command(temp);
+		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
-			temp = temp->next->next;
+			ft_builtins(ms);
+			ft_free_command(ms);
 		}
 		else
-		{
-			perror("Perror");
-			break ;
-		}	//comando no encontrado
-		//son(ms);
+			last_son(ms);
 	}
-	puts("salgo de los pipes");
-	//last_son(ms);   //cuando sea el ultimo comando a ejecutar de la cadena de pipes
-    //añadir algo para el > y el >>, usar else de ft_enter
-	unlink(".tmp");
 	return (0);
-} */
+}
