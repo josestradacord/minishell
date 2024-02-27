@@ -170,8 +170,9 @@ void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 
 //Utils
-char		**ft_joineq(char *astr, char *cr);
+char		**ft_joineq(char *env_var);
 int			ft_liste_comp(t_list_e *env, char **val);
+int			ft_shlvlup(t_ms *ms);
 
 
 int			last_son(t_ms *ms);

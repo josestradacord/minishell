@@ -41,6 +41,7 @@ void	ft_init_data(t_ms *ms, char **argv, char **envp)
 	ft_copy_envp(ms, envp);
 	ft_copy_env2lst(ms, envp);
 	ft_signals();
+	ft_shlvlup(ms);
 	//ft_set_signal(0);
 }
 

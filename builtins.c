@@ -107,21 +107,16 @@ void	changepwd(t_ms *ms, char *dir)
 		chdir("/");
 }
 
-void	ft_cd(t_ms *ms, char *dir)		//aumentar el SHLVL
+void	ft_cd(t_ms *ms, char *dir)
 {
 	if (dir == NULL)
 		changepwd(ms, dir);
 	else if (chdir(dir) != 0)
-	{
-		//dup2(STDERR_FILENO, STDIN_FILENO);
 		changepwd(ms, dir);
-		//ft_printf("No existe el archivo o el directorio: %s\n", dir); //cambiar mensaje de error
-	}
 	else
 		changepwd(ms, dir);
 }
 
-//Tener en cuenta que al ejecutarse una shell dentro de la shell el SHLVL aumenta en 1
 
 void	ft_pwd(t_ms *ms)
 {
@@ -130,7 +125,7 @@ void	ft_pwd(t_ms *ms)
 	temp = ms->env;
 	while(strncmp(temp->name,"PWD", 3) != 0)
 	{
-		if (temp == NULL  || temp->next == NULL) // COMPROBAR QUE AL BORRAR PWD  y usar este comando no pete
+		if (temp == NULL  || temp->next == NULL)
 			return ;
 		temp = temp->next;
 	}
@@ -153,7 +148,7 @@ char	**ft_free2(char **str)
 	return (NULL);
 }
 
-void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que el nombre de la variable exista(ej. b= 23(mal); 23(mal))
+void	ft_export(t_ms *ms)
 {
 	//char		**args;
 	t_list_e	*temp;
@@ -163,7 +158,6 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 
 	i = 0;
 	temp = ms->env;
-	//args = ft_split(ms->cmds->cmd, ' ');
 	if (!ms->command[1])
 		while (temp)
 		{
@@ -173,8 +167,7 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	else
 		while(ms->command[++i] != NULL)
 		{
-			//printf("command i es %s\n", ms->command[i]);
-			val = ft_joineq(ms->command[i], "=");
+			val = ft_joineq(ms->command[i]);
 			if (ft_isalpha(val[0][0]) == 1)
 				if (ft_liste_comp(ms->env, val) != 0)
 				{
@@ -183,7 +176,6 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 				}
 			ft_free2(val);
 		}
-	//ft_free2(args);
 }
 
 void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
