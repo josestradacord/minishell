@@ -173,10 +173,11 @@ void	ft_export(t_ms *ms)		//faltan comprobantes de que la variable exista y que 
 	else
 		while(ms->command[++i] != NULL)
 		{
+			//printf("command i es %s\n", ms->command[i]);
 			val = ft_joineq(ms->command[i], "=");
 			if (ft_isalpha(val[0][0]) == 1)
 				if (ft_liste_comp(ms->env, val) != 0)
-				{	
+				{
 					new = ft_lste_new(val[0], val[1]);
 					ft_lste_addback(&temp, new);
 				}

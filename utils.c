@@ -41,13 +41,12 @@ int	ft_liste_comp(t_list_e *env, char **val)
 	temp = env;
 	if (temp == NULL)		//comprobar que esto vaya bien
 		return (1);
-	if (ft_strncmp(temp->name, val[0], ft_strlen(val[0])) == 0)
+	else if (ft_strncmp(temp->name, val[0], ft_strlen(val[0])) == 0)
 	{
 		free(temp->value);
 		temp->value = ft_strdup(val[1]);
 		return (0);
 	}
 	else
-		ft_liste_comp(temp->next, val);
-	return (0);
+		return(ft_liste_comp(temp->next, val));
 }
