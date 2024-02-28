@@ -1,0 +1,23 @@
+hsa
+afsda
+vsgs
+hsa
+afsda
+agdf
+asfdsh
+mDEBUG:[0m Entrando a crear el comando.
+Lista de tokens:
+Value:	#<<hola#
+Value:	#grep#
+Value:	#a#
+[34;1mDEBUG:[0m[36;1m Copio el token: #<<hola#[0m
+[34;1mDEBUG:[0m[36;1m Copio el token: #a#[0m
+[34;1mDEBUG:[0m Fuera del bucle.
+token: #a#[0m
+[34;1mDEBUG:[0m Fuera del bucle.
+[34;1mDEBUG:[0m[36;1m Copio el token: #a#[0m
+[34;1mDEBUG:[0m Fuera del bucle.
+token: #a#[0m
+[34;1mDEBUG:[0m Fuera del bucle.
+Fuera del bucle.
+l bucle.

@@ -21,55 +21,6 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
-/* static int	firstson(t_ms *data, int *pip, t_list_e *envp)
-{
-	if (ft_search(data, data->command[0]) == 1)
-		return (1);
-	dup2(data->fdin, STDIN_FILENO);
-	dup2(pip[1], STDOUT_FILENO);
-	close(pip[0]);
-	close(pip[1]);
-	execve(data->wanted, data->command, envp);
-	return (0);
-}
-
-static int	secondson(t_ms *data, int *pip, t_list_e *envp)
-{
-	if (ft_search(data, data->command[0]) == 1)
-		return (1);
-	data->fdout = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	dup2(pip[0], STDIN_FILENO);
-	close(pip[0]);
-	close(pip[1]);
-	dup2(data->fdout, STDOUT_FILENO);
-	execve(data->wanted, data->command, envp);
-	return (0);
-}
-
-int	ft_mother(t_ms *data, int *pip, t_list_e *envp)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (firstson(data, pip, envp) == 1)
-			return (1);
-	}
-	else if (pid < 0)
-		return (1);
-	pid = fork();
-	if (pid == 0)
-	{
-		if (secondson(data, pip, envp) == 1)
-			return (1);
-	}
-	else if (pid < 0)
-		return (1);
-	return (0);
-}
- */
-
 void	minishell(t_ms *ms)
 {
 	int		times;
@@ -87,20 +38,13 @@ void	minishell(t_ms *ms)
 	//status = TRUE;
 	while (TRUE)
 	{
-		//usleep(10000);
-		//ft_bzero(ms->line,sizeof(char *));
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 		//ms->line = ft_temp();
-/* 		times++;
-		if (times == 100)
-			status = FALSE; */
 		//printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
-/* 		if (ms->line == NULL)
-			ms->line = ft_strdup("a"); */	//bucle de linea NULL
 		if (ms->line == NULL)
 		{
-			/*ft_printf("Linea NULL\n");//despues solo /n
-			break ;*/
+			//ft_printf("Linea NULL\n");//despues solo /n
+			//break ;
 			ft_control_d();
 		}
 		add_history(ms->line);	// así agregamos las líneas en blanco al historial
@@ -115,7 +59,7 @@ void	minishell(t_ms *ms)
 		if (DEBUG)
 			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
-		if (ft_pipe2(ms) != 0)
+		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
 		//ms->num_pipes = 0;
 		ft_free_toks(ms);
@@ -138,7 +82,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
-		ft_bzero(&ms, sizeof(ms));
+		ft_bzero(&ms, sizeof(ms)); // sin esto libera algo que no debe
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

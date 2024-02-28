@@ -12,9 +12,7 @@
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c \
-		executor.c clean_free.c utils.c pipe.c parser_token_aux.c parser_token.c \
-		signals.c
+SRCS = $(wildcard *.c)
 CC = gcc
 
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 

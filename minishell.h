@@ -158,7 +158,6 @@ void		ft_export(t_ms *ms);
 
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
-int			ft_pipe2(t_ms *ms);
 int			ft_search(t_ms *ms);
 char		**ft_free2(char **str);
 
@@ -176,13 +175,15 @@ int			ft_shlvlup(t_ms *ms);
 
 
 int			last_son(t_ms *ms);
-int			son(t_ms *ms);
 void		ft_nump(t_ms *ms);
 
 //Signals management
 void		ft_signals(void);
 void		ft_set_signal(int s);
 void		ft_control_d(void);
+
+//redir functions
+int		ft_enter(t_ms *ms);
 
 #endif
 

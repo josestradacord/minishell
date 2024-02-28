@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 
-void	ft_echo(t_ms *ms)
+/* void	ft_echo(t_ms *ms)
 {
 	int		index;
 
@@ -26,14 +26,14 @@ void	ft_echo(t_ms *ms)
 			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
 	ft_putstr_fd("\n", STDOUT_FILENO);
-}
+} */
 
-/* void	ft_echo(char **str)
+void	ft_echo(t_ms *ms)
 {
 	int	i;
 	int	k;
 
-	if (ft_strncmp(str[1], "-n", 2) == 0 && str[1][2] == '\0')
+	if (ft_strncmp(ms->command[1], "-n", 2) == 0 && ms->command[1][2] == '\0')
 	{
 		i = 2;
 		k = 0;
@@ -43,13 +43,13 @@ void	ft_echo(t_ms *ms)
 		i = 1;
 		k = 1;
 	}
-	while (str[i + 1])
-		ft_printf("%s ", str[i++]);
+	while (ms->command[i + 1])
+		ft_printf("%s ", ms->command[i++]);
 	if (k == 1)
-		ft_printf("%s\n", str[i]);
+		ft_printf("%s\n", ms->command[i]);
 	else
-		ft_printf("%s", str[i]);
-} */
+		ft_printf("%s", ms->command[i]);
+}
 
 void	ft_exit(t_ms *ms)
 {
@@ -82,7 +82,7 @@ void	changepwd(t_ms *ms, char *dir)
 		temp = temp->next;
 	if (dir == NULL)
 	{
-		while (old && ft_strncmp(old->name, "HOME", 4) != 0)	//si haces cd; pwd; cd se rompe
+		while (old && ft_strncmp(old->name, "HOME", 4) != 0)
 			old = old->next;
 		chdir(old->value);
 		free(temp->value);
@@ -99,7 +99,7 @@ void	changepwd(t_ms *ms, char *dir)
  	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
-	temp->value =malloc(100 * sizeof(char));
+	temp->value = malloc(100 * sizeof(char));
 	if (!temp->value)
 		perror("malloc error");
 	getcwd(temp->value, 100);
