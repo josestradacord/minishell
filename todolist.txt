@@ -1,10 +1,10 @@
 // - Subir el SHLVL en cada minishell que se ejecute dentro de otra.
 - minishell no ejecuta otra minishell
-- Gestionar entrada de dos builtins (ej: env | pwd)
-- Gestionar el uso de builtins en mitad de los pipes
+// - Gestionar entrada de dos builtins (ej: env | pwd)
+//- Gestionar el uso de builtins en mitad de los pipes
 	(ej: ls | grep a | pwd | wc), parece que genera leaks.
 - Integrar señales en la ejecución de pipes (preguntar a fermin?).
-- Entradas y salidas desde y hacia archivos y here_doc
+//- Entradas y salidas desde y hacia archivos y here_doc
 - En export faltan comprobantes de que la variable exista
 	y que el nombre de la variable exista(ej. b= 23(mal); 23(mal))
 - comprobar que al borrar PWD  y usar pwd no pete

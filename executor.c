@@ -71,7 +71,7 @@ char	**ft_create_command(t_token *toks)
 	if (!res)
 		perror("malloc error");
 	index = 0;
-	while (toks && toks->type != PIPE)
+	while (toks && toks->type != PIPE && toks->type != 14 && toks->type != 15)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s%s Copio el token: #%s#%s\n", BLUE, RESET, CYAN, toks->token, RESET);
@@ -131,40 +131,6 @@ void	ft_execute_command(t_ms *ms)
 		index_pipe++;
 	}
 }
-
-/* void	ft_executor(t_ms *ms, t_token *toks)
-{
-	if (DEBUG)
-		printf("DEBUG. Entrando al ejecutor.\n");
-	ms->command = ft_create_command(toks);
-	printf("command 0 es %s\n", ms->command[0]);
-	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
-		ft_builtins(ms);
-	else
-		ft_cmd(ms);
-		//ft_execute_command(ms);
-	ft_free_command(ms);
-	if (DEBUG)
-		printf("DEBUG. Saliendo del ejecutor.\n");
-	while(toks->next && toks->type != PIPE)
-		toks = toks->next;
-	if (toks->type == PIPE && toks->next)
-	{
-		printf("son y token %s\n", toks->next->token);
-		son(ms, toks->next);
-		puts("pasa");
-		//last_son(ms);
-		//ft_executor(ms, toks->next);
-	}
-	else if (toks->type == PIPE && !toks->next)
-	{
-		//son(ms);
-		puts("last son");
-		last_son(ms);
-		//ft_executor(ms, toks);
-	}
-	return ;
-} */
 
 void	ft_nump(t_ms *ms)
 {

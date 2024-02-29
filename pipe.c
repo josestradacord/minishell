@@ -79,7 +79,7 @@ void	ft_last(t_ms *ms, t_token *last)
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
-		if (ft_enter(ms) == 2)
+		if (ft_out(ms) == 2)
 		{
 			dup2(ms->fdout, STDOUT_FILENO);
 			close(ms->fdout);
@@ -166,9 +166,12 @@ int	ft_pipe(t_ms *ms)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
+		printf("temp es %s\n",temp->token);
 		ms->command = ft_create_command(temp);
+		printf("command es $%s$\n",ms->command[0]);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
+			perror("builtin");
 			ft_builtins(ms);
 			ft_free_command(ms);
 		}

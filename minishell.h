@@ -184,6 +184,7 @@ void		ft_control_d(void);
 
 //redir functions
 int		ft_enter(t_ms *ms);
+int		ft_out(t_ms *ms);
 
 #endif
 

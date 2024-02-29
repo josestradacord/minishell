@@ -78,35 +78,21 @@ int	ft_enter(t_ms *ms)
 
 	tok = ms->tokens;
 	i = 1;
-	if (ms->tokens->type == 16)
+	if (ms->tokens->type == HEREDOC)
 	{
+		//perror("es heredocc");
 		here_doc(ms);
 		return (1);
 	}
-	if (ms->tokens->type == 13)
+	if (ms->tokens->type == INPREDIR)
 	{
+		//perror("es entrada");
 		while (ms->tokens->token[i] <= ' ')
 			i++;
 		ms->fdin = open(&ms->tokens->token[i], O_RDONLY);
 		return (1);
 	}
-	while (tok->next && ms->tokens->type != 14)
-		tok = tok->next;
-	if (tok->type == 14)
-	{
-		while (tok->token[i] <= ' ')
-			i++;
-		ms->fdout = open(&tok->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0777);
-		return (2);
-	}
-	if (tok->type == 15)
-	{
-		i++;
-		while (tok->token[i] <= ' ')
-			i++;
-		ms->fdout = open(&tok->token[i], O_WRONLY | O_APPEND | O_CREAT, 0777);
-		return (2);
-	}
+	//perror("no entrada");
 	return (0);
 		//return (i = here_doc(argv[1], data, argv[argc - 1]));
 /* 	else
@@ -127,4 +113,35 @@ int	ft_enter(t_ms *ms)
 		}
 		return (i = 1);
 	} */
+}
+
+int	ft_out(t_ms *ms)
+{
+	int	i;
+	int	fdin;
+	t_token	*tok;
+
+	tok = ms->tokens;
+	i = 1;
+
+	while (tok->next && ms->tokens->type != OUTREDIR && ms->tokens->type != OUTREDIR_A)
+		tok = tok->next;
+	if (tok->type == 14)
+	{
+		//perror ("es un >");
+		while (tok->token[i] <= ' ')
+			i++;
+		//printf("archivo %s\n",&tok->token[i]);
+		ms->fdout = open(&tok->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+		return (2);
+	}
+	if (tok->type == OUTREDIR_A)
+	{
+		i++;
+		while (tok->token[i] <= ' ')
+			i++;
+		ms->fdout = open(&tok->token[i], O_WRONLY | O_APPEND | O_CREAT, 0777);
+		return (2);
+	}
+	return (0);
 }

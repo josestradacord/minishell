@@ -79,16 +79,19 @@ int	last_son(t_ms *ms)
 	int	pid;
 	int	status;
 
+	perror("ultimo hijo");
 	pid = fork();
 	if (pid == 0)
 	{
+		perror("en hijo");
 		if (ms->fdin > 0)
 		{
 			dup2(ms->fdin, STDIN_FILENO);
 			close(ms->fdin);
 		}
-		if (ft_enter(ms) == 2)
+		if (ft_out(ms) == 2)
 		{
+			perror("entra");
 			dup2 (ms->fdout, STDOUT_FILENO);
 			close(ms->fdout);
 		}
