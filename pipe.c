@@ -79,9 +79,18 @@ void	ft_last(t_ms *ms, t_token *last)
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
-		dup2 (STDOUT_FILENO, ms->fd[ms->status][1]);
+		if (ft_enter(ms) == 2)
+		{
+			dup2(ms->fdout, STDOUT_FILENO);
+			close(ms->fdout);
+			close(ms->fd[ms->status][1]);
+		}
+		else
+		{
+			dup2 (STDOUT_FILENO, ms->fd[ms->status][1]);
+			close(ms->fd[ms->status][1]);
+		}
 		dup2(ms->fd[ms->status][0], STDIN_FILENO);
-		close(ms->fd[ms->status][1]);
 		close(ms->fd[ms->status][0]);
 		ms->command = ft_create_command(last);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)

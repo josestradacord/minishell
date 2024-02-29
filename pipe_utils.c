@@ -87,10 +87,9 @@ int	last_son(t_ms *ms)
 			dup2(ms->fdin, STDIN_FILENO);
 			close(ms->fdin);
 		}
-		ms->fdout = 0;
-		if (ms->fdout != 0)
+		if (ft_enter(ms) == 2)
 		{
-			dup2(ms->fdout, STDOUT_FILENO);
+			dup2 (ms->fdout, STDOUT_FILENO);
 			close(ms->fdout);
 		}
 		else

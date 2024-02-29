@@ -74,7 +74,9 @@ int	ft_enter(t_ms *ms)
 {
 	int	i;
 	int	fdin;
+	t_token	*tok;
 
+	tok = ms->tokens;
 	i = 1;
 	if (ms->tokens->type == 16)
 	{
@@ -87,6 +89,15 @@ int	ft_enter(t_ms *ms)
 			i++;
 		ms->fdin = open(&ms->tokens->token[i], O_RDONLY);
 		return (1);
+	}
+	while (tok->next && ms->tokens->type != 14)
+		tok = tok->next;
+	if (tok->type == 14)
+	{
+		while (tok->token[i] <= ' ')
+			i++;
+		ms->fdout = open(&tok->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+		return (2);
 	}
 	return (0);
 		//return (i = here_doc(argv[1], data, argv[argc - 1]));
