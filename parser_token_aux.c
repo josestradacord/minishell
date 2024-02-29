@@ -24,20 +24,23 @@ void	ft_new_token(t_ms *ms, int start, int end)
 
 	token = ft_substr(ms->line, start, end - start);
 	if (DEBUG)
-		printf("DEBUG: Obteniendo el token en ft_new_token(). Comando token: #%s#\n", token);
+		printf("%sDEBUG:%s Obteniendo el token en ft_new_token(). Comando token: #%s#\n", BLUE, RESET , token);
 	new_tok = (t_token *) malloc(sizeof(t_token));
 	if (!new_tok)
+	{
+		perror("malloc error");
 		return ;
+	}
 	new_tok->token = token;
 	if (DEBUG)
-		printf("DEBUG: Comando (en ms): #%s#\n", new_tok->token);
+		printf("%sDEBUG:%s Comando (en ms): #%s#\n", BLUE, RESET , new_tok->token);
 	new_tok->type = NOQUOTE;
 	new_tok->prev = NULL;
 	new_tok->next = NULL;
 	if (!ms->tokens)
 	{
 		if (DEBUG)
-			printf("DEBUG: Primer token de la lista\n");
+			printf("%sDEBUG:%s Primer token de la lista\n", BLUE, RESET);
 		ms->tokens = new_tok;
 	}
 	else
@@ -49,7 +52,7 @@ void	ft_new_token(t_ms *ms, int start, int end)
 		aux->next = new_tok;
 	}
 	if (DEBUG)
-		printf("DEBUG: Saliendo de ft_new_token()\n");
+		printf("%sDEBUG:%s Saliendo de ft_new_token()\n", BLUE, RESET);
 }
 
 void	ft_normal_tok(t_ms *ms, int *start, int *index)
@@ -69,7 +72,7 @@ void	ft_normal_tok(t_ms *ms, int *start, int *index)
 		ft_new_token(ms, s, i);
 	*index = i;
 	if (DEBUG)
-		printf("DEBUG: Saliendo de ft_normal_tok()\n");
+		printf("%sDEBUG:%s Saliendo de ft_normal_tok()\n", BLUE, RESET);
 }
 
 void	ft_token_type(t_ms *ms)

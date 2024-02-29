@@ -23,6 +23,8 @@
 # include <sys/types.h> 
 # include <fcntl.h>
 # include <errno.h>
+# include <signal.h>
+# include <termios.h>
 
 # include "libft/libft.h"
 
@@ -46,6 +48,22 @@
 # define OUTREDIR_A	15
 # define HEREDOC	16
 # define PIPE		17
+
+// Syntax error messages
+# define SYNTAXQUOT	"minishell: syntax error: unclosed quotes\n"
+# define SYNTAXIN_R	"minishell: syntax error near unexpected token '<'\n"
+# define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
+
+# define BOLD	 "\033[1m"
+# define RED	 "\033[31;1m"
+# define GREEN	 "\033[32;1m"
+# define YELLOW	 "\033[33;1m"
+# define CYAN	 "\033[36;1m"
+# define BLUE	 "\033[34;1m"
+# define BLACK	 "\033[30;1m"
+# define MAGENTA "\033[35;1m"
+# define WHITE	 "\033[37;1m"
+# define RESET	 "\033[0m"
 
 // Struct to keep the environment variables as a list
 typedef struct s_list_e
@@ -72,10 +90,16 @@ typedef struct s_ms
 	char		**rout;		//added by Gabriel
 	t_token		*tokens;
 	int			num_pipes;
+	int			fd[20][2];
+	//int			control;
 	pid_t			child_pid;
 	t_list_e	*env;
 	char		**envp;
 	int			status;
+
+	int			fdin;
+	int			fdout;
+
 }	t_ms;
 
 // Check functions
@@ -120,20 +144,22 @@ void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
 
 // Executor functions
-void		ft_executor(t_ms *ms);
+void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
+int		ft_builtins(t_ms *ms);
+
 void		ft_echo(t_ms *ms);
 void		ft_cd(t_ms *ms, char *dir);
-void			ft_exit(t_ms *ms);
+void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 
-int	ft_cmd(t_ms *ms);
-int	ft_pipe(t_ms *ms);
-int	ft_search(t_ms *ms);
-char	**ft_free2(char **str);
+int			ft_cmd(t_ms *ms);
+int			ft_pipe(t_ms *ms);
+int			ft_search(t_ms *ms);
+char		**ft_free2(char **str);
 
 //Clean and free functions
 void		ft_free(t_ms *ms, int exit_code);
@@ -143,7 +169,29 @@ void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 
 //Utils
-char		**ft_joineq(char *astr, char *cr);
+char		**ft_joineq(char *env_var);
 int			ft_liste_comp(t_list_e *env, char **val);
+int			ft_shlvlup(t_ms *ms);
+
+
+int			last_son(t_ms *ms);
+void		ft_nump(t_ms *ms);
+
+//Signals management
+void		ft_signals(void);
+void		ft_set_signal(int s);
+void		ft_control_d(void);
+
+//redir functions
+int		ft_enter(t_ms *ms);
+int		ft_out(t_ms *ms);
 
 #endif
+
+/* BOLD	= \033[1m
+RED		= \033[31;1m
+GREEN	= \033[32;1m
+YELLOW	= \033[33;1m
+CYAN	= \033[36;1m
+WHITE	= \033[37;1m
+RESET	= \033[0m */

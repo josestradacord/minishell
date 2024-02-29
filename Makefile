@@ -12,13 +12,13 @@
 
 NAME = minishell
 
-SRCS = minishell.c init_checks.c environment.c list_env.c parser.c builtins.c executor.c clean_free.c utils.c pipe.c parser_token_aux.c parser_token.c
-
+SRCS = $(wildcard *.c)
 CC = gcc
 
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
 
-
+#GLFW_FLAGS  = -ldl -lglfw -lm
+#GLFW_FLAGS = -lglfw -L /Users/$(USER)/.brew/opt/glfw/lib/ -lm
 
 INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 

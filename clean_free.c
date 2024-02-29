@@ -30,7 +30,7 @@ void	ft_free_tok_list(t_token *toks)
 	t_token	*node;
 
 	if (DEBUG)
-		ft_printf("DEBUG: Empiezo a liberar ft_free_tok_list()\n");
+		ft_printf("%sDEBUG:%s Empiezo a liberar ft_free_tok_list()\n", BLUE, RESET);
 	node = toks;
 	while (toks)
 	{
@@ -46,9 +46,11 @@ void	ft_free_toks(t_ms *ms)
 	t_token	*node;
 
 	if (DEBUG)
-		ft_printf("DEBUG: Empiezo a liberar ft_free_toks()\n");
+		ft_printf("%sDEBUG:%s Empiezo a liberar ft_free_toks()\n", BLUE, RESET);
 	if (ms->line)
 		free(ms->line);
+	if (ms->wanted)
+		free(ms->wanted);
 	node = ms->tokens;
 	ft_free_tok_list(node);
 	ms->tokens = NULL;
@@ -61,12 +63,26 @@ void	ft_free_command(t_ms *ms)
 	/*if (ms->line)
 		free(ms->line);*/
 	index = 0;
-	while (ms->command[index])
+	if (DEBUG)
+		perror("va a liberar comandos");
+	//printf("libero comando %s\n", ms->command[0]);
+	while (ms->command && ms->command[index])
 	{
+		if (DEBUG)
+			printf("libero comando %s\n", ms->command[index]);
 		free(ms->command[index]);
 		index++;
 	}
-	free(ms->command);
+	if (DEBUG)
+		perror("va a liberar wanted");
+	if (ms->wanted)
+		free(ms->wanted);
+	if (DEBUG)
+		perror("va a liberar command");
+	if (ms->command)
+		free(ms->command);
+	if (DEBUG)
+		perror("todo liberado");
 }
 
 /*void	ft_free_cmds(t_ms *ms)
@@ -81,7 +97,7 @@ void	ft_free_command(t_ms *ms)
 	while (node)
 	{
 		if (DEBUG)
-			ft_printf("DEBUG: Libero comando: #%s#\n", ms->cmds->cmd);
+			ft_printf("%s%sDEBUG:%s%s Libero comando: #%s#%s\n", BOLD, BLUE, RESET, BLUE, RESET, ms->cmds->cmd);
 		free(node->cmd);
 		node = node->next;
 	}
@@ -93,23 +109,23 @@ void	ft_free_command(t_ms *ms)
 void	ft_free(t_ms *ms, int exit_code)
 {
 	if (DEBUG)
-		ft_printf("DEBUG: Empiezo a liberar ft_free()\n");
+		ft_printf("%sDEBUG:%s Empiezo a liberar ft_free()\n", BLUE, RESET);
 	rl_clear_history();
 	if (DEBUG)
-		ft_printf("DEBUG: Libero env\n");
+		ft_printf("%sDEBUG:%s Libero env\n", BLUE, RESET);
 	ft_lste_clear(ms->env, free);
 	ft_free_envp(ms);
 	if (DEBUG)
-		ft_printf("DEBUG: Liberado env\n");
+		ft_printf("%sDEBUG:%s Liberado env\n", BLUE, RESET);
 	if (DEBUG)
-		ft_printf("DEBUG: Libero lista de tokens\n");
+		ft_printf("%sDEBUG:%s Libero lista de tokens\n", BLUE, RESET);
 	ft_free_toks(ms);
 	if (DEBUG)
-		ft_printf("DEBUG: Liberada lista de tokens\n");
+		ft_printf("%sDEBUG:%s Liberada lista de tokens\n", BLUE, RESET);
 	if (DEBUG)
-		ft_printf("DEBUG: Libero comandos\n");
+		ft_printf("%sDEBUG:%s Libero comandos\n", BLUE, RESET);
 	ft_free_command(ms);
 	if (DEBUG)
-		ft_printf("DEBUG: Liberado comandos\n");
+		ft_printf("%sDEBUG:%s Liberado comandos\n", BLUE, RESET);
 	exit(exit_code);
 }

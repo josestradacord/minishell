@@ -59,6 +59,8 @@ t_list_e	*ft_create_node(char *env_var)
 	index = 0;
 	len = ft_strlen(env_var);
 	pair = malloc(sizeof(char *) * 3);
+	if (!pair)
+		perror("malloc error");
 	while (env_var[index] && env_var[index] != '=')
 		index++;
 	pair[0] = ft_substr(env_var, 0, index);
@@ -116,13 +118,13 @@ char	*ft_get_env_value(char *name, t_ms *ms)
 	{
 		if (DEBUG)
 		{
-			printf("DEBUG. Buscando variable de entorno con nombre: #%s#\n", name);
+			printf("%sDEBUG:%s Buscando variable de entorno con nombre: #%s#\n", BLUE, RESET, name);
 		}
 		if (!ft_strncmp(name, node->name, ft_strlen(name)))
 		{
 			if (DEBUG)
 			{
-				printf("DEBUG. Buscando variable de entorno con nombre: #%s# en #%s# y valor #%s#\n", name, node->name, node->value);
+				printf("%sDEBUG:%s Buscando variable de entorno con nombre: #%s# en #%s# y valor #%s#\n", BLUE, RESET , name, node->name, node->value);
 			}
 			return (node->value);
 		}

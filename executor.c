@@ -64,27 +64,29 @@ char	**ft_create_command(t_token *toks)
 
 	if (DEBUG)
 	{
-		printf("DEBUG. Entrando a crear el comando.\nLista de tokens:\n");
+		printf("%sDEBUG:%s Entrando a crear el comando.\nLista de tokens:\n", BLUE, RESET);
 		ft_print_tok_list(toks);
 	}
-	res = malloc(sizeof(char *) * ft_count_tokens(toks) + 1);
+	res = malloc(sizeof(char *) * (ft_count_tokens(toks) + 1));
+	if (!res)
+		perror("malloc error");
 	index = 0;
-	while (toks && toks->type != PIPE)
+	while (toks && toks->type != PIPE && toks->type != 14 && toks->type != 15)
 	{
 		if (DEBUG)
-			printf("DEBUG. Copio el token: #%s#\n", toks->token);
+			printf("%sDEBUG:%s%s Copio el token: #%s#%s\n", BLUE, RESET, CYAN, toks->token, RESET);
 		if (toks->type <= DBLQUOTE && toks->type >= NOQUOTE)
 			res[index] = ft_strdup(toks->token);
 		index++;
 		toks = toks->next;
 	}
 	if (DEBUG)
-		printf("DEBUG. Fuera del bucle.\n");
+		printf("%sDEBUG:%s Fuera del bucle.\n", BLUE, RESET);
 	res[index] = NULL;
 	return (res);
 }
 
-void		ft_builtins(t_ms *ms)
+int	ft_builtins(t_ms *ms)
 {
 	if (DEBUG)
 		printf("Es un builtin\n");
@@ -102,7 +104,7 @@ void		ft_builtins(t_ms *ms)
 		ft_lste_rm(ms->env, ms->command[1]);
 	else if (ft_strncmp("export", ms->command[0], 6) == 0)
 		ft_export(ms);
-	//return (0);
+	return (0);
 }
 
 void	ft_execute_command(t_ms *ms)
@@ -130,7 +132,42 @@ void	ft_execute_command(t_ms *ms)
 	}
 }
 
-void	ft_executor(t_ms *ms)
+void	ft_nump(t_ms *ms)
+{
+	t_token *toks;
+
+	toks = ms->tokens;
+	while (toks)
+	{
+		if (toks->type == PIPE)
+			ms->num_pipes++;
+		toks = toks->next;
+	}
+	//printf("%d num pipes\n", ms->num_pipes);
+}
+
+void	ft_executor(t_ms *ms, t_token *toks)
+{
+
+	//lo de abajo es porvisional
+	if (DEBUG)
+		printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
+	ms->command = ft_create_command(toks);
+	//perror("estoy en el ejecutor");
+	//printf("el comando es %s\n", ms->command[0]);
+	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
+	{
+		ft_builtins(ms);
+		ft_free_command(ms);
+	}
+	else
+		ft_cmd(ms);
+		//ft_execute_command(ms);
+	if (DEBUG)
+		printf("%sDEBUG:%s Saliendo del ejecutor.\n", BLUE, RESET);
+}
+
+/* void	ft_executor(t_ms *ms)	//original
 {
 	if (DEBUG)
 		printf("DEBUG. Entrando al ejecutor.\n");
@@ -143,4 +180,4 @@ void	ft_executor(t_ms *ms)
 	ft_free_command(ms);
 	if (DEBUG)
 		printf("DEBUG. Saliendo del ejecutor.\n");
-}
+} */
