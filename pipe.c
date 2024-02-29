@@ -153,8 +153,8 @@ int	ft_pipe(t_ms *ms)
 	t_token	*temp;
 	int		status;
 
-	if (ft_strncmp(ms->tokens->token, "./minishell", 11) == 0)
-		ft_execmini(ms);
+/* 	if (ft_strncmp(ms->tokens->token, "./minishell", 11) == 0)
+		ft_execmini(ms); */
 	if (ft_enter(ms) == 1)
 		temp = ms->tokens->next;
 	else
@@ -166,12 +166,9 @@ int	ft_pipe(t_ms *ms)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-		printf("temp es %s\n",temp->token);
 		ms->command = ft_create_command(temp);
-		printf("command es $%s$\n",ms->command[0]);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
-			perror("builtin");
 			ft_builtins(ms);
 			ft_free_command(ms);
 		}
