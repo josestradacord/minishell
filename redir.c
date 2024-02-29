@@ -51,7 +51,10 @@ void	ft_temp(t_ms *ms)
 		str2 = get_next_line(0);
 	}
 	if (ms->wanted)
+	{
 		free(ms->wanted);
+		ms->wanted = NULL;	
+	}
 	write(ms->fdin, str, ft_strlen(str));
 	//dup2(ms->fdin, STDOUT_FILENO);
 	//ft_printf("%s", str);

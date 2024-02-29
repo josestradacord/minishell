@@ -51,6 +51,7 @@ void	minishell(t_ms *ms)
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
+			//ms->line = NULL;
 			continue ;
 		}
 		ft_parser(ms);
@@ -83,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (DEBUG)
 			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
-		ft_bzero(&ms, sizeof(ms)); // sin esto libera algo que no debe
+		ft_bzero(&ms, sizeof(ms));
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);

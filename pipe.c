@@ -20,6 +20,11 @@ void	ft_first(t_ms *ms, t_token *first)
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
+		if (ms->fdin > 0)
+		{
+			dup2(ms->fdin, STDIN_FILENO);
+			close(ms->fdin);
+		}
 		dup2(ms->fd[ms->status][1], STDOUT_FILENO);
 		close(ms->fd[ms->status][1]);
 		close(ms->fd[ms->status][0]);
@@ -33,6 +38,8 @@ void	ft_first(t_ms *ms, t_token *first)
 			ft_cmd(ms);
 		exit (0);
 	}
+	if (ms->fdin > 0)
+		close(ms->fdin);
 	close(ms->fd[ms->status][1]);
 	waitpid(ms->child_pid, &status, 0);
 }
@@ -84,6 +91,7 @@ void	ft_last(t_ms *ms, t_token *last)
 		}
 		else
 			ft_cmd(ms);
+		exit (0);
 	}
 	close(ms->fd[ms->status][1]);
 	close(ms->fd[ms->status][0]);
