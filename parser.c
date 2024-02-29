@@ -135,39 +135,16 @@ void	ft_expand(t_ms *ms, t_token *tok)
 		while (tok->token[end] && !ft_strchr(ENVCHARS, tok->token[end]))
 			end++;
 		name = ft_substr(tok->token, start, end - start);
-		value = ft_get_env_value(name, ms);
+		if (ft_strncmp(name, "?", ft_strlen(name)) == 0)//no probado
+			value = ft_itoa(ms->status);
+		else
+			value = ft_get_env_value(name, ms);
 		if (DEBUG)
 			printf("%sDEBUG:%s Encontrada variable de entorno #%s# con valor #%s#\n", BLUE, RESET , name, value);
 		ft_change_tok(tok, start - 1, end, value);
 		free(name);
 	}
 }
-
-/*void	ft_expand(t_ms *ms, t_token *tok)
-{
-	int		start;
-	int		end;
-	char	*name;
-	char	*value;
-
-	start = 0;
-	while (tok->token[start] && tok->token[start] != '$')
-		start++;
-	if (tok->token[start] == '$')
-	{
-		start++;
-		end = start;
-		while (tok->token[end] && !ft_strchr(ENVCHARS, tok->token[end]))
-			end++;
-		name = ft_substr(tok->token, start, end - start);
-		value = ft_get_env_value(name, ms);
-		if (DEBUG)
-			printf("DEBUG: Encontrada variable de entorno #%s# con valor #%s#\n", name, value);
-		ft_change_tok(tok, start - 1, end, value, ft_strlen(value));
-		free(name);
-		free(value);
-	}
-}*/
 
 void	ft_find_vars(t_ms *ms)
 {

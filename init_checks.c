@@ -91,75 +91,6 @@ int	ft_check_quotes(char *line)
 	return (TRUE);
 }
 
-
-int	ft_check_quotes_d(char *line)
-{
-	int	d_quot;
-	int	s_quot;
-	int	index;
-
-	index = 0;
-	d_quot = TRUE;
-	s_quot = TRUE;
-	while (line[index])
-	{
-		if (line[index] == '\"')
-			if (d_quot)
-				d_quot = FALSE;
-			else
-				d_quot = TRUE;
-		else if (line[index] == '\'')
-		{
-			if (!d_quot)
-				s_quot = TRUE;
-			else
-				s_quot = FALSE;
-		}
-		index++;
-	}
-	if (d_quot)
-		return (TRUE);
-	else
-	{
-		ft_putstr_fd(SYNTAXQUOT, STDOUT_FILENO);
-		return (FALSE);
-	}
-}
-
-int	ft_check_quotes_s(char *line)
-{
-	int	d_quot;
-	int	s_quot;
-	int	index;
-
-	index = 0;
-	d_quot = TRUE;
-	s_quot = TRUE;
-	while (line[index])
-	{
-		if (line[index] == '\'')
-			if (s_quot)
-				s_quot = FALSE;
-			else
-				s_quot = TRUE;
-		else if (line[index] == '\"')
-		{
-			if (!s_quot)
-				d_quot = TRUE;
-			else
-				d_quot = FALSE;
-		}
-		index++;
-	}
-	if (s_quot)
-		return (TRUE);
-	else
-	{
-		ft_putstr_fd(SYNTAXQUOT, STDOUT_FILENO);
-		return (FALSE);
-	}
-}
-
 int	ft_check_redir_i(char *line)
 {
 	int	index;
@@ -191,7 +122,7 @@ int	ft_check_redir_o(char *line)
 	{
 		if (line[index] == '>')
 		{
-			while (line[index] == ' ')
+			while (line[index] && line[index] == ' ')
 				index++;
 			if (line[index] == '>')
 			{

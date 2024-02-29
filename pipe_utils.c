@@ -55,8 +55,8 @@ char	**ft_routes(char **envp)
 
 int	ft_search(t_ms *ms)
 {
-	int	i;
-	t_list_e *temp;
+	int			i;
+	t_list_e	*temp;
 
 	temp = ms->env;
 	i = -1;
@@ -72,7 +72,7 @@ int	ft_search(t_ms *ms)
 	return (0);
 }
 
-int	ft_cmd(t_ms * ms)
+int	ft_cmd(t_ms *ms)
 {
 	if (ft_search(ms) == 0)
 		return (execve(ms->wanted, ms->command, ms->envp));
