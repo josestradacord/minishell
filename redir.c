@@ -99,6 +99,14 @@ int	ft_enter(t_ms *ms)
 		ms->fdout = open(&tok->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 		return (2);
 	}
+	if (tok->type == 15)
+	{
+		i++;
+		while (tok->token[i] <= ' ')
+			i++;
+		ms->fdout = open(&tok->token[i], O_WRONLY | O_APPEND | O_CREAT, 0777);
+		return (2);
+	}
 	return (0);
 		//return (i = here_doc(argv[1], data, argv[argc - 1]));
 /* 	else
