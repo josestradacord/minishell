@@ -75,9 +75,17 @@ int	ft_enter(t_ms *ms)
 	int	i;
 	int	fdin;
 
+	i = 1;
 	if (ms->tokens->type == 16)
 	{
 		here_doc(ms);
+		return (1);
+	}
+	if (ms->tokens->type == 13)
+	{
+		while (ms->tokens->token[i] <= ' ')
+			i++;
+		ms->fdin = open(&ms->tokens->token[i], O_RDONLY);
 		return (1);
 	}
 	return (0);
