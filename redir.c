@@ -29,7 +29,7 @@
 	return (3);
 } */
 
-void	ft_temp(t_ms *ms, int fdin)
+void	ft_temp(t_ms *ms)
 {
 	char	*str;
 	char	*str2;
@@ -52,21 +52,19 @@ void	ft_temp(t_ms *ms, int fdin)
 	}
 	if (ms->wanted)
 		free(ms->wanted);
-	dup2(fdin, STDOUT_FILENO);
-	ft_printf("%s", str);
+	write(ms->fdin, str, ft_strlen(str));
+	//dup2(ms->fdin, STDOUT_FILENO);
+	//ft_printf("%s", str);
 }
 
 int	here_doc(t_ms *ms)
 {
-	int	fdin;
-
-	fdin = open(".tmp", O_WRONLY | O_CREAT, 0644);
-	ft_temp(ms, fdin);
-	close(fdin);
-	fdin = open(".tmp", O_RDONLY);
-	dup2(fdin, STDIN_FILENO);
-	close(fdin);
-	return (3);
+	ms->fdin = open(".tmp", O_WRONLY | O_CREAT, 0644);
+	ft_temp(ms);
+	close(ms->fdin);
+	ms->fdin = open(".tmp", O_RDONLY);
+	//close(ms->fdin);
+	return (0);
 }
 
 int	ft_enter(t_ms *ms)

@@ -126,7 +126,7 @@ int	ft_pipe(t_ms *ms)
 		temp = ms->tokens->next;
 	else
 		temp = ms->tokens;
-	perror("heredoc control");	//es por la redireccion?
+	//perror("heredoc control");	//es por la redireccion?
 	ms->status = 0;
 	if (ms->num_pipes > 0)
 		ft_family(ms, temp);
@@ -143,5 +143,6 @@ int	ft_pipe(t_ms *ms)
 		else
 			last_son(ms);
 	}
+	unlink(".tmp");
 	return (0);
 }

@@ -43,7 +43,7 @@ void	minishell(t_ms *ms)
 		//printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
 		if (ms->line == NULL)
 		{
-			//ft_printf("Linea NULL\n");//despues solo /n
+			ft_printf("Linea NULL\n");//despues solo /n
 			//break ;
 			ft_control_d();
 		}
@@ -61,7 +61,8 @@ void	minishell(t_ms *ms)
 		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
-		//ms->num_pipes = 0;
+		ms->num_pipes = 0;
+		ms->fdin = 0;
 		ft_free_toks(ms);
 	}
 	return ;

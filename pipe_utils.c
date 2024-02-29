@@ -82,6 +82,11 @@ int	last_son(t_ms *ms)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (ms->fdin > 0)
+		{
+			dup2(ms->fdin, STDIN_FILENO);
+			close(ms->fdin);
+		}
 		ms->fdout = 0;
 		if (ms->fdout != 0)
 		{
@@ -96,6 +101,11 @@ int	last_son(t_ms *ms)
 	else if (pid < 0)
 		return (1);
 	else
+	{
+		if (ms->fdin > 0)
+			close(ms->fdin);
+		dup2(1, STDOUT_FILENO);
 		waitpid(pid, &status, 0);
+	}
 	return (0);
 }

@@ -97,7 +97,7 @@ typedef struct s_ms
 	char		**envp;
 	int			status;
 
-
+	int			fdin;
 	int			fdout;
 
 }	t_ms;
