@@ -15,14 +15,19 @@ NAME = minishell
 SRCS = $(wildcard *.c)
 CC = gcc
 
+#42
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
+INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
+
+#Home
+#LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
+#INC_READLINE = -I/usr/local/opt/readline/include
 
 #GLFW_FLAGS  = -ldl -lglfw -lm
 #GLFW_FLAGS = -lglfw -L /Users/$(USER)/.brew/opt/glfw/lib/ -lm
 
-INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
-FLAGS = #-Wall -Werror -Wextra 
+FLAGS = -Wall -Werror -Wextra 
 
 RM = rm -f
 

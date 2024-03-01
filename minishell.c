@@ -33,7 +33,7 @@ void	minishell(t_ms *ms)
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 		if (ms->line == NULL)
 		{
-			ft_printf("Linea NULL\n");//despues solo /n
+			//ft_printf("Linea NULL\n");//despues solo /n
 			//break ;
 			ft_control_d();
 		}

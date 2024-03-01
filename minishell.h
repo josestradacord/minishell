@@ -53,7 +53,9 @@
 # define SYNTAXQUOT	"minishell: syntax error: unclosed quotes\n"
 # define SYNTAXIN_R	"minishell: syntax error near unexpected token '<'\n"
 # define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
+# define SYNTAXPIPE	"minishell: syntax error near unexpected token '|'\n"
 
+// Definitions for the colour of messages
 # define BOLD	 "\033[1m"
 # define RED	 "\033[31;1m"
 # define GREEN	 "\033[32;1m"
@@ -73,7 +75,7 @@ typedef struct s_list_e
 	struct s_list_e	*next;
 }	t_list_e;
 
-// Struct to 
+// Struct to store the list of tokens
 typedef struct s_token
 {
 	int				type;
@@ -97,7 +99,6 @@ typedef struct s_ms
 	int			status;
 	int			fdin;
 	int			fdout;
-
 }	t_ms;
 
 // Check functions
@@ -108,7 +109,6 @@ int			ft_check_line(char *line);
 
 // Init functions
 void		ft_init_data(t_ms *ms, char **argv, char **envp);
-
 char		**ft_routes(char **envp);
 
 // Functions used to manage the list of environment variables
@@ -151,7 +151,6 @@ void		ft_cd(t_ms *ms, char *dir);
 void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
-
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
 int			ft_search(t_ms *ms);

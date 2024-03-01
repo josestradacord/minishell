@@ -100,7 +100,8 @@ int	ft_check_redir_i(char *line)
 	{
 		if (line[index] == '<')
 		{
-			while (line[index] == ' ')
+			index++;
+			while (line[index] && line[index] == ' ')
 				index++;
 			if (line[index] == '<')
 			{
@@ -122,11 +123,35 @@ int	ft_check_redir_o(char *line)
 	{
 		if (line[index] == '>')
 		{
+			index++;
 			while (line[index] && line[index] == ' ')
 				index++;
 			if (line[index] == '>')
 			{
 				ft_putstr_fd(SYNTAXOU_R, STDOUT_FILENO);
+				return (FALSE);
+			}
+		}
+		index++;
+	}
+	return (TRUE);
+}
+
+int	ft_check_pipes(char *line)
+{
+	int	index;
+
+	index = 0;
+	while (line[index])
+	{
+		if (line[index] == '|')
+		{
+			index++;
+			while (line[index] && line[index] == ' ')
+				index++;
+			if (line[index] == '|')
+			{
+				ft_putstr_fd(SYNTAXPIPE, STDOUT_FILENO);
 				return (FALSE);
 			}
 		}
@@ -143,5 +168,6 @@ int	ft_check_line(char *line)
 	check = check && ft_check_quotes(line);
 	check = check && ft_check_redir_i(line);
 	check = check && ft_check_redir_o(line);
+	check = check && ft_check_pipes(line);
 	return (check);
 }
