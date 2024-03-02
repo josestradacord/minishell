@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot)
 {

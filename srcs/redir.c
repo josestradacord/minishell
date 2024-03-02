@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+# include "../include/minishell.h"
 
 void	ft_temp(t_ms *ms)
 {

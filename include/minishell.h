@@ -26,7 +26,7 @@
 # include <signal.h>
 # include <termios.h>
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 // DEBUG = 0 no debug; DEBUG = 1 debug
 # define DEBUG	0

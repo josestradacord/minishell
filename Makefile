@@ -12,7 +12,10 @@
 
 NAME = minishell
 
-SRCS = $(wildcard *.c)
+OBJ_DIR = ./obj
+SRC_DIR = ./srcs
+
+SRCS = $(wildcard $(SRC_DIR)/*.c)
 CC = gcc
 
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
@@ -26,7 +29,7 @@ FLAGS = #-Wall -Werror -Wextra
 
 RM = rm -f
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 INC_LFT = -I libft
 LIBFT = libft/libft.a
@@ -38,10 +41,12 @@ YELLOW = "\033[33m"
 RED = "\033[31m"
 NOCOLOR = "\033[0m"
 
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
 	@$(CC) -c $(FLAGS) $< -o $@ $(INC_READLINE)
 
 all: $(NAME)
+
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo $(YELLOW)minishell norminette...$(NOCOLOR)
@@ -57,6 +62,7 @@ $(LIBFT):
 
 clean:
 	@$(RM) $(OBJS)
+	@$(RM) -r $(OBJ_DIR)
 	@make clean -C libft --silent
 	@echo minishell objects files $(RED)cleaned$(NOCOLOR)
 
