@@ -1,7 +1,8 @@
 // - Subir el SHLVL en cada minishell que se ejecute dentro de otra.
-- minishell no ejecuta otra minishell
+//- minishell no ejecuta otra minishell
 // - Gestionar entrada de dos builtins (ej: env | pwd)
 //- Gestionar el uso de builtins en mitad de los pipes
+// - SHLVL no sube al ejecutar otra minishell
 	(ej: ls | grep a | pwd | wc), parece que genera leaks.
 - Integrar señales en la ejecución de pipes (preguntar a fermin?).
 //- Entradas y salidas desde y hacia archivos y here_doc
