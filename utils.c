@@ -46,6 +46,33 @@ int	ft_liste_comp(t_list_e *env, char **val)
 		return(ft_liste_comp(temp->next, val));
 }
 
+int	ft_shlvlupenvp(t_ms *ms)
+{
+	int	i;
+	int			num;
+
+	i = 0;
+		puts("entra");
+	while (ms->envp[i])
+	{
+		if (ms->envp[i] == NULL)
+			return (1);
+		if (ft_strncmp(ms->envp[i], "SHLVL", 5) == 0)
+		{
+			printf("envp antes es %s\n", ms->envp[i]);
+			num = ft_atoi(&ms->envp[i][6]);
+			free(ms->envp[i]);
+			num = num + 1;
+			printf("num es %d\n", num);
+			ms->envp[i] = ft_strjoin("SHLVL=", ft_itoa(num));
+			printf("envp despues es %s\n", ms->envp[i]);
+			return (0);
+		}
+		i++;
+	}
+	return(0);
+}
+
 int	ft_shlvlup(t_ms *ms)
 {
 	t_list_e	*temp;
@@ -58,13 +85,14 @@ int	ft_shlvlup(t_ms *ms)
 			return (1);
 		if (ft_strncmp(temp->name, "SHLVL", 5) == 0)
 		{
-			free(temp->value);
 			num = ft_atoi(temp->value);
+			free(temp->value);
 			num++;
 			temp->value = ft_strdup(ft_itoa(num));
-			return (0);
+			//return (0);
 		}
 		temp = temp->next;
 	}
+	ft_shlvlupenvp(ms);
 	return(0);
 }
