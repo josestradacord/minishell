@@ -153,7 +153,6 @@ char	**ft_free2(char **str)
 
 void	ft_export(t_ms *ms)
 {
-	//char		**args;
 	t_list_e	*temp;
 	t_list_e	*new;
 	char		**val;
@@ -181,9 +180,9 @@ void	ft_export(t_ms *ms)
 		}
 }
 
-void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
+void	ft_unset(t_list_e *env, char *tofind)
 {
-	t_list_e	*temp;				//Si no existe la variable a borrar no hace nada
+	t_list_e	*temp;
 	t_list_e	*temp2;
 
 	if (env == NULL || env->next == NULL)
@@ -194,17 +193,16 @@ void	ft_lste_rm(t_list_e *env, char *tofind)		//unset
 	{
 		temp = env->next;
 		env->next = temp->next;
-		free(temp); //liberar nodo y enlazar el siguiente con el anterior
+		free(temp);
 	}
 	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
 	{
 		temp = env;
 		*env = *env->next;
-		//free(temp);
 	}
 	else
 	{
 		temp = env;
-		ft_lste_rm(temp->next, tofind);
+		ft_unset(temp->next, tofind);
 	}
 }

@@ -101,7 +101,7 @@ int	ft_builtins(t_ms *ms)
 	else if (ft_strncmp("env", ms->command[0], 3) == 0)
 		ft_print_env_lst(ms->env);
 	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
-		ft_lste_rm(ms->env, ms->command[1]);
+		ft_unset(ms->env, ms->command[1]);
 	else if (ft_strncmp("export", ms->command[0], 6) == 0)
 		ft_export(ms);
 	return (0);

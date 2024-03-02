@@ -23,43 +23,28 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
-	int		times;
 	int		status;
-	int		pip[2];
-
-	//int		times;
-	//int		status;
+	
 	if (DEBUG)
-	{
 		printf("\033[36;1mDEBUG: Variables de entorno:\033[0m\n");	
-		//ft_print_env(ms->envp);
-	}
-	//times = 0;
-	//status = TRUE;
 	while (TRUE)
 	{
 		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
-		//ms->line = ft_temp();
-		//printf("%sline es %s%s\n", MAGENTA, ms->line, RESET);
 		if (ms->line == NULL)
 		{
-			ft_printf("Linea NULL\n");//despues solo /n
-			//break ;
+			ft_printf("\n");
 			ft_control_d();
 		}
-		add_history(ms->line);	// así agregamos las líneas en blanco al historial
+		add_history(ms->line);
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
-			//ms->line = NULL;
 			continue ;
 		}
 		ft_parser(ms);
 		ft_nump(ms);
-		//status = ft_executor(ms);
 		if (DEBUG)
 			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
-		//ft_executor(ms, ms->tokens);	//ejecutar hijos mientras haya pipes, mirar pipex a ver si se puede adaptar facilmente
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
 		ms->num_pipes = 0;
@@ -67,10 +52,6 @@ void	minishell(t_ms *ms)
 		ft_free_toks(ms);
 	}
 	return ;
-	/*DEBUG
-	printf("DESPUÉS:\n");
-	ft_print_env_lst(ms->env);
-	FIN DEBUG*/
 }
 
 int	main(int argc, char **argv, char **envp)

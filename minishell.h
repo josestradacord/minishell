@@ -128,7 +128,7 @@ void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
 char		*ft_get_env_value(char *name, t_ms *ms);
 
-void		ft_lste_rm(t_list_e *env, char *tofind);
+void		ft_unset(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
 
 

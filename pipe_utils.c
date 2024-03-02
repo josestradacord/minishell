@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-/* void	ft_error(int i)		//no se usa actualmente
-{
-	if (i == 0)
-		write(2, "ERROR\nWrong number of arguments\n", 32);
-	if (i == 1)
-		write(2, "ERROR\nIncorrect infile\n", 23);
-	if (i == 2)
-		write(2, "ERROR\nOrder not found\n", 22);
-	if (i == 3)
-		write(2, "ERROR\nFailed creating child\n", 28);
-} */
-
 char	**ft_routes(char **envp)
 {
 	int		i;
@@ -58,7 +46,6 @@ int	ft_search(t_ms *ms)
 	int	i;
 	char temp[100];
 
-	//temp = ms->env;
 	i = -1;
 	while (ms->rout[++i])
 	{
