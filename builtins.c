@@ -63,11 +63,11 @@ void	ft_exit(t_ms *ms)
 	index = 0;
 	while (ms->command[index])
 		index++;
-	if (index == 1)
+	if (index == 1)		// puede tener un numero valido despues del exit
 	{
 		ft_putstr_fd(ms->command[index - 1], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		ft_free(ms, EXIT_SUCCESS);
+		ft_free(ms, EXIT_SUCCESS);	//cambiar el exit por el num introducido
 	}
 }
 
@@ -80,11 +80,16 @@ void	changepwd(t_ms *ms, char *dir)
 	old = ms->env;
 	while (temp && ft_strncmp(temp->name, "PWD", 3) != 0)
 		temp = temp->next;
+	if (temp == NULL)
+		return ;
 	if (dir == NULL)
 	{
 		while (old && ft_strncmp(old->name, "HOME", 4) != 0)
 			old = old->next;
-		chdir(old->value);
+		if (old->value)
+			chdir(old->value);
+		else
+			return ; //error?
 		free(temp->value);
 		temp->value =malloc(100 * sizeof(char));
 		if (!temp->value)
@@ -120,17 +125,15 @@ void	ft_cd(t_ms *ms, char *dir)
 
 void	ft_pwd(t_ms *ms)
 {
-	t_list_e *temp;
-
-	temp = ms->env;
-	while(strncmp(temp->name,"PWD", 3) != 0)
+	char pwd[100];
+	if (ms->command[1] == NULL)
 	{
-		if (temp == NULL  || temp->next == NULL)
-			return ;
-		temp = temp->next;
+		getcwd(pwd, 100);
+		printf("%s\n", pwd);
 	}
-	printf("%s\n", temp->value);
-	}
+	else
+		write(2, "pwd: too many arguments\n",24);
+}
 
 char	**ft_free2(char **str)
 {

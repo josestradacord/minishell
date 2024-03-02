@@ -2,10 +2,12 @@
 //- minishell no ejecuta otra minishell
 // - Gestionar entrada de dos builtins (ej: env | pwd)
 //- Gestionar el uso de builtins en mitad de los pipes
-// - SHLVL no sube al ejecutar otra minishell
 	(ej: ls | grep a | pwd | wc), parece que genera leaks.
-- Integrar señales en la ejecución de pipes (preguntar a fermin?).
+// - SHLVL no sube al ejecutar otra minishell
+//- comprobar que al borrar PWD  y usar pwd no pete
 //- Entradas y salidas desde y hacia archivos y here_doc
+//- Integrar señales en la ejecución de pipes (preguntar a fermin?).
 - En export faltan comprobantes de que la variable exista
 	y que el nombre de la variable exista(ej. b= 23(mal); 23(mal))
-- comprobar que al borrar PWD  y usar pwd no pete
+- Arreglar salida
+- acer ctrl c en un bucle salen dos prompts seguidos

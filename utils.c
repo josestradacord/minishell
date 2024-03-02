@@ -52,20 +52,16 @@ int	ft_shlvlupenvp(t_ms *ms)
 	int			num;
 
 	i = 0;
-		puts("entra");
 	while (ms->envp[i])
 	{
 		if (ms->envp[i] == NULL)
 			return (1);
 		if (ft_strncmp(ms->envp[i], "SHLVL", 5) == 0)
 		{
-			printf("envp antes es %s\n", ms->envp[i]);
 			num = ft_atoi(&ms->envp[i][6]);
 			free(ms->envp[i]);
 			num = num + 1;
-			printf("num es %d\n", num);
 			ms->envp[i] = ft_strjoin("SHLVL=", ft_itoa(num));
-			printf("envp despues es %s\n", ms->envp[i]);
 			return (0);
 		}
 		i++;
@@ -89,7 +85,6 @@ int	ft_shlvlup(t_ms *ms)
 			free(temp->value);
 			num++;
 			temp->value = ft_strdup(ft_itoa(num));
-			//return (0);
 		}
 		temp = temp->next;
 	}

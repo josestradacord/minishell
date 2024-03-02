@@ -56,9 +56,9 @@ char	**ft_routes(char **envp)
 int	ft_search(t_ms *ms)
 {
 	int	i;
-	t_list_e *temp;
+	char temp[100];
 
-	temp = ms->env;
+	//temp = ms->env;
 	i = -1;
 	while (ms->rout[++i])
 	{
@@ -66,9 +66,8 @@ int	ft_search(t_ms *ms)
 		if (access(ms->wanted, 0) == 0)
 			return (0);
 	}
-	while (temp && ft_strncmp(temp->name, "PWD", 3))
-		temp = temp->next;
-	ms->wanted = ft_strjoin(temp->value, &ms->command[0][1]);
+	getcwd(temp, 100);
+	ms->wanted = ft_strjoin(temp, &ms->command[0][1]);
 	return (0);
 }
 
