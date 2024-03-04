@@ -1,4 +1,4 @@
 - leaks heredoc
 - heredoc sin comandos
 - hacer ctrl c en un bucle salen dos prompts seguidos
-- salidas del exit
+// - salidas del exit

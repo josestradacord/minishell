@@ -53,7 +53,9 @@ void	ft_echo(t_ms *ms)
 void	ft_exit(t_ms *ms)
 {
 	int	index;
+	int	i;
 
+	i = 0;
 	index = 0;
 	while (ms->command[index])
 		index++;
@@ -63,6 +65,19 @@ void	ft_exit(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
 	}
+	else if (index == 2)
+	{
+		while (ms->command[1][i] && ft_isdigit(ms->command[1][i]))
+			i++;
+		if (ms->command[1][i] == '\0')
+		{
+			ft_putstr_fd(ms->command[index - 2], STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			ft_free(ms, ft_atoi(ms->command[1]));
+		}
+	}
+	else
+		write(2, "minishell: exit: too many arguments\n", 36);
 }
 
 void	changepwd(t_ms *ms, char *dir)
