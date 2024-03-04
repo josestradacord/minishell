@@ -95,6 +95,7 @@ int	last_son(t_ms *ms)
 		if (ms->fdin > 0)
 			close(ms->fdin);
 		dup2(1, STDOUT_FILENO);
+		ft_free_command(ms);
 		waitpid(pid, &status, 0);
 	}
 	return (0);

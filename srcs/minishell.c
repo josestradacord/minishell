@@ -29,13 +29,18 @@ void	minishell(t_ms *ms)
 		printf("\033[36;1mDEBUG: Variables de entorno:\033[0m\n");	
 	while (TRUE)
 	{
-		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
+		ms->line = readline("\033[33;1mminishell_V1.0$\033[0m ");
 		if (ms->line == NULL)
 		{
-			ft_printf("\n");
+			//ft_printf("\n");
 			ft_control_d();
 		}
 		add_history(ms->line);
+		if (!ft_check_line(ms->line))
+		{
+			free(ms->line);
+			continue ;
+		}
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
@@ -58,7 +63,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else

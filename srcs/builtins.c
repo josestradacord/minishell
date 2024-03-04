@@ -13,11 +13,33 @@
 #include "../include/minishell.h"
 
 
-/* void	ft_echo(t_ms *ms)
+int	ft_nflag(char *str)
+{
+	int	index;
+
+	index = 0;
+	if (str[index++] != '-')
+		return (FALSE);
+	while (str[index])
+	{
+		if (str[index] != 'n')
+			return (FALSE);
+		index++;
+	}
+	return (TRUE);
+}
+
+ void	ft_echo(t_ms *ms)
 {
 	int		index;
+	int		n_flg;
 
 	index = 1;
+	n_flg = FALSE;
+	if (ms->command[index])
+		n_flg = ft_nflag(ms->command[index]);
+	if (ms->command[index] && n_flg)
+		index++;
 	while (ms->command[index])
 	{
 		ft_putstr_fd(ms->command[index], STDOUT_FILENO);
@@ -25,10 +47,11 @@
 		if (ms->command[index])
 			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
-	ft_putstr_fd("\n", STDOUT_FILENO);
-} */
+	if (!n_flg)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+}
 
-void	ft_echo(t_ms *ms)
+/* void	ft_echo(t_ms *ms)
 {
 	int	i;
 	int	k;
@@ -49,7 +72,7 @@ void	ft_echo(t_ms *ms)
 		ft_printf("%s\n", ms->command[i]);
 	else
 		ft_printf("%s", ms->command[i]);
-}
+} */
 
 /* void	ft_exit(t_ms *ms)
 {

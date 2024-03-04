@@ -106,6 +106,19 @@ void	ft_free_command(t_ms *ms)
 	ft_free_command(ms);
 }*/
 
+void	ft_free_matrix(char **matrix)
+{
+	int	index;
+
+	index = 0;
+	while (matrix[index])
+	{
+		free(matrix[index]);
+		index++;
+	}
+	free(matrix);
+}
+
 void	ft_free(t_ms *ms, int exit_code)
 {
 	if (DEBUG)
@@ -127,5 +140,6 @@ void	ft_free(t_ms *ms, int exit_code)
 	ft_free_command(ms);
 	if (DEBUG)
 		ft_printf("%sDEBUG:%s Liberado comandos\n", BLUE, RESET);
+	ft_free_matrix(ms->rout);
 	exit(exit_code);
 }

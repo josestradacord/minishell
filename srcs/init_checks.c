@@ -92,74 +92,6 @@ int	ft_check_quotes(char *line)
 }
 
 
-int	ft_check_quotes_d(char *line)
-{
-	int	d_quot;
-	int	s_quot;
-	int	index;
-
-	index = 0;
-	d_quot = TRUE;
-	s_quot = TRUE;
-	while (line[index])
-	{
-		if (line[index] == '\"')
-			if (d_quot)
-				d_quot = FALSE;
-			else
-				d_quot = TRUE;
-		else if (line[index] == '\'')
-		{
-			if (!d_quot)
-				s_quot = TRUE;
-			else
-				s_quot = FALSE;
-		}
-		index++;
-	}
-	if (d_quot)
-		return (TRUE);
-	else
-	{
-		ft_putstr_fd(SYNTAXQUOT, STDOUT_FILENO);
-		return (FALSE);
-	}
-}
-
-int	ft_check_quotes_s(char *line)
-{
-	int	d_quot;
-	int	s_quot;
-	int	index;
-
-	index = 0;
-	d_quot = TRUE;
-	s_quot = TRUE;
-	while (line[index])
-	{
-		if (line[index] == '\'')
-			if (s_quot)
-				s_quot = FALSE;
-			else
-				s_quot = TRUE;
-		else if (line[index] == '\"')
-		{
-			if (!s_quot)
-				d_quot = TRUE;
-			else
-				d_quot = FALSE;
-		}
-		index++;
-	}
-	if (s_quot)
-		return (TRUE);
-	else
-	{
-		ft_putstr_fd(SYNTAXQUOT, STDOUT_FILENO);
-		return (FALSE);
-	}
-}
-
 int	ft_check_redir_i(char *line)
 {
 	int	index;
@@ -169,7 +101,8 @@ int	ft_check_redir_i(char *line)
 	{
 		if (line[index] == '<')
 		{
-			while (line[index] == ' ')
+			index++;
+			while (line[index] && line[index] == ' ')
 				index++;
 			if (line[index] == '<')
 			{
@@ -191,11 +124,35 @@ int	ft_check_redir_o(char *line)
 	{
 		if (line[index] == '>')
 		{
+			index++;
 			while (line[index] == ' ')
 				index++;
 			if (line[index] == '>')
 			{
 				ft_putstr_fd(SYNTAXOU_R, STDOUT_FILENO);
+				return (FALSE);
+			}
+		}
+		index++;
+	}
+	return (TRUE);
+}
+
+int	ft_check_pipes(char *line)
+{
+	int	index;
+
+	index = 0;
+	while (line[index])
+	{
+		if (line[index] == '|')
+		{
+			index++;
+			while (line[index] && line[index] == ' ')
+				index++;
+			if (line[index] == '|')
+			{
+				ft_putstr_fd(SYNTAXPIPE, STDOUT_FILENO);
 				return (FALSE);
 			}
 		}
@@ -212,5 +169,6 @@ int	ft_check_line(char *line)
 	check = check && ft_check_quotes(line);
 	check = check && ft_check_redir_i(line);
 	check = check && ft_check_redir_o(line);
+	check = check && ft_check_pipes(line);
 	return (check);
 }
