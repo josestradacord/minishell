@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_token.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/04 20:01:40 by gpaez-ga          #+#    #+#             */
+/*   Updated: 2024/03/04 20:01:40 by gpaez-ga         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 void	ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot)
 {
@@ -51,6 +63,29 @@ void	ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok)
 	}
 	*end = e;
 	ft_new_token(ms, s, e);
+}
+
+void	ft_noquote(t_token *tok)
+{
+	size_t	len;
+	char	*str;
+
+	len = ft_strlen(tok->token);
+	str = (char *) malloc(sizeof(char) * (len - 1));
+	if (!str)
+	{
+		perror("malloc error");
+		return ;
+	}
+	len = 0;
+	while (tok->token[len])
+	{
+		str[len] = tok->token[len + 1];
+		len++;
+	}
+	str[len - 2] = '\0';
+	free(tok->token);
+	tok->token = str;
 }
 
 void	ft_parse_tokens(t_ms *ms)

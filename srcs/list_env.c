@@ -10,13 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
+
+#include "../include/minishell.h"
 
 t_list_e	*ft_lste_new(char *key, char *value)
 {
 	t_list_e	*node;
 
 	node = (t_list_e *) malloc(sizeof(t_list_e));
+	if (!node)
+		perror("malloc error");
 	if (!node)
 		return (NULL);
 	node->name = ft_strdup(key);
@@ -68,6 +72,13 @@ void	ft_lste_delone(t_list_e *lst, void (*del)(void *))
 	free(lst);
 }
 
+/**
+ * @brief 			This function clears (removes of elements) of the
+ * 					given list
+ * 
+ * @param lst 		The list to be cleared
+ * @param del 		A pointer to the remove function
+ */
 void	ft_lste_clear(t_list_e *lst, void (*del)(void *))
 {
 	t_list_e	*node;
@@ -81,24 +92,3 @@ void	ft_lste_clear(t_list_e *lst, void (*del)(void *))
 	}
 	lst = NULL;
 }
-
-
-/**
- * @brief 			This function clears (removes of elements) of the
- * 					given list
- * 
- * @param lst 		The list to be cleared
- * @param del 		A pointer to the remove function
- */
-/*void	ft_lste_clear(t_list_e **lst, void (*del)(void *))
-{
-	t_list_e	*node;
-
-	while (*lst != NULL)
-	{
-		node = (*lst)->next;
-		ft_lste_delone(*lst, del);
-		*lst = node;
-	}
-	*lst = NULL;
-}*/

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 /**
  * @brief 		This function shows the leaks of the main function
@@ -23,20 +23,11 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
-	if (DEBUG)
-	{
-		printf("\033[36;1mDEBUG: Variables de entorno:\033[0m\n");	
-		//ft_print_env(ms->envp);
-	}
 	while (TRUE)
 	{
-		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
+		ms->line = readline("\033[33;1mminishell_V1.0$\033[0m ");
 		if (ms->line == NULL)
-		{
-			//ft_printf("Linea NULL\n");//despues solo /n
-			//break ;
 			ft_control_d();
-		}
 		add_history(ms->line);
 		if (!ft_check_line(ms->line))
 		{
@@ -46,13 +37,10 @@ void	minishell(t_ms *ms)
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
-			//ms->line = NULL;
 			continue ;
 		}
 		ft_parser(ms);
 		ft_nump(ms);
-		if (DEBUG)
-			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
 		ms->num_pipes = 0;
@@ -66,13 +54,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else
 	{
-		if (DEBUG)
-			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
 		ft_bzero(&ms, sizeof(ms));
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);

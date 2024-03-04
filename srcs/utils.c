@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 20:53:51 by gpaez-ga          #+#    #+#             */
+/*   Updated: 2024/02/27 20:53:51 by gpaez-ga         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 char	**ft_joineq(char *env_var)
 {
@@ -12,7 +24,7 @@ char	**ft_joineq(char *env_var)
 	while (env_var[index] && env_var[index] != '=')
 		index++;
 	pair[0] = ft_substr(env_var, 0, index);
-	pair[1]= ft_substr(env_var, index + 1, len);
+	pair[1] = ft_substr(env_var, index + 1, len);
 	pair[2] = NULL;
 	return (pair);
 }
@@ -36,8 +48,9 @@ int	ft_liste_comp(t_list_e *env, char **val)
 
 int	ft_shlvlupenvp(t_ms *ms)
 {
-	int	i;
-	int			num;
+	int		i;
+	int		num;
+	char	*temp;
 
 	i = 0;
 	while (ms->envp[i])
@@ -49,7 +62,9 @@ int	ft_shlvlupenvp(t_ms *ms)
 			num = ft_atoi(&ms->envp[i][6]);
 			free(ms->envp[i]);
 			num = num + 1;
-			ms->envp[i] = ft_strjoin("SHLVL=", ft_itoa(num));
+			temp = ft_itoa(num);
+			ms->envp[i] = ft_strjoin("SHLVL=", temp);
+			free(temp);
 			return (0);
 		}
 		i++;
@@ -79,4 +94,16 @@ int	ft_shlvlup(t_ms *ms)
 	}
 	ft_shlvlupenvp(ms);
 	return (0);
+}
+
+void	ft_print_env_lst(t_list_e *env)
+{
+	t_list_e	*node;
+
+	node = env;
+	while (node)
+	{
+		printf("%s=%s\n", node->name, node->value);
+		node = node->next;
+	}
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	ft_print_env(char **envp)
 {
@@ -23,31 +23,6 @@ void	ft_print_env(char **envp)
 		index++;
 	}
 }
-
-void	ft_print_env_lst(t_list_e *env)
-{
-	t_list_e	*node;
-
-	node = env;
-	while (node)
-	{
-		printf("%s=%s\n", node->name, node->value);
-		node = node->next;
-	}
-}
-
-/*t_list_e	*ft_create_node(char *env_var)
-{
-	char		**pair;
-	t_list_e	*node;
-
-	pair = ft_split(env_var, '=');
-	node = ft_lste_new(pair[0], pair[1]);
-	free(pair[0]);
-	free(pair[1]);
-	free(pair);
-	return (node);
-}*/
 
 t_list_e	*ft_create_node(char *env_var)
 {
@@ -64,7 +39,7 @@ t_list_e	*ft_create_node(char *env_var)
 	while (env_var[index] && env_var[index] != '=')
 		index++;
 	pair[0] = ft_substr(env_var, 0, index);
-	pair[1]= ft_substr(env_var, index + 1, len);
+	pair[1] = ft_substr(env_var, index + 1, len);
 	pair[2] = NULL;
 	node = ft_lste_new(pair[0], pair[1]);
 	free(pair[0]);
@@ -116,18 +91,8 @@ char	*ft_get_env_value(char *name, t_ms *ms)
 	node = ms->env;
 	while (node)
 	{
-		if (DEBUG)
-		{
-			printf("DEBUG. Buscando variable de entorno con nombre: #%s#\n", name);
-		}
 		if (!ft_strncmp(name, node->name, ft_strlen(name)))
-		{
-			if (DEBUG)
-			{
-				printf("DEBUG. Buscando variable de entorno con nombre: #%s# en #%s# y valor #%s#\n", name, node->name, node->value);
-			}
 			return (node->value);
-		}
 		node = node->next;
 	}
 	return (NULL);

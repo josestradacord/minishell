@@ -26,7 +26,7 @@
 # include <signal.h>
 # include <termios.h>
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 // DEBUG = 0 no debug; DEBUG = 1 debug
 # define DEBUG	0
@@ -142,7 +142,6 @@ void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
 
 // Executor functions
-void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
