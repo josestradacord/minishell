@@ -43,8 +43,8 @@ char	**ft_routes(char **envp)
 
 int	ft_search(t_ms *ms)
 {
-	int	i;
-	char temp[100];
+	int		i;
+	char	temp[100];
 
 	i = -1;
 	while (ms->rout[++i])
@@ -58,11 +58,27 @@ int	ft_search(t_ms *ms)
 	return (0);
 }
 
-int	ft_cmd(t_ms * ms)
+int	ft_cmd(t_ms *ms)
 {
 	if (ft_search(ms) == 0)
 		return (execve(ms->wanted, ms->command, ms->envp));
 	return (1);
+}
+
+static void	ft_lastsonaux(t_ms *ms)
+{
+	if (ms->fdin > 0)
+	{
+		dup2(ms->fdin, STDIN_FILENO);
+		close(ms->fdin);
+	}
+	if (ft_out(ms) == 2)
+	{
+		dup2 (ms->fdout, STDOUT_FILENO);
+		close(ms->fdout);
+	}
+	else
+		dup2(1, STDOUT_FILENO);
 }
 
 int	last_son(t_ms *ms)
@@ -73,18 +89,7 @@ int	last_son(t_ms *ms)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (ms->fdin > 0)
-		{
-			dup2(ms->fdin, STDIN_FILENO);
-			close(ms->fdin);
-		}
-		if (ft_out(ms) == 2)
-		{
-			dup2 (ms->fdout, STDOUT_FILENO);
-			close(ms->fdout);
-		}
-		else
-			dup2(1, STDOUT_FILENO);
+		ft_lastsonaux(ms);
 		ft_cmd(ms);
 		exit (0);
 	}
@@ -96,7 +101,9 @@ int	last_son(t_ms *ms)
 			close(ms->fdin);
 		dup2(1, STDOUT_FILENO);
 		ft_free_command(ms);
-		waitpid(pid, &status, 0);
+		waitpid(pid, &status, WUNTRACED);
+		if (WIFEXITED (status))
+			ms->status = WEXITSTATUS(status);
 	}
 	return (0);
 }

@@ -72,6 +72,13 @@ void	ft_lste_delone(t_list_e *lst, void (*del)(void *))
 	free(lst);
 }
 
+/**
+ * @brief 			This function clears (removes of elements) of the
+ * 					given list
+ * 
+ * @param lst 		The list to be cleared
+ * @param del 		A pointer to the remove function
+ */
 void	ft_lste_clear(t_list_e *lst, void (*del)(void *))
 {
 	t_list_e	*node;
@@ -85,24 +92,3 @@ void	ft_lste_clear(t_list_e *lst, void (*del)(void *))
 	}
 	lst = NULL;
 }
-
-
-/**
- * @brief 			This function clears (removes of elements) of the
- * 					given list
- * 
- * @param lst 		The list to be cleared
- * @param del 		A pointer to the remove function
- */
-/*void	ft_lste_clear(t_list_e **lst, void (*del)(void *))
-{
-	t_list_e	*node;
-
-	while (*lst != NULL)
-	{
-		node = (*lst)->next;
-		ft_lste_delone(*lst, del);
-		*lst = node;
-	}
-	*lst = NULL;
-}*/

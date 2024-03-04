@@ -34,7 +34,7 @@ BOBJS = ${BSRCS:.c=.o}
 
 CC = gcc -c
 
-FLAGS = #-Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra
 
 GREEN = "\033[32m"
 RED = "\033[31m"

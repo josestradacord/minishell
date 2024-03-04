@@ -12,7 +12,6 @@
 
 #include "../include/minishell.h"
 
-
 int	ft_nflag(char *str)
 {
 	int	index;
@@ -29,10 +28,10 @@ int	ft_nflag(char *str)
 	return (TRUE);
 }
 
- void	ft_echo(t_ms *ms)
+void	ft_echo(t_ms *ms)
 {
-	int		index;
-	int		n_flg;
+	int	index;
+	int	n_flg;
 
 	index = 1;
 	n_flg = FALSE;
@@ -51,34 +50,6 @@ int	ft_nflag(char *str)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
-/* void	ft_echo(t_ms *ms)
-{
-	int	i;
-	int	k;
-
-	if (ft_strncmp(ms->command[1], "-n", 2) == 0 && ms->command[1][2] == '\0')
-	{
-		i = 2;
-		k = 0;
-	}
-	else
-	{
-		i = 1;
-		k = 1;
-	}
-	while (ms->command[i + 1])
-		ft_printf("%s ", ms->command[i++]);
-	if (k == 1)
-		ft_printf("%s\n", ms->command[i]);
-	else
-		ft_printf("%s", ms->command[i]);
-} */
-
-/* void	ft_exit(t_ms *ms)
-{
-	exit(0);
-} */
-
 void	ft_exit(t_ms *ms)
 {
 	int	index;
@@ -86,11 +57,11 @@ void	ft_exit(t_ms *ms)
 	index = 0;
 	while (ms->command[index])
 		index++;
-	if (index == 1)		// puede tener un numero valido despues del exit
+	if (index == 1)
 	{
 		ft_putstr_fd(ms->command[index - 1], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		ft_free(ms, EXIT_SUCCESS);	//cambiar el exit por el num introducido
+		ft_free(ms, EXIT_SUCCESS);
 	}
 }
 
@@ -112,9 +83,9 @@ void	changepwd(t_ms *ms, char *dir)
 		if (old->value)
 			chdir(old->value);
 		else
-			return ; //error?
+			return ;
 		free(temp->value);
-		temp->value =malloc(100 * sizeof(char));
+		temp->value = malloc(100 * sizeof(char));
 		if (!temp->value)
 			perror("malloc error");
 		getcwd(temp->value, 100);
@@ -124,7 +95,7 @@ void	changepwd(t_ms *ms, char *dir)
 		old = old->next;
 	if (ft_strncmp(dir, "-", 1) == 0)
 		chdir(old->value);
- 	free(old->value);
+	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
 	temp->value = malloc(100 * sizeof(char));
@@ -145,17 +116,17 @@ void	ft_cd(t_ms *ms, char *dir)
 		changepwd(ms, dir);
 }
 
-
 void	ft_pwd(t_ms *ms)
 {
-	char pwd[100];
+	char	pwd[100];
+
 	if (ms->command[1] == NULL)
 	{
 		getcwd(pwd, 100);
 		printf("%s\n", pwd);
 	}
 	else
-		write(2, "pwd: too many arguments\n",24);
+		write(2, "pwd: too many arguments\n", 24);
 }
 
 char	**ft_free2(char **str)
@@ -184,23 +155,29 @@ void	ft_export(t_ms *ms)
 	i = 0;
 	temp = ms->env;
 	if (!ms->command[1])
+	{
 		while (temp)
 		{
 			ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
 			temp = temp->next;
 		}
+	}
 	else
-		while(ms->command[++i] != NULL)
+	{
+		while (ms->command[++i] != NULL)
 		{
 			val = ft_joineq(ms->command[i]);
 			if (ft_isalpha(val[0][0]) == 1)
+			{
 				if (ft_liste_comp(ms->env, val) != 0)
 				{
 					new = ft_lste_new(val[0], val[1]);
 					ft_lste_addback(&temp, new);
 				}
+			}
 			ft_free2(val);
 		}
+	}
 }
 
 void	ft_unset(t_list_e *env, char *tofind)

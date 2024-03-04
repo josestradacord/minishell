@@ -30,7 +30,7 @@ void	ft_first(t_ms *ms, t_token *first)
 		close(ms->fd[ms->status][0]);
 		ms->command = ft_create_command(first);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
-		{	
+		{
 			ft_builtins(ms);
 			ft_free_command(ms);
 		}
@@ -104,7 +104,9 @@ void	ft_last(t_ms *ms, t_token *last)
 	}
 	close(ms->fd[ms->status][1]);
 	close(ms->fd[ms->status][0]);
-	waitpid(ms->child_pid, &status, 0);
+	waitpid(ms->child_pid, &status, WUNTRACED);
+	if (WIFEXITED (status))
+		ms->status = WEXITSTATUS(status);
 }
 
 void	ft_family(t_ms *ms, t_token *temp)
@@ -134,10 +136,7 @@ void	ft_family(t_ms *ms, t_token *temp)
 
 int	ft_pipe(t_ms *ms)
 {
-	int		i;
-	int		end;
 	t_token	*temp;
-	int		status;
 
 	if (ft_enter(ms) == 1)
 		temp = ms->tokens->next;
@@ -148,8 +147,6 @@ int	ft_pipe(t_ms *ms)
 		ft_family(ms, temp);
 	else if (ms->num_pipes == 0)
 	{
-		if (DEBUG)
-			printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
 		ms->command = ft_create_command(temp);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{

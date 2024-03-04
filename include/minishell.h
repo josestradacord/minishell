@@ -140,9 +140,8 @@ void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
 void		ft_new_token(t_ms *ms, int start, int end);
 void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
-
+void		ft_noquote(t_token *tok);
 // Executor functions
-void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions

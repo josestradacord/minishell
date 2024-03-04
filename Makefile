@@ -25,7 +25,7 @@ LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 
 INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
 
-FLAGS = #-Wall -Werror -Wextra 
+FLAGS = -Wall -Werror -Wextra 
 
 RM = rm -f
 

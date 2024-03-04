@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	ft_temp(t_ms *ms)
 {
@@ -36,7 +36,7 @@ void	ft_temp(t_ms *ms)
 	if (ms->wanted)
 	{
 		free(ms->wanted);
-		ms->wanted = NULL;	
+		ms->wanted = NULL;
 	}
 	write(ms->fdin, str, ft_strlen(str));
 }
@@ -52,8 +52,7 @@ int	here_doc(t_ms *ms)
 
 int	ft_enter(t_ms *ms)
 {
-	int	i;
-	int	fdin;
+	int		i;
 	t_token	*tok;
 
 	tok = ms->tokens;
@@ -75,21 +74,18 @@ int	ft_enter(t_ms *ms)
 
 int	ft_out(t_ms *ms)
 {
-	int	i;
-	int	fdin;
+	int		i;
 	t_token	*tok;
 
 	tok = ms->tokens;
 	i = 1;
-
-	while (tok->next && ms->tokens->type != OUTREDIR && ms->tokens->type != OUTREDIR_A)
+	while (tok->next && ms->tokens->type != OUTREDIR
+		&& ms->tokens->type != OUTREDIR_A)
 		tok = tok->next;
 	if (tok->type == 14)
 	{
-		//perror ("es un >");
 		while (tok->token[i] <= ' ')
 			i++;
-		//printf("archivo %s\n",&tok->token[i]);
 		ms->fdout = open(&tok->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 		return (2);
 	}

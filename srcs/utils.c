@@ -24,7 +24,7 @@ char	**ft_joineq(char *env_var)
 	while (env_var[index] && env_var[index] != '=')
 		index++;
 	pair[0] = ft_substr(env_var, 0, index);
-	pair[1]= ft_substr(env_var, index + 1, len);
+	pair[1] = ft_substr(env_var, index + 1, len);
 	pair[2] = NULL;
 	return (pair);
 }
@@ -43,13 +43,13 @@ int	ft_liste_comp(t_list_e *env, char **val)
 		return (0);
 	}
 	else
-		return(ft_liste_comp(temp->next, val));
+		return (ft_liste_comp(temp->next, val));
 }
 
 int	ft_shlvlupenvp(t_ms *ms)
 {
-	int	i;
-	int	num;
+	int		i;
+	int		num;
 	char	*temp;
 
 	i = 0;
@@ -69,7 +69,7 @@ int	ft_shlvlupenvp(t_ms *ms)
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 int	ft_shlvlup(t_ms *ms)
@@ -93,5 +93,17 @@ int	ft_shlvlup(t_ms *ms)
 		temp = temp->next;
 	}
 	ft_shlvlupenvp(ms);
-	return(0);
+	return (0);
+}
+
+void	ft_print_env_lst(t_list_e *env)
+{
+	t_list_e	*node;
+
+	node = env;
+	while (node)
+	{
+		printf("%s=%s\n", node->name, node->value);
+		node = node->next;
+	}
 }

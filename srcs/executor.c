@@ -12,28 +12,6 @@
 
 #include "../include/minishell.h"
 
-void	ft_exec_cmd(t_ms *ms, int file_i, int file_o, int p)
-{
-	(void)	p;
-	(void)	file_i;
-	(void)	file_o;
-	int	status;
-
-	ms->child_pid = fork();
-	if (ms->child_pid < 0)
-		perror(ms->command[0]);
-	else if (ms->child_pid == 0)
-	{
-		if (execve(ms->command[0], ms->command, ms->envp) == - 1)
-			perror(ms->command[0]);
-		ft_free(ms, EXIT_FAILURE);
-	}
-	else
-	{
-		waitpid(ms->child_pid, &status, WUNTRACED);
-	}
-}
-
 /**
  * @brief 		Counts the number of tokens that must have the command line
  * 				it stops when it finds a PIPE
@@ -62,26 +40,17 @@ char	**ft_create_command(t_token *toks)
 	char	**res;
 	int		index;
 
-	if (DEBUG)
-	{
-		printf("%sDEBUG:%s Entrando a crear el comando.\nLista de tokens:\n", BLUE, RESET);
-		ft_print_tok_list(toks);
-	}
 	res = malloc(sizeof(char *) * (ft_count_tokens(toks) + 1));
 	if (!res)
 		perror("malloc error");
 	index = 0;
 	while (toks && toks->type != PIPE && toks->type != 14 && toks->type != 15)
 	{
-		if (DEBUG)
-			printf("%sDEBUG:%s%s Copio el token: #%s#%s\n", BLUE, RESET, CYAN, toks->token, RESET);
 		if (toks->type <= DBLQUOTE && toks->type >= NOQUOTE)
 			res[index] = ft_strdup(toks->token);
 		index++;
 		toks = toks->next;
 	}
-	if (DEBUG)
-		printf("%sDEBUG:%s Fuera del bucle.\n", BLUE, RESET);
 	res[index] = NULL;
 	return (res);
 }
@@ -107,34 +76,9 @@ int	ft_builtins(t_ms *ms)
 	return (0);
 }
 
-void	ft_execute_command(t_ms *ms)
-{
-	int	fd_pipe[2];
-	int	fd_in;
-	int	index_pipe;
-
-	fd_in = STDIN_FILENO;
-	index_pipe = 0;
-	while (index_pipe <= ms->num_pipes)
-	{
-		if (pipe(fd_pipe) == -1)
-			perror("pipe");
-		if (index_pipe == ms->num_pipes)
-		{
-			ft_exec_cmd(ms, fd_in, STDOUT_FILENO, index_pipe);
-		}
-		else
-		{
-			ft_exec_cmd(ms, fd_in, fd_pipe[1], index_pipe);
-		}
-		close(fd_pipe[1]);
-		index_pipe++;
-	}
-}
-
 void	ft_nump(t_ms *ms)
 {
-	t_token *toks;
+	t_token	*toks;
 
 	toks = ms->tokens;
 	while (toks)
@@ -143,41 +87,4 @@ void	ft_nump(t_ms *ms)
 			ms->num_pipes++;
 		toks = toks->next;
 	}
-	//printf("%d num pipes\n", ms->num_pipes);
 }
-
-void	ft_executor(t_ms *ms, t_token *toks)
-{
-
-	//lo de abajo es porvisional
-	if (DEBUG)
-		printf("%sDEBUG:%s Entrando al ejecutor.\n", BLUE, RESET);
-	ms->command = ft_create_command(toks);
-	//perror("estoy en el ejecutor");
-	//printf("el comando es %s\n", ms->command[0]);
-	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
-	{
-		ft_builtins(ms);
-		ft_free_command(ms);
-	}
-	else
-		ft_cmd(ms);
-		//ft_execute_command(ms);
-	if (DEBUG)
-		printf("%sDEBUG:%s Saliendo del ejecutor.\n", BLUE, RESET);
-}
-
-/* void	ft_executor(t_ms *ms)	//original
-{
-	if (DEBUG)
-		printf("DEBUG. Entrando al ejecutor.\n");
-	ms->command = ft_create_command(ms->tokens);
-	if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33) != 0)
-		ft_builtins(ms);
-	else
-		ft_cmd(ms);
-		//ft_execute_command(ms);
-	ft_free_command(ms);
-	if (DEBUG)
-		printf("DEBUG. Saliendo del ejecutor.\n");
-} */
