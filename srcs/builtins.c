@@ -121,14 +121,19 @@ void	changepwd(t_ms *ms, char *dir)
 		chdir("/");
 }
 
-void	ft_cd(t_ms *ms, char *dir)
+int	ft_cd(t_ms *ms, char *dir)
 {
 	if (dir == NULL)
 		changepwd(ms, dir);
 	else if (chdir(dir) != 0)
-		changepwd(ms, dir);
+	{
+		write(2, "cd: no such file or directory\n", 30);
+		return (1);
+		//changepwd(ms, dir);
+	}
 	else
 		changepwd(ms, dir);
+	return (0);
 }
 
 void	ft_pwd(t_ms *ms)

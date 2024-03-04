@@ -64,7 +64,7 @@ int	ft_builtins(t_ms *ms)
 	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
 		ft_exit(ms);
 	else if (ft_strncmp("cd", ms->command[0], 2) == 0)
-		ft_cd(ms, ms->command[1]);
+		return (ft_cd(ms, ms->command[1]));
 	else if (ft_strncmp("pwd", ms->command[0], 3) == 0)
 		ft_pwd(ms);
 	else if (ft_strncmp("env", ms->command[0], 3) == 0)
