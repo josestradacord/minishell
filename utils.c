@@ -72,7 +72,7 @@ int	ft_shlvlup(t_ms *ms)
 			num = ft_atoi(temp->value);
 			free(temp->value);
 			num++;
-			temp->value = ft_strdup(ft_itoa(num));
+			temp->value = ft_itoa(num);
 		}
 		temp = temp->next;
 	}
