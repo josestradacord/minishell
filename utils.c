@@ -73,6 +73,7 @@ int	ft_shlvlup(t_ms *ms)
 			free(temp->value);
 			num++;
 			temp->value = ft_itoa(num);
+			break ;
 		}
 		temp = temp->next;
 	}
