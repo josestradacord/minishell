@@ -59,6 +59,8 @@ t_list_e	*ft_create_node(char *env_var)
 	index = 0;
 	len = ft_strlen(env_var);
 	pair = malloc(sizeof(char *) * 3);
+	if (!pair)
+		perror("malloc error");
 	while (env_var[index] && env_var[index] != '=')
 		index++;
 	pair[0] = ft_substr(env_var, 0, index);

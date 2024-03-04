@@ -53,7 +53,6 @@ void	ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok)
 	ft_new_token(ms, s, e);
 }
 
-
 void	ft_parse_tokens(t_ms *ms)
 {
 	int	start;

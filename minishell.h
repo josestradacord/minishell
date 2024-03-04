@@ -53,6 +53,7 @@
 # define SYNTAXQUOT	"minishell: syntax error: unclosed quotes\n"
 # define SYNTAXIN_R	"minishell: syntax error near unexpected token '<'\n"
 # define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
+# define SYNTAXPIPE	"minishell: syntax error near unexpected token '|'\n"
 
 // Colours definitions
 # define BOLD		"\033[1m"
@@ -88,7 +89,7 @@ typedef struct s_ms
 	char		*line;
 	char		**command;
 	char		*wanted;
-	char		**rout;		//added by Gabriel
+	char		**rout;
 	t_token		*tokens;
 	int			num_pipes;
 	int			fd[20][2];
@@ -96,6 +97,7 @@ typedef struct s_ms
 	t_list_e	*env;
 	char		**envp;
 	int			status;
+	int			fdin;
 	int			fdout;
 }	t_ms;
 
@@ -107,7 +109,6 @@ int			ft_check_line(char *line);
 
 // Init functions
 void		ft_init_data(t_ms *ms, char **argv, char **envp);
-
 char		**ft_routes(char **envp);
 
 // Functions used to manage the list of environment variables
@@ -125,7 +126,6 @@ void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
 void		ft_print_env_lst(t_list_e *env);
 char		*ft_get_env_value(char *name, t_ms *ms);
-
 void		ft_lste_rm(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
 
@@ -146,13 +146,12 @@ void		ft_executor(t_ms *ms, t_token *toks);
 char		**ft_create_command(t_token *tok);
 
 // Builtins functions
-void		ft_builtins(t_ms *ms);
+int			ft_builtins(t_ms *ms);
 void		ft_echo(t_ms *ms);
 void		ft_cd(t_ms *ms, char *dir);
 void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
-
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
 int			ft_pipe2(t_ms *ms);
@@ -171,11 +170,15 @@ char		**ft_joineq(char *astr);
 int			ft_liste_comp(t_list_e *env, char **val);
 int			ft_shlvlup(t_ms *ms);
 int			last_son(t_ms *ms);
-int			son(t_ms *ms);
 void		ft_nump(t_ms *ms);
 
 //Signals management
 void		ft_signals(void);
 void		ft_set_signal(int s);
 void		ft_control_d(void);
+
+//redir functions
+int			ft_enter(t_ms *ms);
+int			ft_out(t_ms *ms);
+
 #endif

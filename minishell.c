@@ -23,30 +23,21 @@ void	ft_leaks(void)
 
 void	minishell(t_ms *ms)
 {
-	//int		times;
-	//int		status;
-	//int	pip[2];
-
 	if (DEBUG)
 	{
-		printf("DEBUG: Variables de entorno:\n");	
+		printf("\033[36;1mDEBUG: Variables de entorno:\033[0m\n");	
 		//ft_print_env(ms->envp);
 	}
-	//times = 0;
-	//status = TRUE;
 	while (TRUE)
 	{
-		ms->line = readline("minishell_V0.9$ ");
-/* 		times++;
-		if (times == 100)
-			status = FALSE; */
+		ms->line = readline("\033[33;1mminishell_V0.9$\033[0m ");
 		if (ms->line == NULL)
 		{
-			/*ft_printf("Linea NULL\n");//despues solo /n
-			break ;*/
+			//ft_printf("Linea NULL\n");//despues solo /n
+			//break ;
 			ft_control_d();
 		}
-		add_history(ms->line);	// así agregamos las líneas en blanco al historial
+		add_history(ms->line);
 		if (!ft_check_line(ms->line))
 		{
 			free(ms->line);
@@ -55,26 +46,20 @@ void	minishell(t_ms *ms)
 		if (ft_blank_line(ms->line))
 		{
 			free(ms->line);
+			//ms->line = NULL;
 			continue ;
 		}
 		ft_parser(ms);
 		ft_nump(ms);
-		//status = ft_executor(ms);
 		if (DEBUG)
-			printf("DEBUG: Ejecuto el comando: #%s#\n", ms->tokens->token);
-		if (ft_pipe2(ms) != 0)
+			printf("%sDEBUG:%s Ejecuto el comando: #%s#\n", BLUE, RESET, ms->tokens->token);
+		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
-		//ft_pipe(ms);
-		//ft_executor(ms);
-		//ft_echo(ms);
-
-
+		ms->num_pipes = 0;
+		ms->fdin = 0;
 		ft_free_toks(ms);
 	}
-	/*DEBUG
-	printf("DESPUÉS:\n");
-	ft_print_env_lst(ms->env);
-	FIN DEBUG*/
+	return ;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -87,11 +72,11 @@ int	main(int argc, char **argv, char **envp)
 	else
 	{
 		if (DEBUG)
-			printf("DEBUG: Voy a iniciar\n");
+			printf("%sDEBUG:%s Voy a iniciar\n", BLUE, RESET);
+		ft_bzero(&ms, sizeof(ms));
 		ft_init_data(&ms, argv, envp);
 		minishell(&ms);
 		ft_free(&ms, EXIT_SUCCESS);
 	}
-	
 	return (0);
 }
