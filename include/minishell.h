@@ -137,6 +137,7 @@ void		ft_print_tok_list(t_token *tok);
 void		ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_dbl_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
+void		ft_noquote(t_token *tok);
 void		ft_new_token(t_ms *ms, int start, int end);
 void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
@@ -147,13 +148,13 @@ char		**ft_create_command(t_token *tok);
 // Builtins functions
 int			ft_builtins(t_ms *ms);
 void		ft_echo(t_ms *ms);
-void		ft_cd(t_ms *ms, char *dir);
+int			ft_cd(t_ms *ms, char *dir);
 void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 void		ft_export(t_ms *ms);
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
-int			ft_pipe2(t_ms *ms);
+void		ft_unset(t_list_e *env, char *tofind);
 int			ft_search(t_ms *ms);
 char		**ft_free2(char **str);
 

@@ -16,10 +16,19 @@ void	ft_signal_controlc(int signal)
 {
 	if (signal == SIGINT)
 	{
-		ft_putstr_fd("\n", STDOUT_FILENO);
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
+		if (ft_strncmp(rl_line_buffer, "", 1) != 0)
+		{
+			ft_putstr_fd("^C\n", STDOUT_FILENO);
+			rl_replace_line("", 1);
+			rl_redisplay();
+		}
+		else
+		{
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			rl_replace_line("", 1);
+			rl_on_new_line();
+			rl_redisplay();
+		}
 	}
 }
 
@@ -44,21 +53,3 @@ void	ft_control_d(void)
 	ft_putstr_fd("exit\n", 0);
 	exit(0);
 }
-
-// ANTES
-//static int	*act_signal;
-
-/*int	ft_get_signal(void)
-{
-	int	get_sig;
-
-	get_sig = *act_signal;
-	return (get_sig);
-}*/
-/*void	ft_set_signal(int s)
-{
-	static int	active_signal;
-
-	active_signal = s;
-	act_signal = &active_signal;
-}*/
