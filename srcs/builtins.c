@@ -203,12 +203,12 @@ void	ft_export(t_ms *ms)
 void	ft_unset(t_list_e *env, char *tofind)
 {
 	t_list_e	*temp;
-	t_list_e	*temp2;
+	//t_list_e	*temp2;
 
 	if (env == NULL || env->next == NULL)
 		return ;
 	temp = env;
-	temp2 = temp;
+	//temp2 = temp;
 	if (ft_strncmp(env->next->name, tofind, ft_strlen(tofind)) == 0)
 	{
 		temp = env->next;
