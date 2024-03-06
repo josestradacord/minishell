@@ -77,6 +77,7 @@ void	ft_last(t_ms *ms, t_token *last)
 	int	status;
 	int	i;
 
+	i = 0;
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -141,6 +142,7 @@ int	ft_pipe(t_ms *ms)
 	t_token	*temp;
 	int	i;
 
+	i = 0;
 	if (ft_enter(ms) == 1)
 		temp = ms->tokens->next;
 	else
