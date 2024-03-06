@@ -25,8 +25,6 @@ void	ft_temp(t_ms *ms)
 	while (ms->tokens->token[i] <= ' ')
 		i++;
 	ms->wanted = ft_strdup(&ms->tokens->token[i]);
-	if (DEBUG)
-		printf("wanted en heredoc es $%s$\n", ms->wanted);
 	while (ft_strncmp(str2, ms->wanted, ft_strlen(str2) - 1))
 	{
 		write(1, "heredoc> ", 9);
@@ -39,6 +37,10 @@ void	ft_temp(t_ms *ms)
 		ms->wanted = NULL;
 	}
 	write(ms->fdin, str, ft_strlen(str));
+	if (str != NULL && ft_strncmp(str, "", 1))
+		free(str);
+	if (str2)
+		free(str2);
 }
 
 int	here_doc(t_ms *ms)

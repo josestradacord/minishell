@@ -57,6 +57,7 @@ void	ft_exit(t_ms *ms)
 
 	i = 0;
 	index = 0;
+	unlink(".tmp");
 	while (ms->command[index])
 		index++;
 	if (index == 1)

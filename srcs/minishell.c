@@ -42,7 +42,7 @@ void	minishell(t_ms *ms)
 		ft_parser(ms);
 		ft_nump(ms);
 		if (ft_pipe(ms) != 0)
-			perror("pipe sale mal");
+			perror("pipe went worng");
 		ms->num_pipes = 0;
 		ms->fdin = 0;
 		ft_free_toks(ms);
