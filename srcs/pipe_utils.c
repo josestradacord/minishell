@@ -91,7 +91,8 @@ int	last_son(t_ms *ms)
 	{
 		ft_lastsonaux(ms);
 		ft_cmd(ms);
-		exit (0);
+		write(2, "command not found\n", 18);
+		exit (127);
 	}
 	else if (pid < 0)
 		return (1);

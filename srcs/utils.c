@@ -96,14 +96,17 @@ int	ft_shlvlup(t_ms *ms)
 	return (0);
 }
 
-void	ft_print_env_lst(t_list_e *env)
+int	ft_print_env_lst(t_list_e *env)
 {
 	t_list_e	*node;
 
 	node = env;
+	if (node == NULL)
+		return(1);
 	while (node)
 	{
 		printf("%s=%s\n", node->name, node->value);
 		node = node->next;
 	}
+	return(0);
 }

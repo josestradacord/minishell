@@ -75,9 +75,7 @@ void	ft_mid(t_ms *ms, t_token *mid)
 void	ft_last(t_ms *ms, t_token *last)
 {
 	int	status;
-	int	i;
 
-	i = 0;
 	ms->child_pid = fork();
 	if (ms->child_pid == 0)
 	{
@@ -97,13 +95,13 @@ void	ft_last(t_ms *ms, t_token *last)
 		ms->command = ft_create_command(last);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
 		{
-			i = ft_builtins(ms);
+			ms->status = ft_builtins(ms);
 			ft_free_command(ms);
-			exit(i);
+			exit(ms->status);
 		}
 		else
 			ft_cmd(ms);
-		exit (0);
+		exit (1);
 	}
 	close(ms->fd[ms->status][1]);
 	close(ms->fd[ms->status][0]);
@@ -140,9 +138,7 @@ void	ft_family(t_ms *ms, t_token *temp)
 int	ft_pipe(t_ms *ms)
 {
 	t_token	*temp;
-	int	i;
 
-	i = 0;
 	if (ft_enter(ms) == 1)
 		temp = ms->tokens->next;
 	else
@@ -154,12 +150,11 @@ int	ft_pipe(t_ms *ms)
 	{
 		ms->command = ft_create_command(temp);
 		if (ms->command[0] == NULL)
-			return (0);
+			return (5);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
-			i = ft_builtins(ms);
+			ms->status = ft_builtins(ms);
 			ft_free_command(ms);
-			return(i);
 		}
 		else
 			last_son(ms);

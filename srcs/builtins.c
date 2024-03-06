@@ -179,7 +179,7 @@ char	**ft_free2(char **str)
 	return (NULL);
 }
 
-void	ft_export(t_ms *ms)
+int	ft_export(t_ms *ms)
 {
 	t_list_e	*temp;
 	t_list_e	*new;
@@ -208,10 +208,17 @@ void	ft_export(t_ms *ms)
 					new = ft_lste_new(val[0], val[1]);
 					ft_lste_addback(&temp, new);
 				}
+				ft_free2(val);
 			}
-			ft_free2(val);
+			else
+			{
+				write(2, "export: not a valid identifier\n", 31);
+				ft_free2(val);
+				return (1);
+			}
 		}
 	}
+	return (0);
 }
 
 void	ft_unset(t_list_e *env, char *tofind)
