@@ -50,14 +50,25 @@ void	ft_echo(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
+int	ft_isnbr(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (!ft_isdigit(str[index]))
+			return (FALSE);
+		index++;
+	}
+	return (TRUE);
+}
+
 void	ft_exit(t_ms *ms)
 {
 	int	index;
-	int	i;
 
-	i = 0;
 	index = 0;
-	unlink(".tmp");
 	while (ms->command[index])
 		index++;
 	if (index == 1)
@@ -66,19 +77,21 @@ void	ft_exit(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
 	}
-	else if (index == 2)
+	else if (index == 2 && ft_isnbr(ms->command[1]))
 	{
-		while (ms->command[1][i] && ft_isdigit(ms->command[1][i]))
-			i++;
-		if (ms->command[1][i] == '\0')
-		{
-			ft_putstr_fd(ms->command[index - 2], STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-			ft_free(ms, ft_atoi(ms->command[1]));
-		}
+		ft_putstr_fd(ms->command[0], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_free(ms, ft_atoi(ms->command[1]));
+	}
+	else if (!ft_isnbr(ms->command[1]))
+	{
+		ft_putstr_fd("exit\nminishel: exit: ", STDOUT_FILENO);
+		ft_putstr_fd(ms->command[1], STDOUT_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
+		ft_free(ms, 255);
 	}
 	else
-		write(2, "minishell: exit: too many arguments\n", 36);
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", STDERR_FILENO);
 }
 
 void	changepwd(t_ms *ms, char *dir)
