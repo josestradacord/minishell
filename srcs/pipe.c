@@ -95,12 +95,13 @@ void	ft_last(t_ms *ms, t_token *last)
 		ms->command = ft_create_command(last);
 		if (ft_strnstr("echo pwd env unset export", ms->command[0], 25) != 0)
 		{
-			ft_builtins(ms);
+			ms->status = ft_builtins(ms);
 			ft_free_command(ms);
+			exit(ms->status);
 		}
 		else
 			ft_cmd(ms);
-		exit (0);
+		exit (1);
 	}
 	close(ms->fd[ms->status][1]);
 	close(ms->fd[ms->status][0]);
@@ -148,9 +149,11 @@ int	ft_pipe(t_ms *ms)
 	else if (ms->num_pipes == 0)
 	{
 		ms->command = ft_create_command(temp);
+		if (ms->command[0] == NULL)
+			return (5);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
-			ft_builtins(ms);
+			ms->status = ft_builtins(ms);
 			ft_free_command(ms);
 		}
 		else

@@ -57,8 +57,6 @@ char	**ft_create_command(t_token *toks)
 
 int	ft_builtins(t_ms *ms)
 {
-	if (DEBUG)
-		printf("Es un builtin\n");
 	if (ft_strncmp("echo", ms->command[0], 4) == 0)
 		ft_echo(ms);
 	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
@@ -68,11 +66,11 @@ int	ft_builtins(t_ms *ms)
 	else if (ft_strncmp("pwd", ms->command[0], 3) == 0)
 		ft_pwd(ms);
 	else if (ft_strncmp("env", ms->command[0], 3) == 0)
-		ft_print_env_lst(ms->env);
+		return (ft_print_env_lst(ms->env));
 	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
 		ft_unset(ms->env, ms->command[1]);
 	else if (ft_strncmp("export", ms->command[0], 6) == 0)
-		ft_export(ms);
+		return (ft_export(ms));
 	return (0);
 }
 

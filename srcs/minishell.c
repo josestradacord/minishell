@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else
