@@ -124,9 +124,9 @@ void		ft_lste_clear(t_list_e *lst, void (*del)(void *));
 void		ft_get_env(t_ms *ms, char **envp);
 void		ft_copy_envp(t_ms *ms, char **envp);
 void		ft_print_env(char **envp);
-void		ft_print_env_lst(t_list_e *env);
+int			ft_print_env_lst(t_list_e *env);
 char		*ft_get_env_value(char *name, t_ms *ms);
-void		ft_lste_rm(t_list_e *env, char *tofind);
+void		ft_unset(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
 
 
@@ -137,6 +137,7 @@ void		ft_print_tok_list(t_token *tok);
 void		ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_dbl_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
+void		ft_noquote(t_token *tok);
 void		ft_new_token(t_ms *ms, int start, int end);
 void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
@@ -147,13 +148,12 @@ char		**ft_create_command(t_token *tok);
 // Builtins functions
 int			ft_builtins(t_ms *ms);
 void		ft_echo(t_ms *ms);
-void		ft_cd(t_ms *ms, char *dir);
+int			ft_cd(t_ms *ms, char *dir);
 void		ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
-void		ft_export(t_ms *ms);
+int			ft_export(t_ms *ms);
 int			ft_cmd(t_ms *ms);
 int			ft_pipe(t_ms *ms);
-int			ft_pipe2(t_ms *ms);
 int			ft_search(t_ms *ms);
 char		**ft_free2(char **str);
 

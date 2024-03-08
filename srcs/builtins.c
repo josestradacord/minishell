@@ -50,12 +50,24 @@ void	ft_echo(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
+int	ft_isnbr(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index])
+	{
+		if (!ft_isdigit(str[index]))
+			return (FALSE);
+		index++;
+	}
+	return (TRUE);
+}
+
 void	ft_exit(t_ms *ms)
 {
 	int	index;
-	int	i;
 
-	i = 0;
 	index = 0;
 	while (ms->command[index])
 		index++;
@@ -65,19 +77,21 @@ void	ft_exit(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
 	}
-	else if (index == 2)
+	else if (index == 2 && ft_isnbr(ms->command[1]))
 	{
-		while (ms->command[1][i] && ft_isdigit(ms->command[1][i]))
-			i++;
-		if (ms->command[1][i] == '\0')
-		{
-			ft_putstr_fd(ms->command[index - 2], STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-			ft_free(ms, ft_atoi(ms->command[1]));
-		}
+		ft_putstr_fd(ms->command[0], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_free(ms, ft_atoi(ms->command[1]));
+	}
+	else if (!ft_isnbr(ms->command[1]))
+	{
+		ft_putstr_fd("exit\nminishel: exit: ", STDOUT_FILENO);
+		ft_putstr_fd(ms->command[1], STDOUT_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
+		ft_free(ms, 255);
 	}
 	else
-		write(2, "minishell: exit: too many arguments\n", 36);
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", STDERR_FILENO);
 }
 
 void	changepwd(t_ms *ms, char *dir)
@@ -127,7 +141,11 @@ int	ft_cd(t_ms *ms, char *dir)
 		changepwd(ms, dir);
 	else if (chdir(dir) != 0)
 	{
-		write(2, "cd: no such file or directory\n", 30);
+		//write(2, "cd: no such file or directory\n", 30);
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd(dir, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		ms->status = 1;
 		return (1);
 		//changepwd(ms, dir);
 	}
@@ -165,7 +183,49 @@ char	**ft_free2(char **str)
 	return (NULL);
 }
 
-void	ft_export(t_ms *ms)
+int	ft_export(t_ms *ms)
+{
+	t_list_e	*temp;
+	t_list_e	*new;
+	char		**val;
+	int			i;
+
+	i = 0;
+	temp = ms->env;
+	if (!ms->command[1])
+	{
+		while (temp)
+		{
+			ft_printf("declare -x %s=\"%s\"\n", temp->name, temp->value);
+			temp = temp->next;
+		}
+	}
+	else
+	{
+		while (ms->command[++i] != NULL)
+		{
+			val = ft_joineq(ms->command[i]);
+			if (ft_isalpha(val[0][0]) == 1)
+			{
+				if (ft_liste_comp(ms->env, val) != 0)
+				{
+					new = ft_lste_new(val[0], val[1]);
+					ft_lste_addback(&temp, new);
+				}
+				ft_free2(val);
+			}
+			else
+			{
+				write(2, "export: not a valid identifier\n", 31);
+				ft_free2(val);
+				return (1);
+			}
+		}
+	}
+	return (0);
+}
+
+/*void	ft_export(t_ms *ms)
 {
 	t_list_e	*temp;
 	t_list_e	*new;
@@ -198,17 +258,17 @@ void	ft_export(t_ms *ms)
 			ft_free2(val);
 		}
 	}
-}
+}*/
 
 void	ft_unset(t_list_e *env, char *tofind)
 {
 	t_list_e	*temp;
-	t_list_e	*temp2;
+	//t_list_e	*temp2;
 
 	if (env == NULL || env->next == NULL)
 		return ;
 	temp = env;
-	temp2 = temp;
+	//temp2 = temp;
 	if (ft_strncmp(env->next->name, tofind, ft_strlen(tofind)) == 0)
 	{
 		temp = env->next;
