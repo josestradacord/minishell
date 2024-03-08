@@ -129,7 +129,6 @@ char		*ft_get_env_value(char *name, t_ms *ms);
 void		ft_unset(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
 
-
 // Parser functions
 void		ft_parser(t_ms *ms);
 void		ft_parse_tokens(t_ms *ms);
@@ -173,7 +172,7 @@ void		ft_nump(t_ms *ms);
 
 //Signals management
 void		ft_signals(void);
-void		ft_set_signal(int s);
+void		ft_signal_ctrlc_son(int signal);
 void		ft_control_d(void);
 
 //redir functions

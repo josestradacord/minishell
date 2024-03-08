@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-void	ft_signal_controlc(int signal)
+/*void	ft_signal_controlc(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -30,6 +30,23 @@ void	ft_signal_controlc(int signal)
 			rl_redisplay();
 		}
 	}
+}*/
+
+void	ft_signal_controlc(int signal)
+{
+	if (signal == SIGINT)
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
+void	ft_signal_ctrlc_son(int signal)
+{
+	(void) signal;
+	ft_putstr_fd("^C\n", STDOUT_FILENO);
 }
 
 void	ft_signals(void)

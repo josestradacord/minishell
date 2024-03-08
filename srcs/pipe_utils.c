@@ -47,14 +47,19 @@ int	ft_search(t_ms *ms)
 	char	temp[100];
 
 	i = -1;
-	while (ms->rout[++i])
+	if (ms->command[0][0] == '/')
+		ms->wanted = ft_strdup(ms->command[0]);
+	else
 	{
-		ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
-		if (access(ms->wanted, 0) == 0)
-			return (0);
+		while (ms->rout[++i])
+		{
+			ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
+			if (access(ms->wanted, 0) == 0)
+				return (0);
+		}
+		getcwd(temp, 100);
+		ms->wanted = ft_strjoin(temp, &ms->command[0][1]);
 	}
-	getcwd(temp, 100);
-	ms->wanted = ft_strjoin(temp, &ms->command[0][1]);
 	return (0);
 }
 
@@ -86,12 +91,17 @@ int	last_son(t_ms *ms)
 	int	pid;
 	int	status;
 
+	signal(SIGINT, ft_signal_ctrlc_son);
 	pid = fork();
 	if (pid == 0)
 	{
 		ft_lastsonaux(ms);
 		ft_cmd(ms);
-		write(2, "command not found\n", 18);
+		//write(2, "command not found\n", 18);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(ms->command[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		//ms->status = 127;
 		exit (127);
 	}
 	else if (pid < 0)
@@ -105,6 +115,7 @@ int	last_son(t_ms *ms)
 		waitpid(pid, &status, WUNTRACED);
 		if (WIFEXITED (status))
 			ms->status = WEXITSTATUS(status);
+		ft_signals();
 	}
 	return (0);
 }

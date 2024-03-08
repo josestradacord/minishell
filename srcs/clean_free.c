@@ -37,8 +37,10 @@ void	ft_free_toks(t_ms *ms)
 	while (ms->tokens)
 	{
 		node = ms->tokens->next;
-		free(ms->tokens->token);
-		free(ms->tokens);
+		if (ms->tokens->token)
+			free(ms->tokens->token);
+		if (ms->tokens)
+			free(ms->tokens);
 		ms->tokens = node;
 	}
 	ms->tokens = NULL;

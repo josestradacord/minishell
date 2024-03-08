@@ -2,3 +2,5 @@
 - heredoc sin comandos
 // - hacer ctrl c en un bucle salen dos prompts seguidos
 // - salidas del exit
+// - no funciona con rutas absolutas: /bin/ls muestra command not found
+// - falla al hacer ctrlC después de introducir un cat sin argumentos
