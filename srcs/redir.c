@@ -55,9 +55,7 @@ int	here_doc(t_ms *ms)
 int	ft_enter(t_ms *ms)
 {
 	int		i;
-	//t_token	*tok;
 
-	//tok = ms->tokens;
 	i = 1;
 	if (ms->tokens->type == HEREDOC)
 	{

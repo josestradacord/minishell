@@ -102,11 +102,11 @@ int	ft_print_env_lst(t_list_e *env)
 
 	node = env;
 	if (node == NULL)
-		return(1);
+		return (1);
 	while (node)
 	{
 		printf("%s=%s\n", node->name, node->value);
 		node = node->next;
 	}
-	return(0);
+	return (0);
 }

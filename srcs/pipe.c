@@ -36,7 +36,7 @@ void	ft_first(t_ms *ms, t_token *first)
 		}
 		else
 			ft_cmd(ms);
-		
+		exit(0);
 	}
 	if (ms->fdin > 0)
 		close(ms->fdin);

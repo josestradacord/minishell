@@ -55,16 +55,17 @@
 # define SYNTAXOU_R	"minishell: syntax error near unexpected token '>'\n"
 # define SYNTAXPIPE	"minishell: syntax error near unexpected token '|'\n"
 
-# define BOLD	 "\033[1m"
-# define RED	 "\033[31;1m"
-# define GREEN	 "\033[32;1m"
-# define YELLOW	 "\033[33;1m"
-# define CYAN	 "\033[36;1m"
-# define BLUE	 "\033[34;1m"
-# define BLACK	 "\033[30;1m"
-# define MAGENTA "\033[35;1m"
-# define WHITE	 "\033[37;1m"
-# define RESET	 "\033[0m"
+// Colours definitions
+# define BOLD		"\033[1m"
+# define RED		"\033[31;1m"
+# define GREEN		"\033[32;1m"
+# define YELLOW		"\033[33;1m"
+# define CYAN		"\033[36;1m"
+# define BLUE		"\033[34;1m"
+# define BLACK		"\033[30;1m"
+# define MAGENTA	"\033[35;1m"
+# define WHITE		"\033[37;1m"
+# define RESET		"\033[0m"
 
 // Struct to keep the environment variables as a list
 typedef struct s_list_e
@@ -98,7 +99,6 @@ typedef struct s_ms
 	int			status;
 	int			fdin;
 	int			fdout;
-
 }	t_ms;
 
 // Check functions
@@ -129,7 +129,6 @@ char		*ft_get_env_value(char *name, t_ms *ms);
 void		ft_unset(t_list_e *env, char *tofind);
 void		ft_env_rm(t_ms *ms, char *tofind);
 
-
 // Parser functions
 void		ft_parser(t_ms *ms);
 void		ft_parse_tokens(t_ms *ms);
@@ -137,10 +136,11 @@ void		ft_print_tok_list(t_token *tok);
 void		ft_simp_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_dbl_quote(t_ms *ms, int *start, int *end, char s_quot);
 void		ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok);
+void		ft_noquote(t_token *tok);
 void		ft_new_token(t_ms *ms, int start, int end);
 void		ft_normal_tok(t_ms *ms, int *start, int *index);
 void		ft_token_type(t_ms *ms);
-void		ft_noquote(t_token *tok);
+
 // Executor functions
 char		**ft_create_command(t_token *tok);
 
@@ -164,7 +164,7 @@ void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
 
 //Utils
-char		**ft_joineq(char *env_var);
+char		**ft_joineq(char *astr);
 int			ft_liste_comp(t_list_e *env, char **val);
 int			ft_shlvlup(t_ms *ms);
 int			last_son(t_ms *ms);
@@ -172,19 +172,11 @@ void		ft_nump(t_ms *ms);
 
 //Signals management
 void		ft_signals(void);
-void		ft_set_signal(int s);
+void		ft_signal_ctrlc_son(int signal);
 void		ft_control_d(void);
 
 //redir functions
-int		ft_enter(t_ms *ms);
-int		ft_out(t_ms *ms);
+int			ft_enter(t_ms *ms);
+int			ft_out(t_ms *ms);
 
 #endif
-
-/* BOLD	= \033[1m
-RED		= \033[31;1m
-GREEN	= \033[32;1m
-YELLOW	= \033[33;1m
-CYAN	= \033[36;1m
-WHITE	= \033[37;1m
-RESET	= \033[0m */
