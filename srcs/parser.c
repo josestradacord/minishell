@@ -76,6 +76,7 @@ void	ft_expand(t_ms *ms, t_token *tok)
 			value = ft_get_env_value(name, ms);
 		ft_change_tok(tok, start - 1, end, value);
 		free(name);
+		free(value);
 	}
 }
 

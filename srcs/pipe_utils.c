@@ -97,11 +97,9 @@ int	last_son(t_ms *ms)
 	{
 		ft_lastsonaux(ms);
 		ft_cmd(ms);
-		//write(2, "command not found\n", 18);
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(ms->command[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		//ms->status = 127;
 		exit (127);
 	}
 	else if (pid < 0)

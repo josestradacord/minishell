@@ -64,7 +64,24 @@ int	ft_isnbr(char *str)
 	return (TRUE);
 }
 
-void	ft_exit(t_ms *ms)
+void	ft_exit_aux(t_ms *ms, char *cmd)
+{
+	if (ft_isnbr(cmd))
+	{
+		ft_putstr_fd(cmd, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_free(ms, ft_atoi(cmd));
+	}
+	else
+	{
+		ft_putstr_fd("exit\nminishel: exit: ", STDOUT_FILENO);
+		ft_putstr_fd(cmd, STDOUT_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
+		ft_free(ms, 255);
+	}
+}
+
+int	ft_exit(t_ms *ms)
 {
 	int	index;
 
@@ -77,44 +94,13 @@ void	ft_exit(t_ms *ms)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, EXIT_SUCCESS);
 	}
-	else if (index == 2 && ft_isnbr(ms->command[1]))
-	{
-		ft_putstr_fd(ms->command[0], STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
-		ft_free(ms, ft_atoi(ms->command[1]));
-	}
-	else if (!ft_isnbr(ms->command[1]))
-	{
-		ft_putstr_fd("exit\nminishel: exit: ", STDOUT_FILENO);
-		ft_putstr_fd(ms->command[1], STDOUT_FILENO);
-		ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
-		ft_free(ms, 255);
-	}
-	else
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
-}
-
-void	ft_unset(t_list_e *env, char *tofind)
-{
-	t_list_e	*temp;
-
-	if (env == NULL || env->next == NULL)
-		return ;
-	temp = env;
-	if (ft_strncmp(env->next->name, tofind, ft_strlen(tofind)) == 0)
-	{
-		temp = env->next;
-		env->next = temp->next;
-		free(temp);
-	}
-	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
-	{
-		temp = env;
-		*env = *env->next;
-	}
+	else if (index == 2)
+		ft_exit_aux(ms, ms->command[1]);
 	else
 	{
-		temp = env;
-		ft_unset(temp->next, tofind);
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 0);
+		ms->status = 1;
+		return (1);
 	}
+	return (0);
 }

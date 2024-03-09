@@ -148,7 +148,7 @@ char		**ft_create_command(t_token *tok);
 int			ft_builtins(t_ms *ms);
 void		ft_echo(t_ms *ms);
 int			ft_cd(t_ms *ms, char *dir);
-void		ft_exit(t_ms *ms);
+int			ft_exit(t_ms *ms);
 void		ft_pwd(t_ms *ms);
 int			ft_export(t_ms *ms);
 int			ft_cmd(t_ms *ms);
