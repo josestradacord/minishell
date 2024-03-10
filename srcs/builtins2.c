@@ -41,7 +41,13 @@ void	changepwd(t_ms *ms, char *dir)
 	while (old && ft_strncmp(old->name, "OLDPWD", 6) != 0)
 		old = old->next;
 	if (ft_strncmp(dir, "-", 1) == 0)
-		chdir(old->value);
+		if (chdir(old->value) < 0)
+		{
+			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+			ft_putstr_fd(old->value, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			return ;
+		}
 	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);

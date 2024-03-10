@@ -1,4 +1,4 @@
 - unset no borra todas las variables
-- comandos no deben funcionar la borrar path
+// - comandos no deben funcionar al borrar path
 - cabiar ms->status de los pipes por otra cosa a ver si funciona SIEMPRE
 	bien y no solo a veces
