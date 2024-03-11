@@ -68,7 +68,7 @@ void	ft_exit_aux(t_ms *ms, char *cmd)
 {
 	if (ft_isnbr(cmd))
 	{
-		ft_putstr_fd(cmd, STDOUT_FILENO);
+		ft_putstr_fd(ms->command[0], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_free(ms, ft_atoi(cmd));
 	}

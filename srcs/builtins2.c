@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:59:35 by joestrad          #+#    #+#             */
-/*   Updated: 2024/03/08 17:02:24 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/03/10 20:57:58 by jestradac        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,13 @@ void	changepwd(t_ms *ms, char *dir)
 	while (old && ft_strncmp(old->name, "OLDPWD", 6) != 0)
 		old = old->next;
 	if (ft_strncmp(dir, "-", 1) == 0)
-		chdir(old->value);
+	if (chdir(old->value) < 0)
+		{
+			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+			ft_putstr_fd(old->value, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			return ;
+		}
 	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
@@ -57,6 +63,8 @@ int	ft_cd(t_ms *ms, char *dir)
 {
 	if (dir == NULL)
 		changepwd(ms, dir);
+	else if (ft_strncmp(dir, "-", 1) == 0)
+		changepwd(ms, dir);
 	else if (chdir(dir) != 0)
 	{
 		//write(2, "cd: no such file or directory\n", 30);
@@ -65,7 +73,6 @@ int	ft_cd(t_ms *ms, char *dir)
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		ms->status = 1;
 		return (1);
-		//changepwd(ms, dir);
 	}
 	else
 		changepwd(ms, dir);

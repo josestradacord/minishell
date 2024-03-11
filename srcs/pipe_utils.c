@@ -45,13 +45,17 @@ int	ft_search(t_ms *ms)
 {
 	int		i;
 	char	temp[100];
+	t_list_e	*aux;
 
 	i = -1;
+	aux = ms->env;
+	while (aux && ft_strncmp(aux->name, "PATH", 4))
+		aux = aux->next;
 	if (ms->command[0][0] == '/')
 		ms->wanted = ft_strdup(ms->command[0]);
 	else
 	{
-		while (ms->rout[++i])
+		while (ms->rout[++i] && aux != NULL)
 		{
 			ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
 			if (access(ms->wanted, 0) == 0)

@@ -75,7 +75,9 @@ int	ft_check_redir_o(char *line)
 		if (line[index] == '>')
 		{
 			index++;
-			while (line[index] == ' ')
+			if (line[index] == '>')
+				index++;
+			while (line[index] && line[index] == ' ')
 				index++;
 			if (line[index] == '>')
 			{
