@@ -92,7 +92,10 @@ static void	ft_lastsonaux(t_ms *ms)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(ms->command[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	exit (127);
+	ms->status = 127;
+	//exit (127);      hace cosas raras con cualquier cosa que se ponga
+	//ft_free(ms, 127);
+	//ft_free_command(ms);
 }
 
 int	last_son(t_ms *ms)

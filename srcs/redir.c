@@ -22,33 +22,28 @@ void	ft_free_heredoc(char *str1, char *str2)
 
 void	ft_temp(t_ms *ms)
 {
-	//char	*str;
-	char	*str2;
+	char	*str;
 	int		i;
 
 	i = 2;
-	//str = "";
 	write(1, "> ", 2);
-	str2 = get_next_line(0);
+	str = get_next_line(0);
 	while (ms->tokens->token[i] <= ' ')
 		i++;
 	ms->wanted = ft_strdup(&ms->tokens->token[i]);
-	while (ft_strncmp(str2, ms->wanted, ft_strlen(str2) - 1) != 0)
+	while (ft_strncmp(str, ms->wanted, ft_strlen(str) - 1) != 0)
 	{
-		//str = ft_strjoin(str, str2);
-		ft_putstr_fd(str2, ms->fdin);
-		free(str2);
+		ft_putstr_fd(str, ms->fdin);
+		free(str);
 		write(1, "> ", 2);
-		str2 = get_next_line(0);
+		str = get_next_line(0);
 	}
 	if (ms->wanted)
 	{
 		free(ms->wanted);
 		ms->wanted = NULL;
 	}
-	//write(ms->fdin, str, ft_strlen(str));
-	//ft_free_heredoc(str, str2);
-	free(str2);
+	free(str);
 }
 
 int	here_doc(t_ms *ms)
