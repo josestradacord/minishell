@@ -72,7 +72,7 @@ int	ft_builtins(t_ms *ms)
 		return (ft_print_env_lst(ms->env));
 	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
 	{
-		while(ms->command[i])
+		while (ms->command[i])
 		{
 			ft_unset(ms->env, ms->command[i]);
 			i++;

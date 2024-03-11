@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jestradac <jestradac@student.42.fr>        +#+  +:+       +#+        */
+/*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:59:35 by joestrad          #+#    #+#             */
-/*   Updated: 2024/03/10 20:57:58 by jestradac        ###   ########.fr       */
+/*   Updated: 2024/03/11 18:41:37 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ void	changepwd(t_ms *ms, char *dir)
 	while (old && ft_strncmp(old->name, "OLDPWD", 6) != 0)
 		old = old->next;
 	if (ft_strncmp(dir, "-", 1) == 0)
-	if (chdir(old->value) < 0)
+	{
+		if (chdir(old->value) < 0)
 		{
 			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 			ft_putstr_fd(old->value, STDERR_FILENO);
 			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 			return ;
 		}
+	}
 	free(old->value);
 	old->value = ft_strdup(temp->value);
 	free(temp->value);
@@ -92,22 +94,6 @@ void	ft_pwd(t_ms *ms)
 		write(2, "pwd: too many arguments\n", 24);
 }
 
-char	**ft_free2(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	while (i >= 0)
-	{
-		free(str[i]);
-		i--;
-	}
-	free (str);
-	return (NULL);
-}
-
 int	ft_export(t_ms *ms)
 {
 	t_list_e	*temp;
@@ -137,12 +123,12 @@ int	ft_export(t_ms *ms)
 					new = ft_lste_new(val[0], val[1]);
 					ft_lste_addback(&temp, new);
 				}
-				ft_free2(val);
+				ft_free_matrix(val);
 			}
 			else
 			{
 				write(2, "export: not a valid identifier\n", 31);
-				ft_free2(val);
+				ft_free_matrix(val);
 				return (1);
 			}
 		}

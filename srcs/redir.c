@@ -28,7 +28,7 @@ void	ft_temp(t_ms *ms)
 
 	i = 2;
 	//str = "";
-	write(1, "heredoc> ", 9);
+	write(1, "> ", 2);
 	str2 = get_next_line(0);
 	while (ms->tokens->token[i] <= ' ')
 		i++;
@@ -38,7 +38,7 @@ void	ft_temp(t_ms *ms)
 		//str = ft_strjoin(str, str2);
 		ft_putstr_fd(str2, ms->fdin);
 		free(str2);
-		write(1, "heredoc> ", 9);
+		write(1, "> ", 2);
 		str2 = get_next_line(0);
 	}
 	if (ms->wanted)

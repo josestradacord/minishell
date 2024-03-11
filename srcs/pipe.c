@@ -150,7 +150,7 @@ int	ft_pipe(t_ms *ms)
 	{
 		ms->command = ft_create_command(temp);
 		if (ms->command[0] == NULL)
-			return (5);
+			return (0);
 		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
 		{
 			ms->status = ft_builtins(ms);

@@ -6,11 +6,18 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:20:36 by joestrad          #+#    #+#             */
-/*   Updated: 2024/03/09 19:21:13 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/03/11 18:39:49 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void	ft_free_env(t_list_e *enval)
+{
+	free(enval->name);
+	free(enval->value);
+	free(enval);
+}
 
 void	ft_unset(t_list_e *env, char *tofind)
 {
@@ -23,12 +30,13 @@ void	ft_unset(t_list_e *env, char *tofind)
 	{
 		temp = env->next;
 		env->next = temp->next;
-		free(temp);
+		ft_free_env(temp);
 	}
 	else if (ft_strncmp(env->name, tofind, ft_strlen(tofind)) == 0)
 	{
 		temp = env;
-		*env = *env->next;
+		env = env->next;
+		ft_free_env(temp);
 	}
 	else
 	{

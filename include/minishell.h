@@ -162,6 +162,7 @@ void		ft_free_cmds(t_ms *ms);
 void		ft_free_toks(t_ms *ms);
 void		ft_free_tok_list(t_token *tok);
 void		ft_free_command(t_ms *ms);
+void		ft_free_matrix(char **matrix);
 
 //Utils
 char		**ft_joineq(char *astr);
