@@ -21,6 +21,59 @@ void	ft_leaks(void)
 	system("leaks -q minishell");
 }
 
+void	ft_family(t_ms *ms, t_token *temp)
+{
+	ft_first(ms, temp);
+	ms->num_pipes--;
+	if (ms->child_pid < 0)
+		exit (1);
+	while (ms->num_pipes > 0)
+	{
+		if (temp->type == PIPE && ms->num_pipes > 0)
+		{
+			ms->status++;
+			if (ms->wanted)
+				free (ms->wanted);
+			ft_mid(ms, temp->next);
+			ms->num_pipes--;
+			temp = temp->next;
+		}
+		else
+			temp = temp->next;
+	}
+	while (temp->type != PIPE)
+		temp = temp->next;
+	ft_last(ms, temp->next);
+}
+
+int	ft_pipe(t_ms *ms)
+{
+	t_token	*temp;
+
+	if (ft_enter(ms) == 1)
+		temp = ms->tokens->next;
+	else
+		temp = ms->tokens;
+	ms->status = 0;
+	if (ms->num_pipes > 0)
+		ft_family(ms, temp);
+	else if (ms->num_pipes == 0)
+	{
+		ms->command = ft_create_command(temp);
+		if (ms->command[0] == NULL)
+			return (0);
+		if (ft_strnstr("echo exit cd pwd env unset export", ms->command[0], 33))
+		{
+			ms->status = ft_builtins(ms);
+			ft_free_command(ms);
+		}
+		else
+			last_son(ms);
+	}
+	unlink(".tmp");
+	return (0);
+}
+
 void	minishell(t_ms *ms)
 {
 	while (TRUE)
