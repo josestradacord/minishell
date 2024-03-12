@@ -46,7 +46,7 @@ NOCOLOR = "\033[0m"
 
 ${NAME}: ${OBJS} libft.h
 	@echo $(YELLOW)Norminette...$(NOCOLOR)
-	#@norminette $(SCRS)
+	@norminette $(SCRS)
 	@echo $(GREEN)Compiling source files... $(NOCOLOR)
 	@ar rcs ${NAME} ${OBJS}
 	@echo $(GREEN)Library $(NOCOLOR)$(NAME) $(GREEN)ready$(NOCOLOR)

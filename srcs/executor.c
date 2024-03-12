@@ -59,11 +59,11 @@ int	ft_builtins(t_ms *ms)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	if (ft_strncmp("echo", ms->command[0], 4) == 0)
 		ft_echo(ms);
 	else if (ft_strncmp("exit", ms->command[0], 4) == 0)
-		ft_exit(ms);
+		return (ft_exit(ms));
 	else if (ft_strncmp("cd", ms->command[0], 2) == 0)
 		return (ft_cd(ms, ms->command[1]));
 	else if (ft_strncmp("pwd", ms->command[0], 3) == 0)
@@ -72,7 +72,7 @@ int	ft_builtins(t_ms *ms)
 		return (ft_print_env_lst(ms->env));
 	else if (ft_strncmp("unset", ms->command[0], 5) == 0)
 	{
-		while(ms->command[i])
+		while (ms->command[i])
 		{
 			ft_unset(ms->env, ms->command[i]);
 			i++;

@@ -42,7 +42,7 @@ void	minishell(t_ms *ms)
 		ft_parser(ms);
 		ft_nump(ms);
 		if (ft_pipe(ms) != 0)
-			perror("pipe went worng");
+			perror("pipe sale mal");
 		ms->num_pipes = 0;
 		ms->fdin = 0;
 		ft_free_toks(ms);
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	if (!ft_check_args(argc))
 		ft_usage();
 	else

@@ -43,8 +43,8 @@ char	**ft_routes(char **envp)
 
 int	ft_search(t_ms *ms)
 {
-	int		i;
-	char	temp[100];
+	int			i;
+	char		temp[100];
 	t_list_e	*aux;
 
 	i = -1;
@@ -88,6 +88,14 @@ static void	ft_lastsonaux(t_ms *ms)
 	}
 	else
 		dup2(1, STDOUT_FILENO);
+	ft_cmd(ms);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(ms->command[0], STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	ms->status = 127;
+	//exit (127);      hace cosas raras con cualquier cosa que se ponga
+	//ft_free(ms, 127);
+	//ft_free_command(ms);
 }
 
 int	last_son(t_ms *ms)
@@ -98,14 +106,7 @@ int	last_son(t_ms *ms)
 	signal(SIGINT, ft_signal_ctrlc_son);
 	pid = fork();
 	if (pid == 0)
-	{
 		ft_lastsonaux(ms);
-		ft_cmd(ms);
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(ms->command[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		exit (127);
-	}
 	else if (pid < 0)
 		return (1);
 	else

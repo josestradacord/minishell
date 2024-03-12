@@ -12,35 +12,38 @@
 
 #include "../include/minishell.h"
 
+void	ft_free_heredoc(char *str1, char *str2)
+{
+	if (str1 != NULL && ft_strncmp(str1, "", 1))
+		free(str1);
+	if (str2)
+		free(str2);
+}
+
 void	ft_temp(t_ms *ms)
 {
 	char	*str;
-	char	*str2;
 	int		i;
 
 	i = 2;
-	str = "";
-	write(1, "heredoc> ", 9);
-	str2 = get_next_line(0);
+	write(1, "> ", 2);
+	str = get_next_line(0);
 	while (ms->tokens->token[i] <= ' ')
 		i++;
 	ms->wanted = ft_strdup(&ms->tokens->token[i]);
-	while (ft_strncmp(str2, ms->wanted, ft_strlen(str2) - 1))
+	while (ft_strncmp(str, ms->wanted, ft_strlen(str) - 1) != 0)
 	{
-		write(1, "heredoc> ", 9);
-		str = ft_strjoin(str, str2);
-		str2 = get_next_line(0);
+		ft_putstr_fd(str, ms->fdin);
+		free(str);
+		write(1, "> ", 2);
+		str = get_next_line(0);
 	}
 	if (ms->wanted)
 	{
 		free(ms->wanted);
 		ms->wanted = NULL;
 	}
-	write(ms->fdin, str, ft_strlen(str));
-	if (str != NULL && ft_strncmp(str, "", 1))
-		free(str);
-	if (str2)
-		free(str2);
+	free(str);
 }
 
 int	here_doc(t_ms *ms)

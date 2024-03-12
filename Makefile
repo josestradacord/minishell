@@ -16,14 +16,16 @@ OBJ_DIR = ./obj
 SRC_DIR = ./srcs
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
+
 CC = gcc
 
+#42
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
-
-#GLFW_FLAGS  = -ldl -lglfw -lm
-#GLFW_FLAGS = -lglfw -L /Users/$(USER)/.brew/opt/glfw/lib/ -lm
-
 INC_READLINE = -I/Users/$(USER)/.brew/opt/readline/include
+
+#Home
+#LIB_READLINE = -lreadline -L/usr/local/opt/readline/lib 
+#INC_READLINE = -I/usr/local/opt/readline/include
 
 FLAGS = -Wall -Werror -Wextra 
 
@@ -47,7 +49,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 all: $(NAME)
 
-
 $(NAME): $(LIBFT) $(OBJS)
 	@echo $(YELLOW)minishell norminette...$(NOCOLOR)
 #	@norminette $(SRCS)
@@ -62,7 +63,6 @@ $(LIBFT):
 
 clean:
 	@$(RM) $(OBJS)
-	@$(RM) -r $(OBJ_DIR)
 	@make clean -C libft --silent
 	@echo minishell objects files $(RED)cleaned$(NOCOLOR)
 
