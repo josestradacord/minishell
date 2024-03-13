@@ -85,6 +85,7 @@ void	minishell(t_ms *ms)
 		if (!ft_check_line(ms->line))
 		{
 			free(ms->line);
+			ms->status = 258;
 			continue ;
 		}
 		if (ft_blank_line(ms->line))
@@ -96,8 +97,6 @@ void	minishell(t_ms *ms)
 		ft_nump(ms);
 		if (ft_pipe(ms) != 0)
 			perror("pipe sale mal");
-		ms->num_pipes = 0;
-		ms->fdin = 0;
 		ft_free_toks(ms);
 	}
 	return ;
