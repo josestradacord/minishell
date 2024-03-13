@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:20:36 by joestrad          #+#    #+#             */
-/*   Updated: 2024/03/11 19:04:57 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:01:23 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,37 @@ void	ft_unset(t_list_e *env, char *tofind)
 	}
 }
 
+int	ft_export_aux(t_ms *ms, t_list_e *temp, t_list_e *new, int i)
+{
+	char	**val;
+
+	val = ft_joineq(ms->command[i]);
+	if (ft_isalpha(val[0][0]) == 1)
+	{
+		if (ft_liste_comp(ms->env, val) != 0)
+		{
+			new = ft_lste_new(val[0], val[1]);
+			ft_lste_addback(&temp, new);
+		}
+		ft_free_matrix(val);
+	}
+	else
+	{
+		write(2, "export: not a valid identifier\n", 31);
+		ft_free_matrix(val);
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_export(t_ms *ms)
 {
 	t_list_e	*temp;
 	t_list_e	*new;
-	char		**val;
 	int			i;
 
 	i = 0;
+	new = NULL;
 	temp = ms->env;
 	if (!ms->command[1])
 	{
@@ -63,26 +86,8 @@ int	ft_export(t_ms *ms)
 		}
 	}
 	else
-	{
 		while (ms->command[++i] != NULL)
-		{
-			val = ft_joineq(ms->command[i]);
-			if (ft_isalpha(val[0][0]) == 1)
-			{
-				if (ft_liste_comp(ms->env, val) != 0)
-				{
-					new = ft_lste_new(val[0], val[1]);
-					ft_lste_addback(&temp, new);
-				}
-				ft_free_matrix(val);
-			}
-			else
-			{
-				write(2, "export: not a valid identifier\n", 31);
-				ft_free_matrix(val);
+			if (ft_export_aux(ms, temp, new, i) == 1)
 				return (1);
-			}
-		}
-	}
 	return (0);
 }

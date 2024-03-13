@@ -17,7 +17,7 @@ SRC_DIR = ./srcs
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 
-CC = gcc
+CC = gcc -g
 
 #42
 LIB_READLINE = -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 

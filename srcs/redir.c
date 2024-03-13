@@ -12,14 +12,6 @@
 
 #include "../include/minishell.h"
 
-void	ft_free_heredoc(char *str1, char *str2)
-{
-	if (str1 != NULL && ft_strncmp(str1, "", 1))
-		free(str1);
-	if (str2)
-		free(str2);
-}
-
 void	ft_temp(t_ms *ms)
 {
 	char	*str;

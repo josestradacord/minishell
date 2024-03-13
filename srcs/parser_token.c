@@ -68,22 +68,21 @@ void	ft_redir_pipe_node(t_ms *ms, int *start, int *end, char tok)
 void	ft_noquote(t_token *tok)
 {
 	size_t	len;
+	size_t	index;
 	char	*str;
 
 	len = ft_strlen(tok->token);
-	str = (char *) malloc(sizeof(char) * (len - 1));
+	str = (char *) malloc(sizeof(char) * len);
 	if (!str)
 	{
 		perror("malloc error");
 		return ;
 	}
-	len = 0;
+	len = 1;
+	index = 0;
 	while (tok->token[len])
-	{
-		str[len] = tok->token[len + 1];
-		len++;
-	}
-	str[len - 2] = '\0';
+		str[index++] = tok->token[len++];
+	str[index - 1] = '\0';
 	free(tok->token);
 	tok->token = str;
 }

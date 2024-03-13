@@ -58,8 +58,10 @@ int	ft_search(t_ms *ms)
 		while (ms->rout[++i] && aux != NULL)
 		{
 			ms->wanted = ft_strjoin(ms->rout[i], ms->command[0]);
-			if (access(ms->wanted, 0) == 0)
+			if (access(ms->wanted, F_OK) == 0)
 				return (0);
+			else
+				free(ms->wanted);
 		}
 		getcwd(temp, 100);
 		ms->wanted = ft_strjoin(temp, &ms->command[0][1]);
@@ -93,9 +95,7 @@ static void	ft_lastsonaux(t_ms *ms)
 	ft_putstr_fd(ms->command[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	ms->status = 127;
-	//exit (127);      hace cosas raras con cualquier cosa que se ponga
-	//ft_free(ms, 127);
-	//ft_free_command(ms);
+	exit (127);
 }
 
 int	last_son(t_ms *ms)

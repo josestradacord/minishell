@@ -6,7 +6,7 @@
 /*   By: joestrad <joestrad@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:59:35 by joestrad          #+#    #+#             */
-/*   Updated: 2024/03/11 20:46:29 by joestrad         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:00:43 by joestrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,34 @@ void	ft_dir_null(t_ms *ms, t_list_e *temp)
 	getcwd(temp->value, 100);
 }
 
+void	changepwd_aux(t_ms *ms, char *dir, t_list_e *temp, t_list_e *old)
+{
+	if (ft_strncmp(dir, "-", 1) == 0)
+	{
+		if (chdir(old->value) < 0)
+		{
+			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+			ft_putstr_fd(old->value, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			return ;
+		}
+		else
+		{
+			ft_putstr_fd(ft_get_env_value("OLDPWD", ms), STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
+	}
+	free(old->value);
+	old->value = ft_strdup(temp->value);
+	free(temp->value);
+	temp->value = malloc(100 * sizeof(char));
+	if (!temp->value)
+		perror("malloc error");
+	getcwd(temp->value, 100);
+	if (ft_strncmp(dir, "/", 1) == 0)
+		chdir("/");
+}
+
 void	changepwd(t_ms *ms, char *dir)
 {
 	t_list_e	*temp;
@@ -48,30 +76,7 @@ void	changepwd(t_ms *ms, char *dir)
 	}
 	while (old && ft_strncmp(old->name, "OLDPWD", 6) != 0)
 		old = old->next;
-	if (ft_strncmp(dir, "-", 1) == 0)
-	{
-		if (chdir(old->value) < 0)
-		{
-			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-			ft_putstr_fd(old->value, STDERR_FILENO);
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-			return ;
-		}
-		else
-		{
-			ft_putstr_fd(ft_get_env_value("PWD", ms), STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
-	}
-	free(old->value);
-	old->value = ft_strdup(temp->value);
-	free(temp->value);
-	temp->value = malloc(100 * sizeof(char));
-	if (!temp->value)
-		perror("malloc error");
-	getcwd(temp->value, 100);
-	if (ft_strncmp(dir, "/", 1) == 0)
-		chdir("/");
+	changepwd_aux(ms, dir, temp, old);
 }
 
 int	ft_cd(t_ms *ms, char *dir)

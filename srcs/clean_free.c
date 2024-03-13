@@ -60,6 +60,7 @@ void	ft_free_command(t_ms *ms)
 		free(ms->wanted);
 	if (ms->command)
 		free(ms->command);
+	ms->command = NULL;
 }
 
 void	ft_free_matrix(char **matrix)
@@ -81,7 +82,8 @@ void	ft_free(t_ms *ms, int exit_code)
 	ft_lste_clear(ms->env, free);
 	ft_free_envp(ms);
 	ft_free_toks(ms);
-	ft_free_command(ms);
+	if (ms->command)
+		ft_free_command(ms);
 	ft_free_matrix(ms->rout);
 	exit(exit_code);
 }

@@ -119,8 +119,11 @@ int	ft_check_line(char *line)
 
 	check = TRUE;
 	check = check && ft_check_quotes(line);
-	check = check && ft_check_redir_i(line);
-	check = check && ft_check_redir_o(line);
+	if (!ft_strnstr(line, "echo", ft_strlen(line)))
+	{
+		check = check && ft_check_redir_i(line);
+		check = check && ft_check_redir_o(line);
+	}
 	check = check && ft_check_pipes(line);
 	return (check);
 }

@@ -83,15 +83,25 @@ void	ft_expand(t_ms *ms, t_token *tok)
 void	ft_find_vars(t_ms *ms)
 {
 	t_token	*node;
+	char	*str;
 
 	node = ms->tokens;
 	while (node)
 	{
 		if (node->type == SNGQUOTE || node->type == DBLQUOTE)
 			ft_noquote(node);
-		while ((node->type == NOQUOTE || node->type == DBLQUOTE)
+		if ((node->type == NOQUOTE || node->type == DBLQUOTE)
 			&& ft_strchr(node->token, '$'))
-			ft_expand(ms, node);
+		{
+			if (ft_strncmp(node->token, "$", ft_strlen(node->token)) == 0)
+			{
+				str = ft_strdup("$");
+				free(node->token);
+				node->token = str;
+			}
+			else
+				ft_expand(ms, node);
+		}
 		node = node->next;
 	}
 }
