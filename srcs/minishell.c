@@ -78,7 +78,7 @@ void	minishell(t_ms *ms)
 {
 	while (TRUE)
 	{
-		ms->line = readline("\033[33;1mminishell_V1.0$\033[0m ");
+		ms->line = readline("minishell_V1.0$ ");
 		if (ms->line == NULL)
 			ft_control_d();
 		add_history(ms->line);

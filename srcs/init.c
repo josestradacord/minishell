@@ -6,7 +6,7 @@
 /*   By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:50:28 by gpaez-ga          #+#    #+#             */
-/*   Updated: 2024/03/04 20:14:36 by gpaez-ga         ###   ########.fr       */
+/*   Updated: 2024/03/13 19:10:50 by gpaez-ga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_init_data(t_ms *ms, char **argv, char **envp)
 	ms->fdin = 0;
 	ms->fdout = 0;
 	ms->rout = ft_routes(envp);
-	ft_welcome_msg();
 	ft_copy_envp(ms, envp);
 	ft_copy_env2lst(ms, envp);
 	ft_signals();
