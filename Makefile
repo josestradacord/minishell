@@ -6,7 +6,7 @@
 #    By: gpaez-ga <gpaez-ga@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 18:48:41 by joestrad          #+#    #+#              #
-#    Updated: 2024/02/11 16:05:06 by gpaez-ga         ###   ########.fr        #
+#    Updated: 2024/03/16 18:12:32 by joestrad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@echo $(YELLOW)minishell norminette...$(NOCOLOR)
-#	@norminette $(SRCS)
+	@norminette $(SRCS)
 	@echo $(GREEN)Compiling minishell...$(NOCOLOR)
 	@$(CC) $(FLAGS) $(OBJS) $(INC) $(LIBFT) -o $(NAME) $(INC_READLINE) $(LIB_READLINE)
 	@echo $(GREEN)Program minishell ready$(NOCOLOR)

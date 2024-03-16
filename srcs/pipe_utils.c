@@ -95,6 +95,7 @@ static void	ft_lastsonaux(t_ms *ms)
 	ft_putstr_fd(ms->command[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	ms->status = 127;
+	free(ms->wanted);
 	exit (127);
 }
 

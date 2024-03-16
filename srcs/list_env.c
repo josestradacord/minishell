@@ -12,8 +12,6 @@
 
 #include "../include/minishell.h"
 
-#include "../include/minishell.h"
-
 t_list_e	*ft_lste_new(char *key, char *value)
 {
 	t_list_e	*node;

@@ -102,6 +102,7 @@ void	minishell(t_ms *ms)
 	return ;
 }
 
+//atexit(ft_leaks);
 int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;

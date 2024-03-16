@@ -87,12 +87,17 @@ void	ft_copy_env2lst(t_ms *ms, char **envp)
 char	*ft_get_env_value(char *name, t_ms *ms)
 {
 	t_list_e	*node;
+	char		*val;
 
 	node = ms->env;
+	val = NULL;
 	while (node)
 	{
 		if (!ft_strncmp(name, node->name, ft_strlen(name)))
-			return (node->value);
+		{
+			val = ft_strdup(node->value);
+			return (val);
+		}
 		node = node->next;
 	}
 	return (NULL);

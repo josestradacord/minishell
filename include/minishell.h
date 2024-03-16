@@ -75,7 +75,7 @@ typedef struct s_list_e
 	struct s_list_e	*next;
 }	t_list_e;
 
-// Struct to 
+// Struct to store the list of tokens
 typedef struct s_token
 {
 	int				type;
@@ -84,6 +84,7 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
+// Main struct of the program
 typedef struct s_ms
 {
 	char		*line;
